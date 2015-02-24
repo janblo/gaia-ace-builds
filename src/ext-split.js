@@ -123,8 +123,8 @@ var Split = function(container, theme, splits) {
         if (undoManager) {
             var undoManagerProxy = new UndoManagerProxy(undoManager, s);
             s.setUndoManager(undoManagerProxy);
-        }
-        s.$informUndoManager = lang.delayedCall(function() { s.$deltas = []; });
+        }
+        s.$informUndoManager = lang.delayedCall(function() { s.$deltas = []; });
         s.setTabSize(session.getTabSize());
         s.setUseSoftTabs(session.getUseSoftTabs());
         s.setOverwrite(session.getOverwrite());
@@ -143,7 +143,7 @@ var Split = function(container, theme, splits) {
             editor = this.$cEditor;
         } else {
             editor = this.$editors[idx];
-        }
+        }
         var isUsed = this.$editors.some(function(editor) {
            return editor.session === session;
         });
@@ -151,7 +151,7 @@ var Split = function(container, theme, splits) {
         if (isUsed) {
             session = this.$cloneSession(session);
         }
-        editor.setSession(session);
+        editor.setSession(session);
         return session;
     };
     this.getOrientation = function() {

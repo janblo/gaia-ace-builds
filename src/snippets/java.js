@@ -55,7 +55,7 @@ snippet imp\n\
 	implements\n\
 ##\n\
 ## Comments\n\
-snippet /*\n\
+snippet /*\n\
 ##\n\
 ## Constants\n\
 snippet co\n\
@@ -135,7 +135,7 @@ snippet findbyid\n\
 	${1:var} ${2:item} = ${1}.findById(${3});${4}\n\
 ##\n\
 ## Javadocs\n\
-snippet /**\n\
+snippet /**\n\
 snippet @au\n\
 	@author `system(\"grep \\`id -un\\` /etc/passwd | cut -d \\\":\\\" -f5 | cut -d \\\",\\\" -f1\")`\n\
 snippet @br\n\

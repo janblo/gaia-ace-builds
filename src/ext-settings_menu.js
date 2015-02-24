@@ -88,7 +88,7 @@ var Mode = function(name, caption, extensions) {
 
 Mode.prototype.supportsFile = function(filename) {
     return filename.match(this.extRe);
-};
+};
 var supportedModes = {
     ABAP:        ["abap"],
     ABC:         ["abc"],
@@ -209,7 +209,7 @@ var supportedModes = {
     VHDL:        ["vhd|vhdl"],
     XML:         ["xml|rdf|rss|wsdl|xslt|atom|mathml|mml|xul|xbl|xaml"],
     XQuery:      ["xq"],
-    YAML:        ["yaml|yml"],
+    YAML:        ["yaml|yml"],
     Django:      ["html"]
 };
 
@@ -351,7 +351,7 @@ module.exports.addEditorMenuOptions = function addEditorMenuOptions (editor) {
 
 define("ace/ext/menu_tools/get_set_functions",["require","exports","module"], function(require, exports, module) {
 'use strict';
-module.exports.getSetFunctions = function getSetFunctions (editor) {
+module.exports.getSetFunctions = function getSetFunctions (editor) {
     var out = [];
     var my = {
         'editor' : editor,
@@ -375,7 +375,7 @@ module.exports.getSetFunctions = function getSetFunctions (editor) {
         var clss = esra;
         for(var fn in esr) {
             if(skip.indexOf(fn) === -1) {
-                if(/^set/.test(fn) && opts.indexOf(fn) === -1) {
+                if(/^set/.test(fn) && opts.indexOf(fn) === -1) {
                     opts.push(fn);
                     out.push({
                         'functionName' : fn,
@@ -396,7 +396,7 @@ define("ace/ext/menu_tools/generate_settings_menu",["require","exports","module"
 var egen = require('./element_generator');
 var addEditorMenuOptions = require('./add_editor_menu_options').addEditorMenuOptions;
 var getSetFunctions = require('./get_set_functions').getSetFunctions;
-module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
+module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
     var elements = [];
     function cleanupElementsList() {
         elements.sort(function(a, b) {
@@ -404,7 +404,7 @@ module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
             var y = b.getAttribute('contains');
             return x.localeCompare(y);
         });
-    }
+    }
     function wrapElements() {
         var topmenu = document.createElement('div');
         topmenu.setAttribute('id', 'ace_settingsmenu');
@@ -418,7 +418,7 @@ module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
         el.textContent = "Ace version " + version;
         
         return topmenu;
-    }
+    }
     function createNewEntry(obj, clss, item, val) {
         var el;
         var div = document.createElement('div');
@@ -448,13 +448,13 @@ module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
         } else if(typeof val === 'boolean') {
             el = egen.createCheckbox(item, val, clss);
             el.addEventListener('change', function(e) {
-                try{
+                try{
                     obj[e.target.id](!!e.target.checked);
                 } catch (err) {
                     throw new Error(err);
                 }
             });
-        } else {
+        } else {
             el = egen.createInput(item, val, clss);
             el.addEventListener('change', function(e) {
                 try{
@@ -473,7 +473,7 @@ module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
         el.style.cssText = 'float:right;';
         div.appendChild(el);
         return div;
-    }
+    }
     function makeDropdown(item, esr, clss, fn) {
         var val = editor.menuOptions[item];
         var currentVal = esr[fn]();
@@ -484,33 +484,33 @@ module.exports.generateSettingsMenu = function generateSettingsMenu (editor) {
                 valuex.selected = 'selected';
         });
         return createNewEntry(esr, clss, item, val);
-    }
+    }
     function handleSet(setObj) {
         var item = setObj.functionName;
         var esr = setObj.parentObj;
         var clss = setObj.parentName;
         var val;
         var fn = item.replace(/^set/, 'get');
-        if(editor.menuOptions[item] !== undefined) {
+        if(editor.menuOptions[item] !== undefined) {
             elements.push(makeDropdown(item, esr, clss, fn));
-        } else if(typeof esr[fn] === 'function') {
+        } else if(typeof esr[fn] === 'function') {
             try {
                 val = esr[fn]();
-                if(typeof val === 'object') {
+                if(typeof val === 'object') {
                     val = val.$id;
-                }
+                }
                 elements.push(
                     createNewEntry(esr, clss, item, val)
                 );
-            } catch (e) {
+            } catch (e) {
             }
         }
     }
-    addEditorMenuOptions(editor);
-    getSetFunctions(editor).forEach(function(setObj) {
+    addEditorMenuOptions(editor);
+    getSetFunctions(editor).forEach(function(setObj) {
         handleSet(setObj);
-    });
-    cleanupElementsList();
+    });
+    cleanupElementsList();
     return wrapElements();
 };
 
@@ -589,7 +589,7 @@ module.exports.overlayPage = function overlayPage(editor, contentElement, top, r
         closer.parentNode.removeChild(closer);
         editor.focus();
         closer = null;
-    });
+    });
     document.addEventListener('keydown', documentEscListener);
 
     contentContainer.style.cssText = top + right + bottom + left;
@@ -621,11 +621,11 @@ define("ace/ext/settings_menu",["require","exports","module","ace/ext/menu_tools
 "use strict";
 var generateSettingsMenu = require('./menu_tools/generate_settings_menu').generateSettingsMenu;
 var overlayPage = require('./menu_tools/overlay_page').overlayPage;
-function showSettingsMenu(editor) {
+function showSettingsMenu(editor) {
     var sm = document.getElementById('ace_settingsmenu');
     if (!sm)    
         overlayPage(editor, generateSettingsMenu(editor), '0', '0', '0');
-}
+}
 module.exports.init = function(editor) {
     var Editor = require("ace/editor").Editor;
     Editor.prototype.showSettingsMenu = function() {

@@ -4,7 +4,7 @@ define("ace/mode/applescript_highlight_rules",["require","exports","module","ace
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var AppleScriptHighlightRules = function() {
+var AppleScriptHighlightRules = function() {
     var keywords = (
         "about|above|after|against|and|around|as|at|back|before|beginning|" +
         "behind|below|beneath|beside|between|but|by|considering|" +
@@ -131,12 +131,12 @@ oop.inherits(FoldMode, BaseFoldMode);
     this.foldingStopMarker = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
     this.singleLineBlockCommentRe= /^\s*(\/\*).*\*\/\s*$/;
     this.tripleStarBlockCommentRe = /^\s*(\/\*\*\*).*\*\/\s*$/;
-    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
+    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
     this._getFoldWidgetBase = this.getFoldWidget;
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
     
-        if (this.singleLineBlockCommentRe.test(line)) {
+        if (this.singleLineBlockCommentRe.test(line)) {
             if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
                 return "";
         }
@@ -253,7 +253,7 @@ define("ace/mode/applescript",["require","exports","module","ace/lib/oop","ace/m
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
 var Tokenizer = require("../tokenizer").Tokenizer;
-var AppleScriptHighlightRules = require("./applescript_highlight_rules").AppleScriptHighlightRules;
+var AppleScriptHighlightRules = require("./applescript_highlight_rules").AppleScriptHighlightRules;
 var FoldMode = require("./folding/cstyle").FoldMode;
 
 var Mode = function() {
@@ -265,7 +265,7 @@ oop.inherits(Mode, TextMode);
 (function() {
     this.lineCommentStart = "--";
     this.blockComment = {start: "(*", end: "*)"};
-    this.$id = "ace/mode/applescript";
+    this.$id = "ace/mode/applescript";
 }).call(Mode.prototype);
 
 exports.Mode = Mode;

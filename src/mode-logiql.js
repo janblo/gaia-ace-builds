@@ -4,32 +4,32 @@ define("ace/mode/logiql_highlight_rules",["require","exports","module","ace/lib/
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var LogiQLHighlightRules = function() {
+var LogiQLHighlightRules = function() {
 
     this.$rules = { start: 
        [ { token: 'comment.block',
            regex: '/\\*',
            push: 
             [ { token: 'comment.block', regex: '\\*/', next: 'pop' },
-              { defaultToken: 'comment.block' } ],
+              { defaultToken: 'comment.block' } ],
             },
          { token: 'comment.single',
-           regex: '//.*',
+           regex: '//.*',
             },
          { token: 'constant.numeric',
-           regex: '\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?[fd]?',
+           regex: '\\d+(?:\\.\\d+)?(?:[eE][+-]?\\d+)?[fd]?',
             },
          { token: 'string',
            regex: '"',
            push: 
             [ { token: 'string', regex: '"', next: 'pop' },
-              { defaultToken: 'string' } ],
+              { defaultToken: 'string' } ],
             },
          { token: 'constant.language',
-           regex: '\\b(true|false)\\b',
+           regex: '\\b(true|false)\\b',
             },
          { token: 'entity.name.type.logicblox',
-           regex: '`[a-zA-Z_:]+(\\d|\\a)*\\b',
+           regex: '`[a-zA-Z_:]+(\\d|\\a)*\\b',
             },
          { token: 'keyword.start', regex: '->',  comment: 'Constraint' },
          { token: 'keyword.start', regex: '-->', comment: 'Level 1 Constraint'},
@@ -49,19 +49,19 @@ var LogiQLHighlightRules = function() {
             [ { include: '$self' },
               { token: 'support.function',
                 regex: '>>',
-                next: 'pop' } ],
+                next: 'pop' } ],
             },
          { token: 'storage.modifier',
-           regex: '\\b(lang:[\\w:]*)',
+           regex: '\\b(lang:[\\w:]*)',
             },
          { token: [ 'storage.type', 'text' ],
-           regex: '(export|sealed|clauses|block|alias|alias_all)(\\s*\\()(?=`)',
+           regex: '(export|sealed|clauses|block|alias|alias_all)(\\s*\\()(?=`)',
             },
          { token: 'entity.name',
-           regex: '[a-zA-Z_][a-zA-Z_0-9:]*(@prev|@init|@final)?(?=(\\(|\\[))',
+           regex: '[a-zA-Z_][a-zA-Z_0-9:]*(@prev|@init|@final)?(?=(\\(|\\[))',
             },
          { token: 'variable.parameter',
-           regex: '([a-zA-Z][a-zA-Z_0-9]*|_)\\s*(?=(,|\\.|<-|->|\\)|\\]|=))',
+           regex: '([a-zA-Z][a-zA-Z_0-9]*|_)\\s*(?=(,|\\.|<-|->|\\)|\\]|=))',
             } ] }
     
     this.normalizeRules();
@@ -117,7 +117,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             var endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
-    };
+    };
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
         var indent = line.search(/\S/);
@@ -129,7 +129,7 @@ oop.inherits(FoldMode, BaseFoldMode);
         if (indent == -1) {
             session.foldWidgets[row - 1] = prevIndent!= -1 && prevIndent < nextIndent ? "start" : "";
             return "";
-        }
+        }
         if (prevIndent == -1) {
             if (indent == nextIndent && line[indent] == "#" && next[indent] == "#") {
                 session.foldWidgets[row - 1] = "";
@@ -387,14 +387,14 @@ var CstyleBehaviour = function() {
                     text: quote + selected + quote,
                     selection: false
                 };
-            } else {
+            } else if (!selected) {
                 var cursor = editor.getCursorPosition();
                 var line = session.doc.getLine(cursor.row);
                 var leftChar = line.substring(cursor.column-1, cursor.column);
                 var rightChar = line.substring(cursor.column, cursor.column + 1);
                 
                 var token = session.getTokenAt(cursor.row, cursor.column);
-                var rightToken = session.getTokenAt(cursor.row, cursor.column + 1);
+                var rightToken = session.getTokenAt(cursor.row, cursor.column + 1);
                 if (leftChar == "\\" && token && /escape/.test(token.type))
                     return null;
                 
@@ -408,7 +408,7 @@ var CstyleBehaviour = function() {
                     if (stringBefore && !stringAfter)
                         return null; // wrap string with different quote
                     if (stringBefore && stringAfter)
-                        return null; // do not pair quotes inside strings 
+                        return null; // do not pair quotes inside strings
                     var wordRe = session.$mode.tokenRe;
                     wordRe.lastIndex = 0;
                     var isWordBefore = wordRe.test(leftChar);
@@ -446,12 +446,12 @@ var CstyleBehaviour = function() {
     
 CstyleBehaviour.isSaneInsertion = function(editor, session) {
     var cursor = editor.getCursorPosition();
-    var iterator = new TokenIterator(session, cursor.row, cursor.column);
-    if (!this.$matchTokenType(iterator.getCurrentToken() || "text", SAFE_INSERT_IN_TOKENS)) {
+    var iterator = new TokenIterator(session, cursor.row, cursor.column);
+    if (!this.$matchTokenType(iterator.getCurrentToken() || "text", SAFE_INSERT_IN_TOKENS)) {
         var iterator2 = new TokenIterator(session, cursor.row, cursor.column + 1);
         if (!this.$matchTokenType(iterator2.getCurrentToken() || "text", SAFE_INSERT_IN_TOKENS))
             return false;
-    }
+    }
     iterator.stepForward();
     return iterator.getCurrentTokenRow() !== cursor.row ||
         this.$matchTokenType(iterator.getCurrentToken() || "text", SAFE_INSERT_BEFORE_TOKENS);
@@ -463,7 +463,7 @@ CstyleBehaviour.$matchTokenType = function(token, types) {
 
 CstyleBehaviour.recordAutoInsert = function(editor, session, bracket) {
     var cursor = editor.getCursorPosition();
-    var line = session.doc.getLine(cursor.row);
+    var line = session.doc.getLine(cursor.row);
     if (!this.isAutoInsertedClosing(cursor, line, context.autoInsertedLineEnd[0]))
         context.autoInsertedBrackets = 0;
     context.autoInsertedRow = cursor.row;

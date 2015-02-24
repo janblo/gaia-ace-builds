@@ -140,7 +140,7 @@ var SnippetManager = function() {
             case "SOFT_TABS":
                 return s.getUseSoftTabs() ? "YES" : "NO";
             case "TAB_SIZE":
-                return s.getTabSize();
+                return s.getTabSize();
             case "FILENAME":
             case "FILEPATH":
                 return "";
@@ -153,7 +153,7 @@ var SnippetManager = function() {
         if (this.variables.hasOwnProperty(varName))
             return this.variables[varName](editor, varName) || "";
         return this.$getDefaultValue(editor, varName) || "";
-    };
+    };
     this.tmStrFormat = function(str, ch, editor) {
         var flag = ch.flag || "";
         var re = ch.guard;
@@ -244,14 +244,14 @@ var SnippetManager = function() {
             indentString = indentString.slice(0, cursor.column);
 
         var tokens = this.tokenizeTmSnippet(snippetText);
-        tokens = this.resolveVariables(tokens, editor);
+        tokens = this.resolveVariables(tokens, editor);
         tokens = tokens.map(function(x) {
             if (x == "\n")
                 return x + indentString;
             if (typeof x == "string")
                 return x.replace(/\t/g, tabString);
             return x;
-        });
+        });
         var tabstops = [];
         tokens.forEach(function(p, i) {
             if (typeof p != "object")
@@ -277,7 +277,7 @@ var SnippetManager = function() {
             } else if (value.length && (!ts.value || typeof ts.value !== "string")) {
                 ts.value = value.join("");
             }
-        });
+        });
         tabstops.forEach(function(ts) {ts.length = 0});
         var expanding = {};
         function copyValue(val) {
@@ -300,9 +300,9 @@ var SnippetManager = function() {
                 continue;
             var id = p.tabstopId;
             var i1 = tokens.indexOf(p, i + 1);
-            if (expanding[id]) {
+            if (expanding[id]) {
                 if (expanding[id] === p)
-                    expanding[id] = null;
+                    expanding[id] = null;
                 continue;
             }
             
@@ -315,7 +315,7 @@ var SnippetManager = function() {
 
             if (ts.indexOf(p) === -1)
                 ts.push(p);
-        }
+        }
         var row = 0, column = 0;
         var text = "";
         tokens.forEach(function(t) {
@@ -357,7 +357,7 @@ var SnippetManager = function() {
     this.$getScope = function(editor) {
         var scope = editor.session.$mode.$id || "";
         scope = scope.split("/").pop();
-        if (scope === "html" || scope === "php") {
+        if (scope === "html" || scope === "php") {
             if (scope === "php" && !editor.session.$mode.inlinePhp) 
                 scope = "html";
             var c = editor.getCursorPosition();
@@ -740,7 +740,7 @@ var TabstopManager = function(editor) {
                 if (ts.hasLinkedRanges && ts[i].linked)
                     continue;
                 sel.addRange(ts[i].clone(), true);
-            }
+            }
             if (sel.ranges[0])
                 sel.addRange(sel.ranges[0].clone());
         } else {
@@ -751,7 +751,7 @@ var TabstopManager = function(editor) {
     };
     this.addTabstops = function(tabstops, start, end) {
         if (!this.$openTabstops)
-            this.$openTabstops = [];
+            this.$openTabstops = [];
         if (!tabstops[0]) {
             var p = Range.fromPoints(end, end);
             moveRelative(p.start, start);
@@ -793,7 +793,7 @@ var TabstopManager = function(editor) {
             this.addTabstopMarkers(dest);
         }, this);
         
-        if (arg.length > 2) {
+        if (arg.length > 2) {
             if (this.tabstops.length)
                 arg.push(arg.splice(2, 1)[0]);
             this.tabstops.splice.apply(this.tabstops, arg);
@@ -844,7 +844,7 @@ var TabstopManager = function(editor) {
         "Esc": function(ed) {
             ed.tabstopManager.detach();
         },
-        "Return": function(ed) {
+        "Return": function(ed) {
             return false;
         }
     });
@@ -919,22 +919,22 @@ AceEmmetEditor.prototype = {
         emmet.require("resources").setVariable("indentation", this.indentation);
         this.$syntax = null;
         this.$syntax = this.getSyntax();
-    },
-    getSelectionRange: function() {
+    },
+    getSelectionRange: function() {
         var range = this.ace.getSelectionRange();
         var doc = this.ace.session.doc;
         return {
             start: doc.positionToIndex(range.start),
             end: doc.positionToIndex(range.end)
         };
-    },
+    },
     createSelection: function(start, end) {
         var doc = this.ace.session.doc;
         this.ace.selection.setRange({
             start: doc.indexToPosition(start),
             end: doc.indexToPosition(end)
         });
-    },
+    },
     getCurrentLineRange: function() {
         var ace = this.ace;
         var row = ace.getCursorPosition().row;
@@ -944,19 +944,19 @@ AceEmmetEditor.prototype = {
             start: index,
             end: index + lineLength
         };
-    },
+    },
     getCaretPos: function(){
         var pos = this.ace.getCursorPosition();
         return this.ace.session.doc.positionToIndex(pos);
-    },
+    },
     setCaretPos: function(index){
         var pos = this.ace.session.doc.indexToPosition(index);
         this.ace.selection.moveToPosition(pos);
-    },
+    },
     getCurrentLine: function() {
         var row = this.ace.getCursorPosition().row;
         return this.ace.session.getLine(row);
-    },
+    },
     replaceContent: function(value, start, end, noIndent) {
         if (end == null)
             end = start == null ? this.getContent().length : start;
@@ -968,14 +968,14 @@ AceEmmetEditor.prototype = {
         var range = Range.fromPoints(doc.indexToPosition(start), doc.indexToPosition(end));
         editor.session.remove(range);
         
-        range.end = range.start;
+        range.end = range.start;
         
         value = this.$updateTabstops(value);
         snippetManager.insertSnippet(editor, value);
-    },
+    },
     getContent: function(){
         return this.ace.getValue();
-    },
+    },
     getSyntax: function() {
         if (this.$syntax)
             return this.$syntax;
@@ -994,7 +994,7 @@ AceEmmetEditor.prototype = {
             }
         }
         return syntax;
-    },
+    },
     getProfileName: function() {
         switch(this.getSyntax()) {
           case "css": return "css";
@@ -1002,22 +1002,22 @@ AceEmmetEditor.prototype = {
           case "xsl":
             return "xml";
           case "html":
-            var profile = emmet.require("resources").getVariable("profile");
+            var profile = emmet.require("resources").getVariable("profile");
             if (!profile)
                 profile = this.ace.session.getLines(0,2).join("").search(/<!DOCTYPE[^>]+XHTML/i) != -1 ? "xhtml": "html";
             return profile;
         }
         return "xhtml";
-    },
+    },
     prompt: function(title) {
         return prompt(title);
-    },
+    },
     getSelection: function() {
         return this.ace.session.getTextRange();
-    },
+    },
     getFilePath: function() {
         return "";
-    },
+    },
     $updateTabstops: function(value) {
         var base = 1000;
         var zeroBase = 0;
@@ -1035,7 +1035,7 @@ AceEmmetEditor.prototype = {
                     group += base;
 
                 var placeholder = data.placeholder;
-                if (placeholder) {
+                if (placeholder) {
                     placeholder = ts.processText(placeholder, tabstopOptions);
                 }
 
@@ -1088,7 +1088,7 @@ var keymap = {
     select_previous_item: {"mac": "shift+command+,", "win": "shift+ctrl+,"},
     reflect_css_value: {"mac": "shift+command+r", "win": "shift+ctrl+r"},
 
-    encode_decode_data_url: {"mac": "shift+ctrl+d", "win": "ctrl+'"},
+    encode_decode_data_url: {"mac": "shift+ctrl+d", "win": "ctrl+'"},
     expand_abbreviation_with_tab: "Tab",
     wrap_with_abbreviation: {"mac": "shift+ctrl+a", "win": "shift+ctrl+a"}
 };
@@ -1107,7 +1107,7 @@ exports.runEmmetCommand = function(editor) {
                 return false;
         }
         
-        if (this.action == "wrap_with_abbreviation") {
+        if (this.action == "wrap_with_abbreviation") {
             return setTimeout(function() {
                 actions.run("wrap_with_abbreviation", editorProxy);
             }, 0);

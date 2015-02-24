@@ -71,7 +71,7 @@ module.exports.overlayPage = function overlayPage(editor, contentElement, top, r
         closer.parentNode.removeChild(closer);
         editor.focus();
         closer = null;
-    });
+    });
     document.addEventListener('keydown', documentEscListener);
 
     contentContainer.style.cssText = top + right + bottom + left;
@@ -133,7 +133,7 @@ module.exports.getEditorKeybordShortcuts = function(editor) {
 define("ace/ext/keybinding_menu",["require","exports","module","ace/editor","ace/ext/menu_tools/overlay_page","ace/ext/menu_tools/get_editor_keyboard_shortcuts"], function(require, exports, module) {
     "use strict";
     var Editor = require("ace/editor").Editor;
-    function showKeyboardShortcuts (editor) {
+    function showKeyboardShortcuts (editor) {
         if(!document.getElementById('kbshortcutmenu')) {
             var overlayPage = require('./menu_tools/overlay_page').overlayPage;
             var getEditorKeybordShortcuts = require('./menu_tools/get_editor_keyboard_shortcuts').getEditorKeybordShortcuts;

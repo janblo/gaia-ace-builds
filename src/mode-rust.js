@@ -4,7 +4,7 @@ define("ace/mode/rust_highlight_rules",["require","exports","module","ace/lib/oo
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var RustHighlightRules = function() {
+var RustHighlightRules = function() {
 
     this.$rules = { start: 
        [ { token: 'variable.other.source.rust',
@@ -148,12 +148,12 @@ oop.inherits(FoldMode, BaseFoldMode);
     this.foldingStopMarker = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
     this.singleLineBlockCommentRe= /^\s*(\/\*).*\*\/\s*$/;
     this.tripleStarBlockCommentRe = /^\s*(\/\*\*\*).*\*\/\s*$/;
-    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
+    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
     this._getFoldWidgetBase = this.getFoldWidget;
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
     
-        if (this.singleLineBlockCommentRe.test(line)) {
+        if (this.singleLineBlockCommentRe.test(line)) {
             if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
                 return "";
         }
@@ -269,7 +269,7 @@ define("ace/mode/rust",["require","exports","module","ace/lib/oop","ace/mode/tex
 
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
-var RustHighlightRules = require("./rust_highlight_rules").RustHighlightRules;
+var RustHighlightRules = require("./rust_highlight_rules").RustHighlightRules;
 var FoldMode = require("./folding/cstyle").FoldMode;
 
 var Mode = function() {

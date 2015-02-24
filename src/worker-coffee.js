@@ -350,7 +350,7 @@ define("ace/range",["require","exports","module"], function(require, exports, mo
 "use strict";
 var comparePoints = function(p1, p2) {
     return p1.row - p2.row || p1.column - p2.column;
-};
+};
 var Range = function(startRow, startColumn, endRow, endColumn) {
     this.start = {
         row: startRow,
@@ -363,7 +363,7 @@ var Range = function(startRow, startColumn, endRow, endColumn) {
     };
 };
 
-(function() {
+(function() {
     this.isEqual = function(range) {
         return this.start.row === range.start.row &&
             this.end.row === range.end.row &&
@@ -589,7 +589,7 @@ define("ace/anchor",["require","exports","module","ace/lib/oop","ace/lib/event_e
 "use strict";
 
 var oop = require("./lib/oop");
-var EventEmitter = require("./lib/event_emitter").EventEmitter;
+var EventEmitter = require("./lib/event_emitter").EventEmitter;
 
 var Anchor = exports.Anchor = function(doc, row, column) {
     this.$onChange = this.onChange.bind(this);
@@ -631,7 +631,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
 
         if (delta.action === "insertText") {
             if (start.row === row && start.column <= column) {
-                if (start.column === column && this.$insertRight) {
+                if (start.column === column && this.$insertRight) {
                 } else if (start.row === end.row) {
                     column += end.column - start.column;
                 } else {
@@ -642,7 +642,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
                 row += end.row - start.row;
             }
         } else if (delta.action === "insertLines") {
-            if (start.row === row && column === 0 && this.$insertRight) {
+            if (start.row === row && column === 0 && this.$insertRight) {
             }
             else if (start.row <= row) {
                 row += end.row - start.row;
@@ -740,10 +740,10 @@ define("ace/document",["require","exports","module","ace/lib/oop","ace/lib/event
 var oop = require("./lib/oop");
 var EventEmitter = require("./lib/event_emitter").EventEmitter;
 var Range = require("./range").Range;
-var Anchor = require("./anchor").Anchor;
+var Anchor = require("./anchor").Anchor;
 
 var Document = function(text) {
-    this.$lines = [];
+    this.$lines = [];
     if (text.length === 0) {
         this.$lines = [""];
     } else if (Array.isArray(text)) {
@@ -766,7 +766,7 @@ var Document = function(text) {
     };
     this.createAnchor = function(row, column) {
         return new Anchor(this, row, column);
-    };
+    };
     if ("aaa".split(/a/).length === 0)
         this.$split = function(text) {
             return text.replace(/\r\n|\r/g, "\n").split("\n");
@@ -846,7 +846,7 @@ var Document = function(text) {
         if (!text || text.length === 0)
             return position;
 
-        position = this.$clipPosition(position);
+        position = this.$clipPosition(position);
         if (this.getLength() <= 1)
             this.$detectNewLine(text);
 
@@ -861,7 +861,7 @@ var Document = function(text) {
             position = this.insertInLine(position, lastLine || "");
         }
         return position;
-    };
+    };
     this.insertLines = function(row, lines) {
         if (row >= this.getLength())
             return this.insert({row: row, column: 0}, "\n" + lines.join("\n"));
@@ -869,7 +869,7 @@ var Document = function(text) {
     };
     this._insertLines = function(row, lines) {
         if (lines.length == 0)
-            return {row: row, column: 0};
+            return {row: row, column: 0};
         while (lines.length > 0xF000) {
             var end = this._insertLines(row, lines.slice(0, 0xF000));
             lines = lines.slice(0xF000);
@@ -935,7 +935,7 @@ var Document = function(text) {
     };
     this.remove = function(range) {
         if (!(range instanceof Range))
-            range = Range.fromPoints(range.start, range.end);
+            range = Range.fromPoints(range.start, range.end);
         range.start = this.$clipPosition(range.start);
         range.end = this.$clipPosition(range.end);
 
@@ -1022,7 +1022,7 @@ var Document = function(text) {
         if (!(range instanceof Range))
             range = Range.fromPoints(range.start, range.end);
         if (text.length == 0 && range.isEmpty())
-            return range.start;
+            return range.start;
         if (text == this.getTextRange(range))
             return range.end;
 
@@ -1317,7 +1317,7 @@ var Mirror = exports.Mirror = function(sender) {
         this.sender.callback(this.doc.getValue(), callbackId);
     };
     
-    this.onUpdate = function() {
+    this.onUpdate = function() {
     };
     
     this.isPending = function() {
@@ -1328,7 +1328,7 @@ var Mirror = exports.Mirror = function(sender) {
 
 });
 
-define("ace/mode/coffee/rewriter",["require","exports","module"], function(require, exports, module) {
+define("ace/mode/coffee/rewriter",["require","exports","module"], function(require, exports, module) {
 
   var BALANCED_PAIRS, CALL_CLOSERS, EXPRESSION_CLOSE, EXPRESSION_END, EXPRESSION_START, IMPLICIT_CALL, IMPLICIT_END, IMPLICIT_FUNC, IMPLICIT_UNSPACED_CALL, INVERSES, LINEBREAKS, SINGLE_CLOSERS, SINGLE_LINERS, generate, left, rite, _i, _len, _ref,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
@@ -1818,7 +1818,7 @@ define("ace/mode/coffee/rewriter",["require","exports","module"], function(requi
 
 });
 
-define("ace/mode/coffee/helpers",["require","exports","module"], function(require, exports, module) {
+define("ace/mode/coffee/helpers",["require","exports","module"], function(require, exports, module) {
 
   var buildLocationData, extend, flatten, last, repeat, syntaxErrorToString, _ref;
 
@@ -2063,7 +2063,7 @@ define("ace/mode/coffee/helpers",["require","exports","module"], function(requir
 
 });
 
-define("ace/mode/coffee/lexer",["require","exports","module","ace/mode/coffee/rewriter","ace/mode/coffee/helpers"], function(require, exports, module) {
+define("ace/mode/coffee/lexer",["require","exports","module","ace/mode/coffee/rewriter","ace/mode/coffee/helpers"], function(require, exports, module) {
 
   var BOM, BOOL, CALLABLE, CODE, COFFEE_ALIASES, COFFEE_ALIAS_MAP, COFFEE_KEYWORDS, COMMENT, COMPARE, COMPOUND_ASSIGN, HEREDOC, HEREDOC_ILLEGAL, HEREDOC_INDENT, HEREGEX, HEREGEX_OMIT, IDENTIFIER, INDEXABLE, INVERSES, JSTOKEN, JS_FORBIDDEN, JS_KEYWORDS, LINE_BREAK, LINE_CONTINUER, LOGIC, Lexer, MATH, MULTILINER, MULTI_DENT, NOT_REGEX, NOT_SPACED_REGEX, NUMBER, OPERATOR, REGEX, RELATION, RESERVED, Rewriter, SHIFT, SIMPLESTR, STRICT_PROSCRIBED, TRAILING_SPACES, UNARY, WHITESPACE, compact, count, invertLiterate, key, last, locationDataToString, repeat, starts, throwSyntaxError, _ref, _ref1,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -2972,14 +2972,14 @@ define("ace/mode/coffee/lexer",["require","exports","module","ace/mode/coffee/re
 
 });
 
-define("ace/mode/coffee/parser",["require","exports","module"], function(require, exports, module) {
+define("ace/mode/coffee/parser",["require","exports","module"], function(require, exports, module) {
 
 var parser = {trace: function trace() { },
 yy: {},
 symbols_: {"error":2,"Root":3,"Body":4,"Line":5,"TERMINATOR":6,"Expression":7,"Statement":8,"Return":9,"Comment":10,"STATEMENT":11,"Value":12,"Invocation":13,"Code":14,"Operation":15,"Assign":16,"If":17,"Try":18,"While":19,"For":20,"Switch":21,"Class":22,"Throw":23,"Block":24,"INDENT":25,"OUTDENT":26,"Identifier":27,"IDENTIFIER":28,"AlphaNumeric":29,"NUMBER":30,"STRING":31,"Literal":32,"JS":33,"REGEX":34,"DEBUGGER":35,"UNDEFINED":36,"NULL":37,"BOOL":38,"Assignable":39,"=":40,"AssignObj":41,"ObjAssignable":42,":":43,"ThisProperty":44,"RETURN":45,"HERECOMMENT":46,"PARAM_START":47,"ParamList":48,"PARAM_END":49,"FuncGlyph":50,"->":51,"=>":52,"OptComma":53,",":54,"Param":55,"ParamVar":56,"...":57,"Array":58,"Object":59,"Splat":60,"SimpleAssignable":61,"Accessor":62,"Parenthetical":63,"Range":64,"This":65,".":66,"?.":67,"::":68,"?::":69,"Index":70,"INDEX_START":71,"IndexValue":72,"INDEX_END":73,"INDEX_SOAK":74,"Slice":75,"{":76,"AssignList":77,"}":78,"CLASS":79,"EXTENDS":80,"OptFuncExist":81,"Arguments":82,"SUPER":83,"FUNC_EXIST":84,"CALL_START":85,"CALL_END":86,"ArgList":87,"THIS":88,"@":89,"[":90,"]":91,"RangeDots":92,"..":93,"Arg":94,"SimpleArgs":95,"TRY":96,"Catch":97,"FINALLY":98,"CATCH":99,"THROW":100,"(":101,")":102,"WhileSource":103,"WHILE":104,"WHEN":105,"UNTIL":106,"Loop":107,"LOOP":108,"ForBody":109,"FOR":110,"ForStart":111,"ForSource":112,"ForVariables":113,"OWN":114,"ForValue":115,"FORIN":116,"FOROF":117,"BY":118,"SWITCH":119,"Whens":120,"ELSE":121,"When":122,"LEADING_WHEN":123,"IfBlock":124,"IF":125,"POST_IF":126,"UNARY":127,"-":128,"+":129,"--":130,"++":131,"?":132,"MATH":133,"SHIFT":134,"COMPARE":135,"LOGIC":136,"RELATION":137,"COMPOUND_ASSIGN":138,"$accept":0,"$end":1},
 terminals_: {2:"error",6:"TERMINATOR",11:"STATEMENT",25:"INDENT",26:"OUTDENT",28:"IDENTIFIER",30:"NUMBER",31:"STRING",33:"JS",34:"REGEX",35:"DEBUGGER",36:"UNDEFINED",37:"NULL",38:"BOOL",40:"=",43:":",45:"RETURN",46:"HERECOMMENT",47:"PARAM_START",49:"PARAM_END",51:"->",52:"=>",54:",",57:"...",66:".",67:"?.",68:"::",69:"?::",71:"INDEX_START",73:"INDEX_END",74:"INDEX_SOAK",76:"{",78:"}",79:"CLASS",80:"EXTENDS",83:"SUPER",84:"FUNC_EXIST",85:"CALL_START",86:"CALL_END",88:"THIS",89:"@",90:"[",91:"]",93:"..",96:"TRY",98:"FINALLY",99:"CATCH",100:"THROW",101:"(",102:")",104:"WHILE",105:"WHEN",106:"UNTIL",108:"LOOP",110:"FOR",114:"OWN",116:"FORIN",117:"FOROF",118:"BY",119:"SWITCH",121:"ELSE",123:"LEADING_WHEN",125:"IF",126:"POST_IF",127:"UNARY",128:"-",129:"+",130:"--",131:"++",132:"?",133:"MATH",134:"SHIFT",135:"COMPARE",136:"LOGIC",137:"RELATION",138:"COMPOUND_ASSIGN"},
 productions_: [0,[3,0],[3,1],[4,1],[4,3],[4,2],[5,1],[5,1],[8,1],[8,1],[8,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[7,1],[24,2],[24,3],[27,1],[29,1],[29,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[32,1],[16,3],[16,4],[16,5],[41,1],[41,3],[41,5],[41,1],[42,1],[42,1],[42,1],[9,2],[9,1],[10,1],[14,5],[14,2],[50,1],[50,1],[53,0],[53,1],[48,0],[48,1],[48,3],[48,4],[48,6],[55,1],[55,2],[55,3],[56,1],[56,1],[56,1],[56,1],[60,2],[61,1],[61,2],[61,2],[61,1],[39,1],[39,1],[39,1],[12,1],[12,1],[12,1],[12,1],[12,1],[62,2],[62,2],[62,2],[62,2],[62,1],[62,1],[70,3],[70,2],[72,1],[72,1],[59,4],[77,0],[77,1],[77,3],[77,4],[77,6],[22,1],[22,2],[22,3],[22,4],[22,2],[22,3],[22,4],[22,5],[13,3],[13,3],[13,1],[13,2],[81,0],[81,1],[82,2],[82,4],[65,1],[65,1],[44,2],[58,2],[58,4],[92,1],[92,1],[64,5],[75,3],[75,2],[75,2],[75,1],[87,1],[87,3],[87,4],[87,4],[87,6],[94,1],[94,1],[95,1],[95,3],[18,2],[18,3],[18,4],[18,5],[97,3],[97,3],[97,2],[23,2],[63,3],[63,5],[103,2],[103,4],[103,2],[103,4],[19,2],[19,2],[19,2],[19,1],[107,2],[107,2],[20,2],[20,2],[20,2],[109,2],[109,2],[111,2],[111,3],[115,1],[115,1],[115,1],[115,1],[113,1],[113,3],[112,2],[112,2],[112,4],[112,4],[112,4],[112,6],[112,6],[21,5],[21,7],[21,4],[21,6],[120,1],[120,2],[122,3],[122,4],[124,3],[124,5],[17,1],[17,3],[17,3],[17,3],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,2],[15,3],[15,3],[15,3],[15,3],[15,3],[15,3],[15,3],[15,3],[15,5],[15,4],[15,3]],
-performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
+performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 
 var $0 = $$.length - 1;
 switch (yystate) {
@@ -3456,7 +3456,7 @@ defaultActions: {58:[2,50],59:[2,51],89:[2,108],186:[2,88]},
 parseError: function parseError(str, hash) {
     if (hash.recoverable) {
         this.trace(str);
-    } else {
+    } else {
         var e = new Error(str)
         e.location = hash.loc
         throw e;
@@ -3515,7 +3515,7 @@ parse: function parse(input) {
                     errStr = 'Expecting ' + expected.join(', ') + ', got \'' + (this.terminals_[symbol] || symbol) + '\'';
                 } else {
                     errStr = 'Unexpected ' + (symbol == EOF ? 'end of input' : '\'' + (this.terminals_[symbol] || symbol) + '\'');
-                }
+                }
                 if (this.lexer.yylloc.first_line !== yyloc.first_line) yyloc = this.lexer.yylloc;
                 this.parseError(errStr, {
                     text: this.lexer.match,
@@ -3595,7 +3595,7 @@ module.exports = new Parser;
 
 });
 
-define("ace/mode/coffee/scope",["require","exports","module","ace/mode/coffee/helpers"], function(require, exports, module) {
+define("ace/mode/coffee/scope",["require","exports","module","ace/mode/coffee/helpers"], function(require, exports, module) {
 
   var Scope, extend, last, _ref;
 
@@ -3743,7 +3743,7 @@ define("ace/mode/coffee/scope",["require","exports","module","ace/mode/coffee/he
 
 });
 
-define("ace/mode/coffee/nodes",["require","exports","module","ace/mode/coffee/scope","ace/mode/coffee/lexer","ace/mode/coffee/helpers"], function(require, exports, module) {
+define("ace/mode/coffee/nodes",["require","exports","module","ace/mode/coffee/scope","ace/mode/coffee/lexer","ace/mode/coffee/helpers"], function(require, exports, module) {
 
   var Access, Arr, Assign, Base, Block, Call, Class, Code, CodeFragment, Comment, Existence, Extends, For, HEXNUM, IDENTIFIER, IDENTIFIER_STR, IS_REGEX, IS_STRING, If, In, Index, LEVEL_ACCESS, LEVEL_COND, LEVEL_LIST, LEVEL_OP, LEVEL_PAREN, LEVEL_TOP, Literal, METHOD_DEF, NEGATE, NO, NUMBER, Obj, Op, Param, Parens, RESERVED, Range, Return, SIMPLENUM, STRICT_PROSCRIBED, Scope, Slice, Splat, Switch, TAB, THIS, Throw, Try, UTILITIES, Value, While, YES, addLocationDataFn, compact, del, ends, extend, flatten, fragmentsToText, isLiteralArguments, isLiteralThis, last, locationDataToString, merge, multident, parseNum, some, starts, throwSyntaxError, unfoldSoak, utility, _ref, _ref1,
     __hasProp = {}.hasOwnProperty,
@@ -6900,20 +6900,20 @@ oop.inherits(Worker, Mirror);
 
 });
 
-define("ace/lib/es5-shim",["require","exports","module"], function(require, exports, module) {
+define("ace/lib/es5-shim",["require","exports","module"], function(require, exports, module) {
 
 function Empty() {}
 
 if (!Function.prototype.bind) {
-    Function.prototype.bind = function bind(that) { // .length is 1
-        var target = this;
+    Function.prototype.bind = function bind(that) { // .length is 1
+        var target = this;
         if (typeof target != "function") {
             throw new TypeError("Function.prototype.bind called on incompatible " + target);
-        }
-        var args = slice.call(arguments, 1); // for normal call
+        }
+        var args = slice.call(arguments, 1); // for normal call
         var bound = function () {
 
-            if (this instanceof bound) {
+            if (this instanceof bound) {
 
                 var result = target.apply(
                     this,
@@ -6924,7 +6924,7 @@ if (!Function.prototype.bind) {
                 }
                 return this;
 
-            } else {
+            } else {
                 return target.apply(
                     that,
                     args.concat(slice.call(arguments))
@@ -6935,18 +6935,18 @@ if (!Function.prototype.bind) {
         };
         if(target.prototype) {
             Empty.prototype = target.prototype;
-            bound.prototype = new Empty();
+            bound.prototype = new Empty();
             Empty.prototype = null;
-        }
+        }
         return bound;
     };
-}
+}
 var call = Function.prototype.call;
 var prototypeOfArray = Array.prototype;
 var prototypeOfObject = Object.prototype;
-var slice = prototypeOfArray.slice;
+var slice = prototypeOfArray.slice;
 var _toString = call.bind(prototypeOfObject.toString);
-var owns = call.bind(prototypeOfObject.hasOwnProperty);
+var owns = call.bind(prototypeOfObject.hasOwnProperty);
 var defineGetter;
 var defineSetter;
 var lookupGetter;
@@ -6957,7 +6957,7 @@ if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {
     defineSetter = call.bind(prototypeOfObject.__defineSetter__);
     lookupGetter = call.bind(prototypeOfObject.__lookupGetter__);
     lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
-}
+}
 if ([1,2].splice(0).length != 2) {
     if(function() { // test IE < 9 to splice bug - see issue #138
         function makeArray(l) {
@@ -6977,7 +6977,7 @@ if ([1,2].splice(0).length != 2) {
 
         if (lengthBefore + 1 == array.length) {
             return true;// has right splice implementation without bugs
-        }
+        }
     }()) {//IE 6/7
         var array_splice = Array.prototype.splice;
         Array.prototype.splice = function(start, deleteCount) {
@@ -6990,7 +6990,7 @@ if ([1,2].splice(0).length != 2) {
                 ].concat(slice.call(arguments, 2)))
             }
         };
-    } else {//IE8
+    } else {//IE8
         Array.prototype.splice = function(pos, removeCount){
             var length = this.length;
             if (pos > 0) {
@@ -7007,7 +7007,7 @@ if ([1,2].splice(0).length != 2) {
 
             var removed = this.slice(pos, pos+removeCount);
             var insert = slice.call(arguments, 2);
-            var add = insert.length;            
+            var add = insert.length;            
             if (pos === length) {
                 if (add) {
                     this.push.apply(this, insert);
@@ -7042,12 +7042,12 @@ if ([1,2].splice(0).length != 2) {
             return removed;
         };
     }
-}
+}
 if (!Array.isArray) {
     Array.isArray = function isArray(obj) {
         return _toString(obj) == "[object Array]";
     };
-}
+}
 var boxedString = Object("a"),
     splitString = boxedString[0] != "a" || !(0 in boxedString);
 
@@ -7059,18 +7059,18 @@ if (!Array.prototype.forEach) {
                 object,
             thisp = arguments[1],
             i = -1,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(); // TODO message
         }
 
         while (++i < length) {
-            if (i in self) {
+            if (i in self) {
                 fun.call(thisp, self[i], i, object);
             }
         }
     };
-}
+}
 if (!Array.prototype.map) {
     Array.prototype.map = function map(fun /*, thisp*/) {
         var object = toObject(this),
@@ -7079,7 +7079,7 @@ if (!Array.prototype.map) {
                 object,
             length = self.length >>> 0,
             result = Array(length),
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -7090,7 +7090,7 @@ if (!Array.prototype.map) {
         }
         return result;
     };
-}
+}
 if (!Array.prototype.filter) {
     Array.prototype.filter = function filter(fun /*, thisp */) {
         var object = toObject(this),
@@ -7100,7 +7100,7 @@ if (!Array.prototype.filter) {
             length = self.length >>> 0,
             result = [],
             value,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -7115,7 +7115,7 @@ if (!Array.prototype.filter) {
         }
         return result;
     };
-}
+}
 if (!Array.prototype.every) {
     Array.prototype.every = function every(fun /*, thisp */) {
         var object = toObject(this),
@@ -7123,7 +7123,7 @@ if (!Array.prototype.every) {
                 this.split("") :
                 object,
             length = self.length >>> 0,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -7135,7 +7135,7 @@ if (!Array.prototype.every) {
         }
         return true;
     };
-}
+}
 if (!Array.prototype.some) {
     Array.prototype.some = function some(fun /*, thisp */) {
         var object = toObject(this),
@@ -7143,7 +7143,7 @@ if (!Array.prototype.some) {
                 this.split("") :
                 object,
             length = self.length >>> 0,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -7155,17 +7155,17 @@ if (!Array.prototype.some) {
         }
         return false;
     };
-}
+}
 if (!Array.prototype.reduce) {
     Array.prototype.reduce = function reduce(fun /*, initial*/) {
         var object = toObject(this),
             self = splitString && _toString(this) == "[object String]" ?
                 this.split("") :
                 object,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
-        }
+        }
         if (!length && arguments.length == 1) {
             throw new TypeError("reduce of empty array with no initial value");
         }
@@ -7179,7 +7179,7 @@ if (!Array.prototype.reduce) {
                 if (i in self) {
                     result = self[i++];
                     break;
-                }
+                }
                 if (++i >= length) {
                     throw new TypeError("reduce of empty array with no initial value");
                 }
@@ -7194,17 +7194,17 @@ if (!Array.prototype.reduce) {
 
         return result;
     };
-}
+}
 if (!Array.prototype.reduceRight) {
     Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
         var object = toObject(this),
             self = splitString && _toString(this) == "[object String]" ?
                 this.split("") :
                 object,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
-        }
+        }
         if (!length && arguments.length == 1) {
             throw new TypeError("reduceRight of empty array with no initial value");
         }
@@ -7217,7 +7217,7 @@ if (!Array.prototype.reduceRight) {
                 if (i in self) {
                     result = self[i--];
                     break;
-                }
+                }
                 if (--i < 0) {
                     throw new TypeError("reduceRight of empty array with no initial value");
                 }
@@ -7232,7 +7232,7 @@ if (!Array.prototype.reduceRight) {
 
         return result;
     };
-}
+}
 if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
     Array.prototype.indexOf = function indexOf(sought /*, fromIndex */ ) {
         var self = splitString && _toString(this) == "[object String]" ?
@@ -7247,7 +7247,7 @@ if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
         var i = 0;
         if (arguments.length > 1) {
             i = toInteger(arguments[1]);
-        }
+        }
         i = i >= 0 ? i : Math.max(0, length + i);
         for (; i < length; i++) {
             if (i in self && self[i] === sought) {
@@ -7256,7 +7256,7 @@ if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
         }
         return -1;
     };
-}
+}
 if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
     Array.prototype.lastIndexOf = function lastIndexOf(sought /*, fromIndex */) {
         var self = splitString && _toString(this) == "[object String]" ?
@@ -7270,7 +7270,7 @@ if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
         var i = length - 1;
         if (arguments.length > 1) {
             i = Math.min(i, toInteger(arguments[1]));
-        }
+        }
         i = i >= 0 ? i : length - Math.abs(i);
         for (; i >= 0; i--) {
             if (i in self && sought === self[i]) {
@@ -7279,8 +7279,8 @@ if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
         }
         return -1;
     };
-}
-if (!Object.getPrototypeOf) {
+}
+if (!Object.getPrototypeOf) {
     Object.getPrototypeOf = function getPrototypeOf(object) {
         return object.__proto__ || (
             object.constructor ?
@@ -7288,48 +7288,48 @@ if (!Object.getPrototypeOf) {
             prototypeOfObject
         );
     };
-}
+}
 if (!Object.getOwnPropertyDescriptor) {
     var ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a " +
                          "non-object: ";
     Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
         if ((typeof object != "object" && typeof object != "function") || object === null)
-            throw new TypeError(ERR_NON_OBJECT + object);
+            throw new TypeError(ERR_NON_OBJECT + object);
         if (!owns(object, property))
             return;
 
-        var descriptor, getter, setter;
-        descriptor =  { enumerable: true, configurable: true };
-        if (supportsAccessors) {
+        var descriptor, getter, setter;
+        descriptor =  { enumerable: true, configurable: true };
+        if (supportsAccessors) {
             var prototype = object.__proto__;
             object.__proto__ = prototypeOfObject;
 
             var getter = lookupGetter(object, property);
-            var setter = lookupSetter(object, property);
+            var setter = lookupSetter(object, property);
             object.__proto__ = prototype;
 
             if (getter || setter) {
                 if (getter) descriptor.get = getter;
-                if (setter) descriptor.set = setter;
+                if (setter) descriptor.set = setter;
                 return descriptor;
             }
-        }
+        }
         descriptor.value = object[property];
         return descriptor;
     };
-}
+}
 if (!Object.getOwnPropertyNames) {
     Object.getOwnPropertyNames = function getOwnPropertyNames(object) {
         return Object.keys(object);
     };
-}
+}
 if (!Object.create) {
     var createEmpty;
     if (Object.prototype.__proto__ === null) {
         createEmpty = function () {
             return { "__proto__": null };
         };
-    } else {
+    } else {
         createEmpty = function () {
             var empty = {};
             for (var i in empty)
@@ -7355,22 +7355,22 @@ if (!Object.create) {
                 throw new TypeError("typeof prototype["+(typeof prototype)+"] != 'object'");
             var Type = function () {};
             Type.prototype = prototype;
-            object = new Type();
+            object = new Type();
             object.__proto__ = prototype;
         }
         if (properties !== void 0)
             Object.defineProperties(object, properties);
         return object;
     };
-}
+}
 
 function doesDefinePropertyWork(object) {
     try {
         Object.defineProperty(object, "sentinel", {});
         return "sentinel" in object;
-    } catch (exception) {
+    } catch (exception) {
     }
-}
+}
 if (Object.defineProperty) {
     var definePropertyWorksOnObject = doesDefinePropertyWork({});
     var definePropertyWorksOnDom = typeof document == "undefined" ||
@@ -7390,29 +7390,29 @@ if (!Object.defineProperty || definePropertyFallback) {
         if ((typeof object != "object" && typeof object != "function") || object === null)
             throw new TypeError(ERR_NON_OBJECT_TARGET + object);
         if ((typeof descriptor != "object" && typeof descriptor != "function") || descriptor === null)
-            throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
+            throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
         if (definePropertyFallback) {
             try {
                 return definePropertyFallback.call(Object, object, property, descriptor);
-            } catch (exception) {
+            } catch (exception) {
             }
-        }
-        if (owns(descriptor, "value")) {
+        }
+        if (owns(descriptor, "value")) {
 
             if (supportsAccessors && (lookupGetter(object, property) ||
                                       lookupSetter(object, property)))
-            {
+            {
                 var prototype = object.__proto__;
-                object.__proto__ = prototypeOfObject;
+                object.__proto__ = prototypeOfObject;
                 delete object[property];
-                object[property] = descriptor.value;
+                object[property] = descriptor.value;
                 object.__proto__ = prototype;
             } else {
                 object[property] = descriptor.value;
             }
         } else {
             if (!supportsAccessors)
-                throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);
+                throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);
             if (owns(descriptor, "get"))
                 defineGetter(object, property, descriptor.get);
             if (owns(descriptor, "set"))
@@ -7421,7 +7421,7 @@ if (!Object.defineProperty || definePropertyFallback) {
 
         return object;
     };
-}
+}
 if (!Object.defineProperties) {
     Object.defineProperties = function defineProperties(object, properties) {
         for (var property in properties) {
@@ -7430,17 +7430,17 @@ if (!Object.defineProperties) {
         }
         return object;
     };
-}
+}
 if (!Object.seal) {
-    Object.seal = function seal(object) {
+    Object.seal = function seal(object) {
         return object;
     };
-}
+}
 if (!Object.freeze) {
-    Object.freeze = function freeze(object) {
+    Object.freeze = function freeze(object) {
         return object;
     };
-}
+}
 try {
     Object.freeze(function () {});
 } catch (exception) {
@@ -7453,27 +7453,27 @@ try {
             }
         };
     })(Object.freeze);
-}
+}
 if (!Object.preventExtensions) {
-    Object.preventExtensions = function preventExtensions(object) {
+    Object.preventExtensions = function preventExtensions(object) {
         return object;
     };
-}
+}
 if (!Object.isSealed) {
     Object.isSealed = function isSealed(object) {
         return false;
     };
-}
+}
 if (!Object.isFrozen) {
     Object.isFrozen = function isFrozen(object) {
         return false;
     };
-}
+}
 if (!Object.isExtensible) {
-    Object.isExtensible = function isExtensible(object) {
+    Object.isExtensible = function isExtensible(object) {
         if (Object(object) === object) {
             throw new TypeError(); // TODO message
-        }
+        }
         var name = '';
         while (owns(object, name)) {
             name += '?';
@@ -7483,8 +7483,8 @@ if (!Object.isExtensible) {
         delete object[name];
         return returnValue;
     };
-}
-if (!Object.keys) {
+}
+if (!Object.keys) {
     var hasDontEnumBug = true,
         dontEnums = [
             "toString",
@@ -7528,23 +7528,23 @@ if (!Object.keys) {
         return keys;
     };
 
-}
+}
 if (!Date.now) {
     Date.now = function now() {
         return new Date().getTime();
     };
-}
+}
 var ws = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003" +
     "\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028" +
     "\u2029\uFEFF";
-if (!String.prototype.trim || ws.trim()) {
+if (!String.prototype.trim || ws.trim()) {
     ws = "[" + ws + "]";
     var trimBeginRegexp = new RegExp("^" + ws + ws + "*"),
         trimEndRegexp = new RegExp(ws + ws + "*$");
     String.prototype.trim = function trim() {
         return String(this).replace(trimBeginRegexp, "").replace(trimEndRegexp, "");
     };
-}
+}
 
 function toInteger(n) {
     n = +n;
@@ -7587,7 +7587,7 @@ function toPrimitive(input) {
         }
     }
     throw new TypeError();
-}
+}
 var toObject = function (o) {
     if (o == null) { // this matches both null and undefined
         throw new TypeError("can't convert "+o+" to object");

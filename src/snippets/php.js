@@ -42,14 +42,14 @@ snippet m\n\
 		${7}\n\
 	}\n\
 # setter method\n\
-snippet sm \n\
+snippet sm \n\
 	${5:public} function set${6:$2}(${7:$2 }$$1)\n\
 	{\n\
 		$this->${8:$1} = $$1;\n\
 		return $this;\n\
 	}${9}\n\
 # getter method\n\
-snippet gm\n\
+snippet gm\n\
 	${3:public} function get${4:$2}()\n\
 	{\n\
 		return $this->${5:$1};\n\
@@ -94,49 +94,49 @@ snippet req\n\
 snippet req1\n\
 	require_once '${1:file}';${2}\n\
 # Start Docblock\n\
-snippet /*\n\
+snippet /*\n\
 # Class - post doc\n\
-snippet doc_cp${5}\n\
+snippet doc_cp${5}\n\
 # Class Variable - post doc\n\
-snippet doc_vp${3}\n\
+snippet doc_vp${3}\n\
 # Class Variable\n\
-snippet doc_v\n\
+snippet doc_v\n\
 	${1:var} $${2};${5}\n\
 # Class\n\
-snippet doc_c\n\
+snippet doc_c\n\
 	${1:}class ${2:}\n\
 	{\n\
 		${7}\n\
 	} // END $1class $2\n\
 # Constant Definition - post doc\n\
-snippet doc_dp${2}\n\
+snippet doc_dp${2}\n\
 # Constant Definition\n\
-snippet doc_d\n\
+snippet doc_d\n\
 	define(${1}, ${2});${4}\n\
 # Function - post doc\n\
-snippet doc_fp${4}\n\
+snippet doc_fp${4}\n\
 # Function signature\n\
-snippet doc_s\n\
+snippet doc_s\n\
 	${1}function ${2}(${3});${7}\n\
 # Function\n\
-snippet doc_f\n\
+snippet doc_f\n\
 	${1}function ${2}(${3})\n\
 	{${7}\n\
 	}\n\
 # Header\n\
-snippet doc_h\n\
+snippet doc_h\n\
 	\n\
 # Interface\n\
-snippet interface\n\
+snippet interface\n\
 	interface ${1:$FILENAME}\n\
 	{\n\
 		${5}\n\
 	}\n\
 # class ...\n\
-snippet class\n\
+snippet class\n\
 	class ${2:$FILENAME}\n\
 	{\n\
-		${3}\n\
+		${3}\n\
 		${5:public} function ${6:__construct}(${7:argument})\n\
 		{\n\
 			${8:// code...}\n\
@@ -249,18 +249,18 @@ snippet http_redirect\n\
 	header (\"Location: \".URL); \n\
 	exit();\n\
 # Getters & Setters\n\
-snippet gs\n\
+snippet gs\n\
 	public function get${3:$2}()\n\
 	{\n\
 		return $this->${4:$1};\n\
-	}\n\
+	}\n\
 	public function set$3(${7:$2 }$$1)\n\
 	{\n\
 		$this->$4 = $$1;\n\
 		return $this;\n\
 	}${8}\n\
 # anotation, get, and set, useful for doctrine\n\
-snippet ags\n\
+snippet ags\n\
 	${2:protected} $${3:foo};\n\
 \n\
 	public function get${4:$3}()\n\

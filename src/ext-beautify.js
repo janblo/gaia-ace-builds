@@ -154,19 +154,19 @@ exports.transform = function(iterator, maxPos, context) {
         if( !token ){
             token = iterator.stepForward();
             continue;
-        }
+        }
         if( token.type == 'support.php_tag' && token.value != '?>' ){
             context = 'php';
         }
         else if( token.type == 'support.php_tag' && token.value == '?>' ){
             context = 'html';
-        }
+        }
         else if( token.type == 'meta.tag.name.style' && context != 'css' ){
             context = 'css';
         }
         else if( token.type == 'meta.tag.name.style' && context == 'css' ){
             context = 'html';
-        }
+        }
         else if( token.type == 'meta.tag.name.script' && context != 'js' ){
             context = 'js';
         }
@@ -174,23 +174,23 @@ exports.transform = function(iterator, maxPos, context) {
             context = 'html';
         }
 
-        nextToken = iterator.stepForward();
+        nextToken = iterator.stepForward();
         if (nextToken && nextToken.type.indexOf('meta.tag.name') == 0) {
             nextTag = nextToken.value;
-        }
+        }
         if ( lastToken.type == 'support.php_tag' && lastToken.value == '<?=') {
             dontBreak = true;
-        }
+        }
         if (token.type == 'meta.tag.name') {
             token.value = token.value.toLowerCase();
-        }
+        }
         if (token.type == 'text') {
             token.value = token.value.trim();
-        }
+        }
         if (!token.value) {
             token = nextToken;
             continue;
-        }
+        }
         value = token.value;
         for (var i in spaces) {
             if (
@@ -209,11 +209,11 @@ exports.transform = function(iterator, maxPos, context) {
                     value += ' ';
                 }
             }
-        }
+        }
         if (token.type.indexOf('meta.tag.name') == 0) {
-            tag = token.value;
-        }
-        breakAdded = false;
+            tag = token.value;
+        }
+        breakAdded = false;
         for (i in newLines) {
             if (
                 token.type == newLines[i].type &&
@@ -239,7 +239,7 @@ exports.transform = function(iterator, maxPos, context) {
                     ( !newLines[i].prev || newLines[i].prev.test(lastToken.value) )
                 ) {
                     code += "\n";
-                    breakAdded = true;
+                    breakAdded = true;
                     for (i = 0; i < indentation; i++) {
                         code += "\t";
                     }
@@ -270,7 +270,7 @@ exports.transform = function(iterator, maxPos, context) {
                     }
 
                     if (!newLines[i].dontBreak  && !breakAdded) {
-                        code += "\n";
+                        code += "\n";
                         for (i = 0; i < indentation; i++) {
                             code += "\t";
                         }
@@ -281,10 +281,10 @@ exports.transform = function(iterator, maxPos, context) {
             }
         }
 
-        code += value;
+        code += value;
         if ( lastToken.type == 'support.php_tag' && lastToken.value == '?>' ) {
             dontBreak = false;
-        }
+        }
         lastTag = tag;
 
         lastToken = token;

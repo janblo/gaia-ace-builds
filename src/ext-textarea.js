@@ -140,7 +140,7 @@ var event = require("./lib/event");
 var Editor = require("./editor").Editor;
 var EditSession = require("./edit_session").EditSession;
 var UndoManager = require("./undomanager").UndoManager;
-var Renderer = require("./virtual_renderer").VirtualRenderer;
+var Renderer = require("./virtual_renderer").VirtualRenderer;
 require("./worker/worker_client");
 require("./keyboard/hash_handler");
 require("./placeholder");
@@ -240,8 +240,8 @@ function setupContainer(element, getValue) {
         throw new Error("Textarea required!");
     }
 
-    var parentNode = element.parentNode;
-    var container = document.createElement('div');
+    var parentNode = element.parentNode;
+    var container = document.createElement('div');
     var resizeEvent = function() {
         var style = 'position:relative;';
         [
@@ -249,21 +249,21 @@ function setupContainer(element, getValue) {
         ].forEach(function(item) {
             style += item + ':' +
                         getCSSProperty(element, container, item) + ';';
-        });
+        });
         var width = getCSSProperty(element, container, 'width') || (element.clientWidth + "px");
         var height = getCSSProperty(element, container, 'height')  || (element.clientHeight + "px");
-        style += 'height:' + height + ';width:' + width + ';';
+        style += 'height:' + height + ';width:' + width + ';';
         style += 'display:inline-block;';
         container.setAttribute('style', style);
     };
-    event.addListener(window, 'resize', resizeEvent);
-    resizeEvent();
-    parentNode.insertBefore(container, element.nextSibling);
+    event.addListener(window, 'resize', resizeEvent);
+    resizeEvent();
+    parentNode.insertBefore(container, element.nextSibling);
     while (parentNode !== document) {
         if (parentNode.tagName.toUpperCase() === 'FORM') {
-            var oldSumit = parentNode.onsubmit;
+            var oldSumit = parentNode.onsubmit;
             parentNode.onsubmit = function(evt) {
-                element.value = getValue();
+                element.value = getValue();
                 if (oldSumit) {
                     oldSumit.call(this, evt);
                 }
@@ -279,9 +279,9 @@ exports.transformTextarea = function(element, options) {
     var session;
     var container = setupContainer(element, function() {
         return session.getValue();
-    });
+    });
     element.style.display = 'none';
-    container.style.background = 'white';
+    container.style.background = 'white';
     var editorDiv = document.createElement("div");
     applyStyles(editorDiv, {
         top: "0px",
@@ -331,14 +331,14 @@ exports.transformTextarea = function(element, options) {
     applyStyles(settingDiv, settingDivStyles);
     container.appendChild(settingDiv);
 
-    options = options || exports.defaultOptions;
+    options = options || exports.defaultOptions;
     var editor = ace.edit(editorDiv);
     session = editor.getSession();
 
     session.setValue(element.value || element.innerHTML);
-    editor.focus();
-    container.appendChild(settingOpener);
-    setupApi(editor, editorDiv, settingDiv, ace, options, load);
+    editor.focus();
+    container.appendChild(settingOpener);
+    setupApi(editor, editorDiv, settingDiv, ace, options, load);
     setupSettingPanel(settingDiv, settingOpener, editor);
 
     var state = "";
@@ -612,7 +612,7 @@ function setupSettingPanel(settingDiv, settingOpener, editor) {
     });
     settingDiv.appendChild(button);
     settingDiv.hideButton = button;
-}
+}
 exports.defaultOptions = {
     mode:               "javascript",
     theme:              "textmate",

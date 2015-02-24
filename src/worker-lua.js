@@ -350,7 +350,7 @@ define("ace/range",["require","exports","module"], function(require, exports, mo
 "use strict";
 var comparePoints = function(p1, p2) {
     return p1.row - p2.row || p1.column - p2.column;
-};
+};
 var Range = function(startRow, startColumn, endRow, endColumn) {
     this.start = {
         row: startRow,
@@ -363,7 +363,7 @@ var Range = function(startRow, startColumn, endRow, endColumn) {
     };
 };
 
-(function() {
+(function() {
     this.isEqual = function(range) {
         return this.start.row === range.start.row &&
             this.end.row === range.end.row &&
@@ -589,7 +589,7 @@ define("ace/anchor",["require","exports","module","ace/lib/oop","ace/lib/event_e
 "use strict";
 
 var oop = require("./lib/oop");
-var EventEmitter = require("./lib/event_emitter").EventEmitter;
+var EventEmitter = require("./lib/event_emitter").EventEmitter;
 
 var Anchor = exports.Anchor = function(doc, row, column) {
     this.$onChange = this.onChange.bind(this);
@@ -631,7 +631,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
 
         if (delta.action === "insertText") {
             if (start.row === row && start.column <= column) {
-                if (start.column === column && this.$insertRight) {
+                if (start.column === column && this.$insertRight) {
                 } else if (start.row === end.row) {
                     column += end.column - start.column;
                 } else {
@@ -642,7 +642,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
                 row += end.row - start.row;
             }
         } else if (delta.action === "insertLines") {
-            if (start.row === row && column === 0 && this.$insertRight) {
+            if (start.row === row && column === 0 && this.$insertRight) {
             }
             else if (start.row <= row) {
                 row += end.row - start.row;
@@ -740,10 +740,10 @@ define("ace/document",["require","exports","module","ace/lib/oop","ace/lib/event
 var oop = require("./lib/oop");
 var EventEmitter = require("./lib/event_emitter").EventEmitter;
 var Range = require("./range").Range;
-var Anchor = require("./anchor").Anchor;
+var Anchor = require("./anchor").Anchor;
 
 var Document = function(text) {
-    this.$lines = [];
+    this.$lines = [];
     if (text.length === 0) {
         this.$lines = [""];
     } else if (Array.isArray(text)) {
@@ -766,7 +766,7 @@ var Document = function(text) {
     };
     this.createAnchor = function(row, column) {
         return new Anchor(this, row, column);
-    };
+    };
     if ("aaa".split(/a/).length === 0)
         this.$split = function(text) {
             return text.replace(/\r\n|\r/g, "\n").split("\n");
@@ -846,7 +846,7 @@ var Document = function(text) {
         if (!text || text.length === 0)
             return position;
 
-        position = this.$clipPosition(position);
+        position = this.$clipPosition(position);
         if (this.getLength() <= 1)
             this.$detectNewLine(text);
 
@@ -861,7 +861,7 @@ var Document = function(text) {
             position = this.insertInLine(position, lastLine || "");
         }
         return position;
-    };
+    };
     this.insertLines = function(row, lines) {
         if (row >= this.getLength())
             return this.insert({row: row, column: 0}, "\n" + lines.join("\n"));
@@ -869,7 +869,7 @@ var Document = function(text) {
     };
     this._insertLines = function(row, lines) {
         if (lines.length == 0)
-            return {row: row, column: 0};
+            return {row: row, column: 0};
         while (lines.length > 0xF000) {
             var end = this._insertLines(row, lines.slice(0, 0xF000));
             lines = lines.slice(0xF000);
@@ -935,7 +935,7 @@ var Document = function(text) {
     };
     this.remove = function(range) {
         if (!(range instanceof Range))
-            range = Range.fromPoints(range.start, range.end);
+            range = Range.fromPoints(range.start, range.end);
         range.start = this.$clipPosition(range.start);
         range.end = this.$clipPosition(range.end);
 
@@ -1022,7 +1022,7 @@ var Document = function(text) {
         if (!(range instanceof Range))
             range = Range.fromPoints(range.start, range.end);
         if (text.length == 0 && range.isEmpty())
-            return range.start;
+            return range.start;
         if (text == this.getTextRange(range))
             return range.end;
 
@@ -1317,7 +1317,7 @@ var Mirror = exports.Mirror = function(sender) {
         this.sender.callback(this.doc.getValue(), callbackId);
     };
     
-    this.onUpdate = function() {
+    this.onUpdate = function() {
     };
     
     this.isPending = function() {
@@ -1328,7 +1328,7 @@ var Mirror = exports.Mirror = function(sender) {
 
 });
 
-define("ace/mode/lua/luaparse",["require","exports","module"], function(require, exports, module) {
+define("ace/mode/lua/luaparse",["require","exports","module"], function(require, exports, module) {
 
 (function (root, name, factory) {
    factory(exports)
@@ -1337,14 +1337,14 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
   exports.version = '0.1.4';
 
-  var input, options, length;
-  var defaultOptions = exports.defaultOptions = {
-      wait: false
-    , comments: true
-    , scope: false
-    , locations: false
+  var input, options, length;
+  var defaultOptions = exports.defaultOptions = {
+      wait: false
+    , comments: true
+    , scope: false
+    , locations: false
     , ranges: false
-  };
+  };
 
   var EOF = 1, StringLiteral = 2, Keyword = 4, Identifier = 8
     , NumericLiteral = 16, Punctuator = 32, BooleanLiteral = 64
@@ -1354,7 +1354,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     , Keyword: Keyword, Identifier: Identifier, NumericLiteral: NumericLiteral
     , Punctuator: Punctuator, BooleanLiteral: BooleanLiteral
     , NilLiteral: NilLiteral, VarargLiteral: VarargLiteral
-  };
+  };
 
   var errors = exports.errors = {
       unexpected: 'Unexpected %1 \'%2\' near \'%3\''
@@ -1362,7 +1362,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     , expectedToken: '%1 expected near \'%2\''
     , unfinishedString: 'unfinished string near \'%1\''
     , malformedNumber: 'malformed number near \'%1\''
-  };
+  };
 
   var ast = exports.ast = {
       labelStatement: function(label) {
@@ -1618,9 +1618,9 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
         , raw: raw
       };
     }
-  };
+  };
 
-  function finishNode(node) {
+  function finishNode(node) {
     if (trackLocations) {
       var location = locations.pop();
       location.complete();
@@ -1628,7 +1628,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       if (options.ranges) node.range = location.range;
     }
     return node;
-  }
+  }
 
   var slice = Array.prototype.slice
     , toString = Object.prototype.toString
@@ -1637,14 +1637,14 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
         if (array[i] === element) return i;
       }
       return -1;
-    };
+    };
 
   function indexOfObject(array, property, element) {
     for (var i = 0, length = array.length; i < length; i++) {
       if (array[i][property] === element) return i;
     }
     return -1;
-  }
+  }
 
   function sprintf(format) {
     var args = slice.call(arguments, 1);
@@ -1652,7 +1652,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       return '' + args[index - 1] || '';
     });
     return format;
-  }
+  }
 
   function extend() {
     var args = slice.call(arguments)
@@ -1666,7 +1666,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       }
     }
     return dest;
-  }
+  }
 
   function raise(token) {
     var message = sprintf.apply(null, slice.call(arguments, 1))
@@ -1686,11 +1686,11 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       error.column = col;
     }
     throw error;
-  }
+  }
 
   function raiseUnexpectedToken(type, token) {
     raise(token, errors.expectedToken, type, token.value);
-  }
+  }
 
   function unexpected(found, near) {
     if ('undefined' === typeof near) near = lookahead.value;
@@ -1709,7 +1709,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       return raise(found, errors.unexpected, type, found.value, near);
     }
     return raise(found, errors.unexpected, 'symbol', found, near);
-  }
+  }
 
   var index
     , token
@@ -1723,7 +1723,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
   exports.lex = lex;
 
   function lex() {
-    skipWhiteSpace();
+    skipWhiteSpace();
     while (45 === input.charCodeAt(index) &&
            45 === input.charCodeAt(index + 1)) {
       scanComment();
@@ -1738,18 +1738,18 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     };
 
     var charCode = input.charCodeAt(index)
-      , next = input.charCodeAt(index + 1);
+      , next = input.charCodeAt(index + 1);
     tokenStart = index;
     if (isIdentifierStart(charCode)) return scanIdentifierOrKeyword();
 
     switch (charCode) {
       case 39: case 34: // '"
-        return scanStringLiteral();
+        return scanStringLiteral();
       case 48: case 49: case 50: case 51: case 52: case 53:
       case 54: case 55: case 56: case 57:
         return scanNumericLiteral();
 
-      case 46: // .
+      case 46: // .
         if (isDecDigit(next)) return scanNumericLiteral();
         if (46 === next) {
           if (46 === input.charCodeAt(index + 2)) return scanVarargLiteral();
@@ -1777,16 +1777,16 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
         if (58 === next) return scanPunctuator('::');
         return scanPunctuator(':');
 
-      case 91: // [
+      case 91: // [
         if (91 === next || 61 === next) return scanLongStringLiteral();
-        return scanPunctuator('[');
+        return scanPunctuator('[');
       case 42: case 47: case 94: case 37: case 44: case 123: case 125:
       case 93: case 40: case 41: case 59: case 35: case 45: case 43:
         return scanPunctuator(input.charAt(index));
     }
 
     return unexpected(input.charAt(index));
-  }
+  }
 
   function skipWhiteSpace() {
     while (index < length) {
@@ -1800,12 +1800,12 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
         break;
       }
     }
-  }
+  }
 
   function scanIdentifierOrKeyword() {
-    var value, type;
+    var value, type;
     while (isIdentifierPart(input.charCodeAt(++index)));
-    value = input.slice(tokenStart, index);
+    value = input.slice(tokenStart, index);
     if (isKeyword(value)) {
       type = Keyword;
     } else if ('true' === value || 'false' === value) {
@@ -1825,7 +1825,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineStart: lineStart
       , range: [tokenStart, index]
     };
-  }
+  }
 
   function scanPunctuator(value) {
     index += value.length;
@@ -1836,7 +1836,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineStart: lineStart
       , range: [tokenStart, index]
     };
-  }
+  }
 
   function scanVarargLiteral() {
     index += 3;
@@ -1847,7 +1847,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineStart: lineStart
       , range: [tokenStart, index]
     };
-  }
+  }
 
   function scanStringLiteral() {
     var delimiter = input.charCodeAt(index++)
@@ -1861,7 +1861,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       if (92 === charCode) { // \
         string += input.slice(stringStart, index - 1) + readEscapeSequence();
         stringStart = index;
-      }
+      }
       else if (index >= length || isLineTerminator(charCode)) {
         string += input.slice(stringStart, index - 1);
         raise({}, errors.unfinishedString, string + String.fromCharCode(charCode));
@@ -1876,10 +1876,10 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineStart: lineStart
       , range: [tokenStart, index]
     };
-  }
+  }
 
   function scanLongStringLiteral() {
-    var string = readLongString();
+    var string = readLongString();
     if (false === string) raise(token, errors.expected, '[', token.value);
 
     return {
@@ -1889,7 +1889,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineStart: lineStart
       , range: [tokenStart, index]
     };
-  }
+  }
 
   function scanNumericLiteral() {
     var character = input.charAt(index)
@@ -1905,7 +1905,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineStart: lineStart
       , range: [tokenStart, index]
     };
-  }
+  }
 
   function readHexLiteral() {
     var fraction = 0 // defaults to 0 as it gets summed
@@ -1913,46 +1913,46 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , binarySign = 1 // positive
       , digit, fractionStart, exponentStart, digitStart;
 
-    digitStart = index += 2; // Skip 0x part
+    digitStart = index += 2; // Skip 0x part
     if (!isHexDigit(input.charCodeAt(index)))
       raise({}, errors.malformedNumber, input.slice(tokenStart, index));
 
-    while (isHexDigit(input.charCodeAt(index))) index++;
-    digit = parseInt(input.slice(digitStart, index), 16);
+    while (isHexDigit(input.charCodeAt(index))) index++;
+    digit = parseInt(input.slice(digitStart, index), 16);
     if ('.' === input.charAt(index)) {
       fractionStart = ++index;
 
       while (isHexDigit(input.charCodeAt(index))) index++;
-      fraction = input.slice(fractionStart, index);
+      fraction = input.slice(fractionStart, index);
       fraction = (fractionStart === index) ? 0
         : parseInt(fraction, 16) / Math.pow(16, index - fractionStart);
-    }
+    }
     if ('pP'.indexOf(input.charAt(index) || null) >= 0) {
-      index++;
+      index++;
       if ('+-'.indexOf(input.charAt(index) || null) >= 0)
         binarySign = ('+' === input.charAt(index++)) ? 1 : -1;
 
-      exponentStart = index;
+      exponentStart = index;
       if (!isDecDigit(input.charCodeAt(index)))
         raise({}, errors.malformedNumber, input.slice(tokenStart, index));
 
       while (isDecDigit(input.charCodeAt(index))) index++;
-      binaryExponent = input.slice(exponentStart, index);
+      binaryExponent = input.slice(exponentStart, index);
       binaryExponent = Math.pow(2, binaryExponent * binarySign);
     }
 
     return (digit + fraction) * binaryExponent;
-  }
+  }
 
   function readDecLiteral() {
-    while (isDecDigit(input.charCodeAt(index))) index++;
+    while (isDecDigit(input.charCodeAt(index))) index++;
     if ('.' === input.charAt(index)) {
-      index++;
+      index++;
       while (isDecDigit(input.charCodeAt(index))) index++;
-    }
+    }
     if ('eE'.indexOf(input.charAt(index) || null) >= 0) {
-      index++;
-      if ('+-'.indexOf(input.charAt(index) || null) >= 0) index++;
+      index++;
+      if ('+-'.indexOf(input.charAt(index) || null) >= 0) index++;
       if (!isDecDigit(input.charCodeAt(index)))
         raise({}, errors.malformedNumber, input.slice(tokenStart, index));
 
@@ -1960,33 +1960,33 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
 
     return parseFloat(input.slice(tokenStart, index));
-  }
+  }
 
   function readEscapeSequence() {
     var sequenceStart = index;
-    switch (input.charAt(index)) {
+    switch (input.charAt(index)) {
       case 'n': index++; return '\n';
       case 'r': index++; return '\r';
       case 't': index++; return '\t';
       case 'v': index++; return '\x0B';
       case 'b': index++; return '\b';
-      case 'f': index++; return '\f';
-      case 'z': index++; skipWhiteSpace(); return '';
-      case 'x':
+      case 'f': index++; return '\f';
+      case 'z': index++; skipWhiteSpace(); return '';
+      case 'x':
         if (isHexDigit(input.charCodeAt(index + 1)) &&
             isHexDigit(input.charCodeAt(index + 2))) {
-          index += 3;
+          index += 3;
           return '\\' + input.slice(sequenceStart, index);
         }
         return '\\' + input.charAt(index++);
-      default:
+      default:
         if (isDecDigit(input.charCodeAt(index))) {
           while (isDecDigit(input.charCodeAt(++index)));
           return '\\' + input.slice(sequenceStart, index);
-        }
+        }
         return input.charAt(index++);
     }
-  }
+  }
 
   function scanComment() {
     tokenStart = index;
@@ -2000,10 +2000,10 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , lineComment = line;
 
     if ('[' === character) {
-      content = readLongString();
+      content = readLongString();
       if (false === content) content = character;
       else isLong = true;
-    }
+    }
     if (!isLong) {
       while (index < length) {
         if (isLineTerminator(input.charCodeAt(index))) break;
@@ -2013,7 +2013,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
 
     if (options.comments) {
-      var node = ast.comment(content, input.slice(tokenStart, index));
+      var node = ast.comment(content, input.slice(tokenStart, index));
       if (options.locations) {
         node.loc = {
             start: { line: lineComment, column: tokenStart - lineStartComment }
@@ -2025,7 +2025,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       }
       comments.push(node);
     }
-  }
+  }
 
   function readLongString() {
     var level = 0
@@ -2033,11 +2033,11 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       , terminator = false
       , character, stringStart;
 
-    index++; // [
-    while ('=' === input.charAt(index + level)) level++;
+    index++; // [
+    while ('=' === input.charAt(index + level)) level++;
     if ('[' !== input.charAt(index + level)) return false;
 
-    index += level + 1;
+    index += level + 1;
     if (isLineTerminator(input.charCodeAt(index))) {
       line++;
       lineStart = index++;
@@ -2045,31 +2045,31 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
     stringStart = index;
     while (index < length) {
-      character = input.charAt(index++);
+      character = input.charAt(index++);
       if (isLineTerminator(character.charCodeAt(0))) {
         line++;
         lineStart = index;
-      }
+      }
       if (']' === character) {
         terminator = true;
         for (var i = 0; i < level; i++) {
           if ('=' !== input.charAt(index + i)) terminator = false;
         }
         if (']' !== input.charAt(index + level)) terminator = false;
-      }
+      }
       if (terminator) break;
     }
     content += input.slice(stringStart, index - 1);
     index += level + 1;
 
     return content;
-  }
+  }
 
   function next() {
     previousToken = token;
     token = lookahead;
     lookahead = lex();
-  }
+  }
 
   function consume(value) {
     if (value === token.value) {
@@ -2077,12 +2077,12 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       return true;
     }
     return false;
-  }
+  }
 
   function expect(value) {
     if (value === token.value) next();
     else raise(token, errors.expected, value, token.value);
-  }
+  }
 
   function isWhiteSpace(charCode) {
     return 9 === charCode || 32 === charCode || 0xB === charCode || 0xC === charCode;
@@ -2098,7 +2098,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
   function isHexDigit(charCode) {
     return (charCode >= 48 && charCode <= 57) || (charCode >= 97 && charCode <= 102) || (charCode >= 65 && charCode <= 70);
-  }
+  }
 
   function isIdentifierStart(charCode) {
     return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || 95 === charCode;
@@ -2106,7 +2106,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
   function isIdentifierPart(charCode) {
     return (charCode >= 65 && charCode <= 90) || (charCode >= 97 && charCode <= 122) || 95 === charCode || (charCode >= 48 && charCode <= 57);
-  }
+  }
 
   function isKeyword(id) {
     switch (id.length) {
@@ -2130,7 +2130,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     if (Punctuator === token.type) return '#-'.indexOf(token.value) >= 0;
     if (Keyword === token.type) return 'not' === token.value;
     return false;
-  }
+  }
   function isCallExpression(expression) {
     switch (expression.type) {
       case 'CallExpression':
@@ -2139,7 +2139,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
         return true;
     }
     return false;
-  }
+  }
 
   function isBlockFollow(token) {
     if (EOF === token.type) return true;
@@ -2151,34 +2151,34 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       default:
         return false;
     }
-  }
-  var scopes
-    , scopeDepth
-    , globals;
+  }
+  var scopes
+    , scopeDepth
+    , globals;
   function createScope() {
     scopes.push(Array.apply(null, scopes[scopeDepth++]));
-  }
+  }
   function exitScope() {
     scopes.pop();
     scopeDepth--;
-  }
+  }
   function scopeIdentifierName(name) {
     if (-1 !== indexOf(scopes[scopeDepth], name)) return;
     scopes[scopeDepth].push(name);
-  }
+  }
   function scopeIdentifier(node) {
     scopeIdentifierName(node.name);
     attachScope(node, true);
-  }
+  }
   function attachScope(node, isLocal) {
     if (!isLocal && -1 === indexOfObject(globals, 'name', node.name))
       globals.push(node);
 
     node.isLocal = isLocal;
-  }
+  }
   function scopeHasName(name) {
     return (-1 !== indexOf(scopes[scopeDepth], name));
-  }
+  }
 
   var locations = []
     , trackLocations;
@@ -2201,7 +2201,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       };
     }
     if (options.ranges) this.range = [token.range[0], 0];
-  }
+  }
   Marker.prototype.complete = function() {
     if (options.locations) {
       this.loc.end.line = previousToken.line;
@@ -2210,40 +2210,40 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     if (options.ranges) {
       this.range[1] = previousToken.range[1];
     }
-  };
+  };
   function markLocation() {
     if (trackLocations) locations.push(createLocationMarker());
-  }
+  }
   function pushLocation(marker) {
     if (trackLocations) locations.push(marker);
-  }
+  }
 
   function parseChunk() {
     next();
     markLocation();
     var body = parseBlock();
-    if (EOF !== token.type) unexpected(token);
+    if (EOF !== token.type) unexpected(token);
     if (trackLocations && !body.length) previousToken = token;
     return finishNode(ast.chunk(body));
-  }
+  }
 
   function parseBlock(terminator) {
     var block = []
-      , statement;
+      , statement;
     if (options.scope) createScope();
 
-    while (!isBlockFollow(token)) {
+    while (!isBlockFollow(token)) {
       if ('return' === token.value) {
         block.push(parseStatement());
         break;
       }
-      statement = parseStatement();
+      statement = parseStatement();
       if (statement) block.push(statement);
     }
 
-    if (options.scope) exitScope();
+    if (options.scope) exitScope();
     return block;
-  }
+  }
 
   function parseStatement() {
     markLocation();
@@ -2266,12 +2266,12 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
     if (Punctuator === token.type) {
       if (consume('::')) return parseLabelStatement();
-    }
-    if (trackLocations) locations.pop();
+    }
+    if (trackLocations) locations.pop();
     if (consume(';')) return;
 
     return parseAssignmentOrCallStatement();
-  }
+  }
 
   function parseLabelStatement() {
     var name = token.value
@@ -2284,11 +2284,11 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
     expect('::');
     return finishNode(ast.labelStatement(label));
-  }
+  }
 
   function parseBreakStatement() {
     return finishNode(ast.breakStatement());
-  }
+  }
 
   function parseGotoStatement() {
     var name = token.value
@@ -2296,13 +2296,13 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
     if (options.scope) label.isLabel = scopeHasName('::' + name + '::');
     return finishNode(ast.gotoStatement(label));
-  }
+  }
 
   function parseDoStatement() {
     var body = parseBlock();
     expect('end');
     return finishNode(ast.doStatement(body));
-  }
+  }
 
   function parseWhileStatement() {
     var condition = parseExpectedExpression();
@@ -2310,14 +2310,14 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     var body = parseBlock();
     expect('end');
     return finishNode(ast.whileStatement(condition, body));
-  }
+  }
 
   function parseRepeatStatement() {
     var body = parseBlock();
     expect('until');
     var condition = parseExpectedExpression();
     return finishNode(ast.repeatStatement(condition, body));
-  }
+  }
 
   function parseReturnStatement() {
     var expressions = [];
@@ -2332,13 +2332,13 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       consume(';'); // grammar tells us ; is optional here.
     }
     return finishNode(ast.returnStatement(expressions));
-  }
+  }
 
   function parseIfStatement() {
     var clauses = []
       , condition
       , body
-      , marker;
+      , marker;
     if (trackLocations) {
       marker = locations[locations.length - 1];
       locations.push(marker);
@@ -2358,7 +2358,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       if (trackLocations) marker = createLocationMarker();
     }
 
-    if (consume('else')) {
+    if (consume('else')) {
       if (trackLocations) {
         marker = new Marker(previousToken);
         locations.push(marker);
@@ -2369,16 +2369,16 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
     expect('end');
     return finishNode(ast.ifStatement(clauses));
-  }
+  }
 
   function parseForStatement() {
     var variable = parseIdentifier()
-      , body;
-    if (options.scope) scopeIdentifier(variable);
-    if (consume('=')) {
+      , body;
+    if (options.scope) scopeIdentifier(variable);
+    if (consume('=')) {
       var start = parseExpectedExpression();
-      expect(',');
-      var end = parseExpectedExpression();
+      expect(',');
+      var end = parseExpectedExpression();
       var step = consume(',') ? parseExpectedExpression() : null;
 
       expect('do');
@@ -2386,16 +2386,16 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       expect('end');
 
       return finishNode(ast.forNumericStatement(variable, start, end, step, body));
-    }
-    else {
+    }
+    else {
       var variables = [variable];
       while (consume(',')) {
-        variable = parseIdentifier();
+        variable = parseIdentifier();
         if (options.scope) scopeIdentifier(variable);
         variables.push(variable);
       }
       expect('in');
-      var iterators = [];
+      var iterators = [];
       do {
         var expression = parseExpectedExpression();
         iterators.push(expression);
@@ -2407,7 +2407,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
       return finishNode(ast.forGenericStatement(variables, iterators, body));
     }
-  }
+  }
 
   function parseLocalStatement() {
     var name;
@@ -2427,7 +2427,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
           var expression = parseExpectedExpression();
           init.push(expression);
         } while (consume(','));
-      }
+      }
       if (options.scope) {
         for (var i = 0, l = variables.length; i < l; i++) {
           scopeIdentifier(variables[i]);
@@ -2438,14 +2438,14 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
     if (consume('function')) {
       name = parseIdentifier();
-      if (options.scope) scopeIdentifier(name);
+      if (options.scope) scopeIdentifier(name);
       return parseFunctionDeclaration(name, true);
     } else {
       raiseUnexpectedToken('<name>', token);
     }
-  }
+  }
 
-  function parseAssignmentOrCallStatement() {
+  function parseAssignmentOrCallStatement() {
     var previous = token
       , expression, marker;
 
@@ -2475,9 +2475,9 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     if (isCallExpression(expression)) {
       pushLocation(marker);
       return finishNode(ast.callStatement(expression));
-    }
+    }
     return unexpected(previous);
-  }
+  }
 
   function parseIdentifier() {
     markLocation();
@@ -2485,22 +2485,22 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     if (Identifier !== token.type) raiseUnexpectedToken('<name>', token);
     next();
     return finishNode(ast.identifier(identifier));
-  }
+  }
 
   function parseFunctionDeclaration(name, isLocal) {
     var parameters = [];
-    expect('(');
-    if (!consume(')')) {
+    expect('(');
+    if (!consume(')')) {
       while (true) {
         if (Identifier === token.type) {
-          var parameter = parseIdentifier();
+          var parameter = parseIdentifier();
           if (options.scope) scopeIdentifier(parameter);
 
           parameters.push(parameter);
 
           if (consume(',')) continue;
           else if (consume(')')) break;
-        }
+        }
         else if (VarargLiteral === token.type) {
           parameters.push(parsePrimaryExpression());
           expect(')');
@@ -2516,7 +2516,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
 
     isLocal = isLocal || false;
     return finishNode(ast.functionStatement(name, parameters, isLocal, body));
-  }
+  }
 
   function parseFunctionName() {
     var base, name, marker;
@@ -2541,7 +2541,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
 
     return base;
-  }
+  }
 
   function parseTableConstructor() {
     var fields = []
@@ -2578,18 +2578,18 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
     expect('}');
     return finishNode(ast.tableConstructorExpression(fields));
-  }
+  }
 
   function parseExpression() {
     var expression = parseSubExpression(0);
     return expression;
-  }
+  }
 
   function parseExpectedExpression() {
     var expression = parseExpression();
     if (null == expression) raiseUnexpectedToken('<expression>', token);
     else return expression;
-  }
+  }
 
   function binaryPrecedence(operator) {
     var charCode = operator.charCodeAt(0)
@@ -2610,13 +2610,13 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       }
     } else if (97 === charCode && 'and' === operator) return 2;
     return 0;
-  }
+  }
 
   function parseSubExpression(minPrecedence) {
-    var operator = token.value
+    var operator = token.value
       , expression, marker;
 
-    if (trackLocations) marker = createLocationMarker();
+    if (trackLocations) marker = createLocationMarker();
     if (isUnary(token)) {
       markLocation();
       next();
@@ -2624,12 +2624,12 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       if (argument == null) raiseUnexpectedToken('<expression>', token);
       expression = finishNode(ast.unaryExpression(operator, argument));
     }
-    if (null == expression) {
-      expression = parsePrimaryExpression();
+    if (null == expression) {
+      expression = parsePrimaryExpression();
       if (null == expression) {
         expression = parsePrefixExpression();
       }
-    }
+    }
     if (null == expression) return null;
 
     var precedence;
@@ -2639,26 +2639,26 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       precedence = (Punctuator === token.type || Keyword === token.type) ?
         binaryPrecedence(operator) : 0;
 
-      if (precedence === 0 || precedence <= minPrecedence) break;
+      if (precedence === 0 || precedence <= minPrecedence) break;
       if ('^' === operator || '..' === operator) precedence--;
       next();
       var right = parseSubExpression(precedence);
-      if (null == right) raiseUnexpectedToken('<expression>', token);
+      if (null == right) raiseUnexpectedToken('<expression>', token);
       if (trackLocations) locations.push(marker);
       expression = finishNode(ast.binaryExpression(operator, expression, right));
 
     }
     return expression;
-  }
+  }
 
   function parsePrefixExpression() {
-    var base, name, marker
+    var base, name, marker
       , isLocal;
 
-    if (trackLocations) marker = createLocationMarker();
+    if (trackLocations) marker = createLocationMarker();
     if (Identifier === token.type) {
       name = token.value;
-      base = parseIdentifier();
+      base = parseIdentifier();
       if (options.scope) attachScope(base, isLocal = scopeHasName(name));
     } else if (consume('(')) {
       base = parseExpectedExpression();
@@ -2666,7 +2666,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       if (options.scope) isLocal = base.isLocal;
     } else {
       return null;
-    }
+    }
     var expression, identifier;
     while (true) {
       if (Punctuator === token.type) {
@@ -2681,7 +2681,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
           case '.':
             pushLocation(marker);
             next();
-            identifier = parseIdentifier();
+            identifier = parseIdentifier();
             if (options.scope) attachScope(identifier, isLocal);
             base = finishNode(ast.memberExpression(base, '.', identifier));
             break;
@@ -2690,7 +2690,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
             next();
             identifier = parseIdentifier();
             if (options.scope) attachScope(identifier, isLocal);
-            base = finishNode(ast.memberExpression(base, ':', identifier));
+            base = finishNode(ast.memberExpression(base, ':', identifier));
             pushLocation(marker);
             base = parseCallExpression(base);
             break;
@@ -2710,13 +2710,13 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
 
     return base;
-  }
+  }
 
   function parseCallExpression(base) {
     if (Punctuator === token.type) {
       switch (token.value) {
         case '(':
-          next();
+          next();
           var expressions = [];
           var expression = parseExpression();
           if (null != expression) expressions.push(expression);
@@ -2739,7 +2739,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     }
 
     raiseUnexpectedToken('function arguments', token);
-  }
+  }
 
   function parsePrimaryExpression() {
     var literals = StringLiteral | NumericLiteral | BooleanLiteral | NilLiteral | VarargLiteral
@@ -2762,7 +2762,7 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
       pushLocation(marker);
       return parseTableConstructor();
     }
-  }
+  }
 
   exports.parse = parse;
 
@@ -2774,11 +2774,11 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     if (!_options) _options = {};
 
     input = _input || '';
-    options = extend(defaultOptions, _options);
+    options = extend(defaultOptions, _options);
     index = 0;
     line = 1;
     lineStart = 0;
-    length = input.length;
+    length = input.length;
     scopes = [[]];
     scopeDepth = 0;
     globals = [];
@@ -2787,21 +2787,21 @@ define("ace/mode/lua/luaparse",["require","exports","module"], function(require,
     if (options.comments) comments = [];
     if (!options.wait) return end();
     return exports;
-  }
+  }
   exports.write = write;
 
   function write(_input) {
     input += String(_input);
     length = input.length;
     return exports;
-  }
+  }
   exports.end = end;
 
   function end(_input) {
     if ('undefined' !== typeof _input) write(_input);
 
     length = input.length;
-    trackLocations = options.locations || options.ranges;
+    trackLocations = options.locations || options.ranges;
     lookahead = lex();
 
     var chunk = parseChunk();
@@ -2836,7 +2836,7 @@ oop.inherits(Worker, Mirror);
 
     this.onUpdate = function() {
         var value = this.doc.getValue();
-        var errors = [];
+        var errors = [];
         try {
             luaparse.parse(value);
         } catch(e) {
@@ -2848,7 +2848,7 @@ oop.inherits(Worker, Mirror);
                     type: "error"
                 });
             }
-        }
+        }
         this.sender.emit("annotate", errors);
     };
 
@@ -2856,20 +2856,20 @@ oop.inherits(Worker, Mirror);
 
 });
 
-define("ace/lib/es5-shim",["require","exports","module"], function(require, exports, module) {
+define("ace/lib/es5-shim",["require","exports","module"], function(require, exports, module) {
 
 function Empty() {}
 
 if (!Function.prototype.bind) {
-    Function.prototype.bind = function bind(that) { // .length is 1
-        var target = this;
+    Function.prototype.bind = function bind(that) { // .length is 1
+        var target = this;
         if (typeof target != "function") {
             throw new TypeError("Function.prototype.bind called on incompatible " + target);
-        }
-        var args = slice.call(arguments, 1); // for normal call
+        }
+        var args = slice.call(arguments, 1); // for normal call
         var bound = function () {
 
-            if (this instanceof bound) {
+            if (this instanceof bound) {
 
                 var result = target.apply(
                     this,
@@ -2880,7 +2880,7 @@ if (!Function.prototype.bind) {
                 }
                 return this;
 
-            } else {
+            } else {
                 return target.apply(
                     that,
                     args.concat(slice.call(arguments))
@@ -2891,18 +2891,18 @@ if (!Function.prototype.bind) {
         };
         if(target.prototype) {
             Empty.prototype = target.prototype;
-            bound.prototype = new Empty();
+            bound.prototype = new Empty();
             Empty.prototype = null;
-        }
+        }
         return bound;
     };
-}
+}
 var call = Function.prototype.call;
 var prototypeOfArray = Array.prototype;
 var prototypeOfObject = Object.prototype;
-var slice = prototypeOfArray.slice;
+var slice = prototypeOfArray.slice;
 var _toString = call.bind(prototypeOfObject.toString);
-var owns = call.bind(prototypeOfObject.hasOwnProperty);
+var owns = call.bind(prototypeOfObject.hasOwnProperty);
 var defineGetter;
 var defineSetter;
 var lookupGetter;
@@ -2913,7 +2913,7 @@ if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {
     defineSetter = call.bind(prototypeOfObject.__defineSetter__);
     lookupGetter = call.bind(prototypeOfObject.__lookupGetter__);
     lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
-}
+}
 if ([1,2].splice(0).length != 2) {
     if(function() { // test IE < 9 to splice bug - see issue #138
         function makeArray(l) {
@@ -2933,7 +2933,7 @@ if ([1,2].splice(0).length != 2) {
 
         if (lengthBefore + 1 == array.length) {
             return true;// has right splice implementation without bugs
-        }
+        }
     }()) {//IE 6/7
         var array_splice = Array.prototype.splice;
         Array.prototype.splice = function(start, deleteCount) {
@@ -2946,7 +2946,7 @@ if ([1,2].splice(0).length != 2) {
                 ].concat(slice.call(arguments, 2)))
             }
         };
-    } else {//IE8
+    } else {//IE8
         Array.prototype.splice = function(pos, removeCount){
             var length = this.length;
             if (pos > 0) {
@@ -2963,7 +2963,7 @@ if ([1,2].splice(0).length != 2) {
 
             var removed = this.slice(pos, pos+removeCount);
             var insert = slice.call(arguments, 2);
-            var add = insert.length;            
+            var add = insert.length;            
             if (pos === length) {
                 if (add) {
                     this.push.apply(this, insert);
@@ -2998,12 +2998,12 @@ if ([1,2].splice(0).length != 2) {
             return removed;
         };
     }
-}
+}
 if (!Array.isArray) {
     Array.isArray = function isArray(obj) {
         return _toString(obj) == "[object Array]";
     };
-}
+}
 var boxedString = Object("a"),
     splitString = boxedString[0] != "a" || !(0 in boxedString);
 
@@ -3015,18 +3015,18 @@ if (!Array.prototype.forEach) {
                 object,
             thisp = arguments[1],
             i = -1,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(); // TODO message
         }
 
         while (++i < length) {
-            if (i in self) {
+            if (i in self) {
                 fun.call(thisp, self[i], i, object);
             }
         }
     };
-}
+}
 if (!Array.prototype.map) {
     Array.prototype.map = function map(fun /*, thisp*/) {
         var object = toObject(this),
@@ -3035,7 +3035,7 @@ if (!Array.prototype.map) {
                 object,
             length = self.length >>> 0,
             result = Array(length),
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3046,7 +3046,7 @@ if (!Array.prototype.map) {
         }
         return result;
     };
-}
+}
 if (!Array.prototype.filter) {
     Array.prototype.filter = function filter(fun /*, thisp */) {
         var object = toObject(this),
@@ -3056,7 +3056,7 @@ if (!Array.prototype.filter) {
             length = self.length >>> 0,
             result = [],
             value,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3071,7 +3071,7 @@ if (!Array.prototype.filter) {
         }
         return result;
     };
-}
+}
 if (!Array.prototype.every) {
     Array.prototype.every = function every(fun /*, thisp */) {
         var object = toObject(this),
@@ -3079,7 +3079,7 @@ if (!Array.prototype.every) {
                 this.split("") :
                 object,
             length = self.length >>> 0,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3091,7 +3091,7 @@ if (!Array.prototype.every) {
         }
         return true;
     };
-}
+}
 if (!Array.prototype.some) {
     Array.prototype.some = function some(fun /*, thisp */) {
         var object = toObject(this),
@@ -3099,7 +3099,7 @@ if (!Array.prototype.some) {
                 this.split("") :
                 object,
             length = self.length >>> 0,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3111,17 +3111,17 @@ if (!Array.prototype.some) {
         }
         return false;
     };
-}
+}
 if (!Array.prototype.reduce) {
     Array.prototype.reduce = function reduce(fun /*, initial*/) {
         var object = toObject(this),
             self = splitString && _toString(this) == "[object String]" ?
                 this.split("") :
                 object,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
-        }
+        }
         if (!length && arguments.length == 1) {
             throw new TypeError("reduce of empty array with no initial value");
         }
@@ -3135,7 +3135,7 @@ if (!Array.prototype.reduce) {
                 if (i in self) {
                     result = self[i++];
                     break;
-                }
+                }
                 if (++i >= length) {
                     throw new TypeError("reduce of empty array with no initial value");
                 }
@@ -3150,17 +3150,17 @@ if (!Array.prototype.reduce) {
 
         return result;
     };
-}
+}
 if (!Array.prototype.reduceRight) {
     Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
         var object = toObject(this),
             self = splitString && _toString(this) == "[object String]" ?
                 this.split("") :
                 object,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
-        }
+        }
         if (!length && arguments.length == 1) {
             throw new TypeError("reduceRight of empty array with no initial value");
         }
@@ -3173,7 +3173,7 @@ if (!Array.prototype.reduceRight) {
                 if (i in self) {
                     result = self[i--];
                     break;
-                }
+                }
                 if (--i < 0) {
                     throw new TypeError("reduceRight of empty array with no initial value");
                 }
@@ -3188,7 +3188,7 @@ if (!Array.prototype.reduceRight) {
 
         return result;
     };
-}
+}
 if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
     Array.prototype.indexOf = function indexOf(sought /*, fromIndex */ ) {
         var self = splitString && _toString(this) == "[object String]" ?
@@ -3203,7 +3203,7 @@ if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
         var i = 0;
         if (arguments.length > 1) {
             i = toInteger(arguments[1]);
-        }
+        }
         i = i >= 0 ? i : Math.max(0, length + i);
         for (; i < length; i++) {
             if (i in self && self[i] === sought) {
@@ -3212,7 +3212,7 @@ if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
         }
         return -1;
     };
-}
+}
 if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
     Array.prototype.lastIndexOf = function lastIndexOf(sought /*, fromIndex */) {
         var self = splitString && _toString(this) == "[object String]" ?
@@ -3226,7 +3226,7 @@ if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
         var i = length - 1;
         if (arguments.length > 1) {
             i = Math.min(i, toInteger(arguments[1]));
-        }
+        }
         i = i >= 0 ? i : length - Math.abs(i);
         for (; i >= 0; i--) {
             if (i in self && sought === self[i]) {
@@ -3235,8 +3235,8 @@ if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
         }
         return -1;
     };
-}
-if (!Object.getPrototypeOf) {
+}
+if (!Object.getPrototypeOf) {
     Object.getPrototypeOf = function getPrototypeOf(object) {
         return object.__proto__ || (
             object.constructor ?
@@ -3244,48 +3244,48 @@ if (!Object.getPrototypeOf) {
             prototypeOfObject
         );
     };
-}
+}
 if (!Object.getOwnPropertyDescriptor) {
     var ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a " +
                          "non-object: ";
     Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
         if ((typeof object != "object" && typeof object != "function") || object === null)
-            throw new TypeError(ERR_NON_OBJECT + object);
+            throw new TypeError(ERR_NON_OBJECT + object);
         if (!owns(object, property))
             return;
 
-        var descriptor, getter, setter;
-        descriptor =  { enumerable: true, configurable: true };
-        if (supportsAccessors) {
+        var descriptor, getter, setter;
+        descriptor =  { enumerable: true, configurable: true };
+        if (supportsAccessors) {
             var prototype = object.__proto__;
             object.__proto__ = prototypeOfObject;
 
             var getter = lookupGetter(object, property);
-            var setter = lookupSetter(object, property);
+            var setter = lookupSetter(object, property);
             object.__proto__ = prototype;
 
             if (getter || setter) {
                 if (getter) descriptor.get = getter;
-                if (setter) descriptor.set = setter;
+                if (setter) descriptor.set = setter;
                 return descriptor;
             }
-        }
+        }
         descriptor.value = object[property];
         return descriptor;
     };
-}
+}
 if (!Object.getOwnPropertyNames) {
     Object.getOwnPropertyNames = function getOwnPropertyNames(object) {
         return Object.keys(object);
     };
-}
+}
 if (!Object.create) {
     var createEmpty;
     if (Object.prototype.__proto__ === null) {
         createEmpty = function () {
             return { "__proto__": null };
         };
-    } else {
+    } else {
         createEmpty = function () {
             var empty = {};
             for (var i in empty)
@@ -3311,22 +3311,22 @@ if (!Object.create) {
                 throw new TypeError("typeof prototype["+(typeof prototype)+"] != 'object'");
             var Type = function () {};
             Type.prototype = prototype;
-            object = new Type();
+            object = new Type();
             object.__proto__ = prototype;
         }
         if (properties !== void 0)
             Object.defineProperties(object, properties);
         return object;
     };
-}
+}
 
 function doesDefinePropertyWork(object) {
     try {
         Object.defineProperty(object, "sentinel", {});
         return "sentinel" in object;
-    } catch (exception) {
+    } catch (exception) {
     }
-}
+}
 if (Object.defineProperty) {
     var definePropertyWorksOnObject = doesDefinePropertyWork({});
     var definePropertyWorksOnDom = typeof document == "undefined" ||
@@ -3346,29 +3346,29 @@ if (!Object.defineProperty || definePropertyFallback) {
         if ((typeof object != "object" && typeof object != "function") || object === null)
             throw new TypeError(ERR_NON_OBJECT_TARGET + object);
         if ((typeof descriptor != "object" && typeof descriptor != "function") || descriptor === null)
-            throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
+            throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
         if (definePropertyFallback) {
             try {
                 return definePropertyFallback.call(Object, object, property, descriptor);
-            } catch (exception) {
+            } catch (exception) {
             }
-        }
-        if (owns(descriptor, "value")) {
+        }
+        if (owns(descriptor, "value")) {
 
             if (supportsAccessors && (lookupGetter(object, property) ||
                                       lookupSetter(object, property)))
-            {
+            {
                 var prototype = object.__proto__;
-                object.__proto__ = prototypeOfObject;
+                object.__proto__ = prototypeOfObject;
                 delete object[property];
-                object[property] = descriptor.value;
+                object[property] = descriptor.value;
                 object.__proto__ = prototype;
             } else {
                 object[property] = descriptor.value;
             }
         } else {
             if (!supportsAccessors)
-                throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);
+                throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);
             if (owns(descriptor, "get"))
                 defineGetter(object, property, descriptor.get);
             if (owns(descriptor, "set"))
@@ -3377,7 +3377,7 @@ if (!Object.defineProperty || definePropertyFallback) {
 
         return object;
     };
-}
+}
 if (!Object.defineProperties) {
     Object.defineProperties = function defineProperties(object, properties) {
         for (var property in properties) {
@@ -3386,17 +3386,17 @@ if (!Object.defineProperties) {
         }
         return object;
     };
-}
+}
 if (!Object.seal) {
-    Object.seal = function seal(object) {
+    Object.seal = function seal(object) {
         return object;
     };
-}
+}
 if (!Object.freeze) {
-    Object.freeze = function freeze(object) {
+    Object.freeze = function freeze(object) {
         return object;
     };
-}
+}
 try {
     Object.freeze(function () {});
 } catch (exception) {
@@ -3409,27 +3409,27 @@ try {
             }
         };
     })(Object.freeze);
-}
+}
 if (!Object.preventExtensions) {
-    Object.preventExtensions = function preventExtensions(object) {
+    Object.preventExtensions = function preventExtensions(object) {
         return object;
     };
-}
+}
 if (!Object.isSealed) {
     Object.isSealed = function isSealed(object) {
         return false;
     };
-}
+}
 if (!Object.isFrozen) {
     Object.isFrozen = function isFrozen(object) {
         return false;
     };
-}
+}
 if (!Object.isExtensible) {
-    Object.isExtensible = function isExtensible(object) {
+    Object.isExtensible = function isExtensible(object) {
         if (Object(object) === object) {
             throw new TypeError(); // TODO message
-        }
+        }
         var name = '';
         while (owns(object, name)) {
             name += '?';
@@ -3439,8 +3439,8 @@ if (!Object.isExtensible) {
         delete object[name];
         return returnValue;
     };
-}
-if (!Object.keys) {
+}
+if (!Object.keys) {
     var hasDontEnumBug = true,
         dontEnums = [
             "toString",
@@ -3484,23 +3484,23 @@ if (!Object.keys) {
         return keys;
     };
 
-}
+}
 if (!Date.now) {
     Date.now = function now() {
         return new Date().getTime();
     };
-}
+}
 var ws = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003" +
     "\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028" +
     "\u2029\uFEFF";
-if (!String.prototype.trim || ws.trim()) {
+if (!String.prototype.trim || ws.trim()) {
     ws = "[" + ws + "]";
     var trimBeginRegexp = new RegExp("^" + ws + ws + "*"),
         trimEndRegexp = new RegExp(ws + ws + "*$");
     String.prototype.trim = function trim() {
         return String(this).replace(trimBeginRegexp, "").replace(trimEndRegexp, "");
     };
-}
+}
 
 function toInteger(n) {
     n = +n;
@@ -3543,7 +3543,7 @@ function toPrimitive(input) {
         }
     }
     throw new TypeError();
-}
+}
 var toObject = function (o) {
     if (o == null) { // this matches both null and undefined
         throw new TypeError("can't convert "+o+" to object");

@@ -4,7 +4,7 @@ define("ace/mode/apache_conf_highlight_rules",["require","exports","module","ace
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var ApacheConfHighlightRules = function() {
+var ApacheConfHighlightRules = function() {
 
     this.$rules = { start: 
        [ { token: 
@@ -217,12 +217,12 @@ oop.inherits(FoldMode, BaseFoldMode);
     this.foldingStopMarker = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
     this.singleLineBlockCommentRe= /^\s*(\/\*).*\*\/\s*$/;
     this.tripleStarBlockCommentRe = /^\s*(\/\*\*\*).*\*\/\s*$/;
-    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
+    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
     this._getFoldWidgetBase = this.getFoldWidget;
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
     
-        if (this.singleLineBlockCommentRe.test(line)) {
+        if (this.singleLineBlockCommentRe.test(line)) {
             if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
                 return "";
         }
@@ -338,7 +338,7 @@ define("ace/mode/apache_conf",["require","exports","module","ace/lib/oop","ace/m
 
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
-var ApacheConfHighlightRules = require("./apache_conf_highlight_rules").ApacheConfHighlightRules;
+var ApacheConfHighlightRules = require("./apache_conf_highlight_rules").ApacheConfHighlightRules;
 var FoldMode = require("./folding/cstyle").FoldMode;
 
 var Mode = function() {
@@ -349,7 +349,7 @@ oop.inherits(Mode, TextMode);
 
 (function() {
     this.lineCommentStart = "#";
-    this.$id = "ace/mode/apache_conf";
+    this.$id = "ace/mode/apache_conf";
 }).call(Mode.prototype);
 
 exports.Mode = Mode;

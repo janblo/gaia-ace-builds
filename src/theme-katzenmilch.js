@@ -2,7 +2,7 @@ define("ace/theme/katzenmilch",["require","exports","module","ace/lib/dom"], fun
 
 exports.isDark = false;
 exports.cssClass = "ace-katzenmilch";
-exports.cssText = ".ace-katzenmilch .ace_gutter,\
+exports.cssText = ".ace-katzenmilch .ace_gutter,\
 .ace-katzenmilch .ace_gutter {\
 background: #e8e8e8;\
 color: #333\

@@ -76,14 +76,14 @@ var highlight = function(el, opts, callback) {
 };
 highlight.render = function(input, mode, theme, lineStart, disableGutter, callback) {
     var waiting = 1;
-    var modeCache = EditSession.prototype.$modes;
+    var modeCache = EditSession.prototype.$modes;
     if (typeof theme == "string") {
         waiting++;
         config.loadModule(['theme', theme], function(m) {
             theme = m;
             --waiting || done();
         });
-    }
+    }
     var modeOptions;
     if (mode && typeof mode === "object" && !mode.getTokenizer) {
         modeOptions = mode;
@@ -97,7 +97,7 @@ highlight.render = function(input, mode, theme, lineStart, disableGutter, callba
             mode = modeCache[mode];
             --waiting || done();
         });
-    }
+    }
     function done() {
         var result = highlight.renderSync(input, mode, theme, lineStart, disableGutter);
         return callback ? callback(result) : result;
@@ -129,7 +129,7 @@ highlight.renderSync = function(input, mode, theme, lineStart, disableGutter) {
             stringBuilder.push("<span class='ace_gutter ace_gutter-cell' unselectable='on'>" + /*(ix + lineStart) + */ "</span>");
         textLayer.$renderLine(stringBuilder, ix, true, false);
         stringBuilder.push("\n</div>");
-    }
+    }
     var html = "<div class='" + theme.cssClass + "'>" +
         "<div class='ace_static_highlight' style='counter-reset:ace_line " + (lineStart - 1) + "'>" +
             stringBuilder.join("") +

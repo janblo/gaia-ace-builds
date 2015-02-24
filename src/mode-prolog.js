@@ -4,7 +4,7 @@ define("ace/mode/prolog_highlight_rules",["require","exports","module","ace/lib/
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var PrologHighlightRules = function() {
+var PrologHighlightRules = function() {
 
     this.$rules = { start: 
        [ { include: '#comment' },
@@ -224,12 +224,12 @@ oop.inherits(FoldMode, BaseFoldMode);
     this.foldingStopMarker = /^[^\[\{]*(\}|\])|^[\s\*]*(\*\/)/;
     this.singleLineBlockCommentRe= /^\s*(\/\*).*\*\/\s*$/;
     this.tripleStarBlockCommentRe = /^\s*(\/\*\*\*).*\*\/\s*$/;
-    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
+    this.startRegionRe = /^\s*(\/\*|\/\/)#region\b/;
     this._getFoldWidgetBase = this.getFoldWidget;
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
     
-        if (this.singleLineBlockCommentRe.test(line)) {
+        if (this.singleLineBlockCommentRe.test(line)) {
             if (!this.startRegionRe.test(line) && !this.tripleStarBlockCommentRe.test(line))
                 return "";
         }
@@ -345,7 +345,7 @@ define("ace/mode/prolog",["require","exports","module","ace/lib/oop","ace/mode/t
 
 var oop = require("../lib/oop");
 var TextMode = require("./text").Mode;
-var PrologHighlightRules = require("./prolog_highlight_rules").PrologHighlightRules;
+var PrologHighlightRules = require("./prolog_highlight_rules").PrologHighlightRules;
 var FoldMode = require("./folding/cstyle").FoldMode;
 
 var Mode = function() {

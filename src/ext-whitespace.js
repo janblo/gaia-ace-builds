@@ -1,7 +1,7 @@
 define("ace/ext/whitespace",["require","exports","module","ace/lib/lang"], function(require, exports, module) {
 "use strict";
 
-var lang = require("../lib/lang");
+var lang = require("../lib/lang");
 exports.$detectIndentation = function(lines, fallback) {
     var stats = [];
     var changes = [];
@@ -9,7 +9,7 @@ exports.$detectIndentation = function(lines, fallback) {
     var prevSpaces = 0;
     var max = Math.min(lines.length, 1000);
     for (var i = 0; i < max; i++) {
-        var line = lines[i];
+        var line = lines[i];
         if (!/^\s*[^*+\-\s]/.test(line))
             continue;
 
@@ -24,7 +24,7 @@ exports.$detectIndentation = function(lines, fallback) {
 
             stats[spaces] = (stats[spaces] || 0) + 1;
         }
-        prevSpaces = spaces;
+        prevSpaces = spaces;
         while (i < max && line[line.length - 1] == "\\")
             line = lines[i++];
     }
@@ -152,7 +152,7 @@ exports.$parseArg = function(arg) {
 exports.commands = [{
     name: "detectIndentation",
     exec: function(editor) {
-        exports.detectIndentation(editor.session);
+        exports.detectIndentation(editor.session);
     }
 }, {
     name: "trimTrailingSpace",

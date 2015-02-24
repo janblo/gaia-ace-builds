@@ -22,7 +22,7 @@ var CssHighlightRules = function() {
         "support.type": supportType,
         "support.constant.color": supportConstantColor,
         "support.constant.fonts": supportConstantFonts
-    }, "text", true);
+    }, "text", true);
 
     this.$rules = {
         "start" : [{
@@ -149,7 +149,7 @@ var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var CssHighlightRules = require("./css_highlight_rules");
 
-var StylusHighlightRules = function() {
+var StylusHighlightRules = function() {
 
     var keywordMapper = this.createKeywordMapper({
         "support.type": CssHighlightRules.supportType,
@@ -347,7 +347,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             var endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
-    };
+    };
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
         var indent = line.search(/\S/);
@@ -359,7 +359,7 @@ oop.inherits(FoldMode, BaseFoldMode);
         if (indent == -1) {
             session.foldWidgets[row - 1] = prevIndent!= -1 && prevIndent < nextIndent ? "start" : "";
             return "";
-        }
+        }
         if (prevIndent == -1) {
             if (indent == nextIndent && line[indent] == "#" && next[indent] == "#") {
                 session.foldWidgets[row - 1] = "";

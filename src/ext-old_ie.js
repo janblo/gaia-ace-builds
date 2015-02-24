@@ -245,14 +245,14 @@ var SearchBox = function(editor, range, showReplaceForm) {
             _this.activeInput = _this.replaceInput;
             _this.searchInput.value && _this.highlight();
         });
-    };
+    };
     this.$closeSearchBarKb = new HashHandler([{
         bindKey: "Esc",
         name: "closeSearchBar",
         exec: function(editor) {
             editor.searchBox.hide();
         }
-    }]);
+    }]);
     this.$searchBarKb = new HashHandler();
     this.$searchBarKb.bindKeys({
         "Ctrl-f|Command-f|Ctrl-H|Command-Option-F": function(sb) {

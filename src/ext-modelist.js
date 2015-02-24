@@ -32,7 +32,7 @@ var Mode = function(name, caption, extensions) {
 
 Mode.prototype.supportsFile = function(filename) {
     return filename.match(this.extRe);
-};
+};
 var supportedModes = {
     ABAP:        ["abap"],
     ABC:         ["abc"],
@@ -153,7 +153,7 @@ var supportedModes = {
     VHDL:        ["vhd|vhdl"],
     XML:         ["xml|rdf|rss|wsdl|xslt|atom|mathml|mml|xul|xbl|xaml"],
     XQuery:      ["xq"],
-    YAML:        ["yaml|yml"],
+    YAML:        ["yaml|yml"],
     Django:      ["html"]
 };
 

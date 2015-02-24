@@ -5,12 +5,12 @@ var oop = require("./lib/oop");
 var Range = require("./range").Range;
 var Search = require("./search").Search;
 var EditSession = require("./edit_session").EditSession;
-var SearchHighlight = require("./search_highlight").SearchHighlight;
+var SearchHighlight = require("./search_highlight").SearchHighlight;
 function Occur() {}
 
 oop.inherits(Occur, Search);
 
-(function() {
+(function() {
     this.enter = function(editor, options) {
         if (!options.needle) return false;
         var pos = editor.getCursorPosition();
@@ -18,7 +18,7 @@ oop.inherits(Occur, Search);
         var translatedPos = this.originalToOccurPosition(editor.session, pos);
         editor.moveCursorToPosition(translatedPos);
         return true;
-    }
+    }
     this.exit = function(editor, options) {
         var pos = options.translatePosition && editor.getCursorPosition();
         var translatedPos = pos && this.occurToOriginalPosition(editor.session, pos);
@@ -35,7 +35,7 @@ oop.inherits(Occur, Search);
         sess._emit("changeBackMarker"); // force highlight layer redraw
     }
 
-    this.displayOccurContent = function(editor, options) {
+    this.displayOccurContent = function(editor, options) {
         this.$originalSession = editor.session;
         var found = this.matchingLines(editor.session, options);
         var lines = found.map(function(foundLine) { return foundLine.content; });
@@ -52,7 +52,7 @@ oop.inherits(Occur, Search);
     this.displayOriginalContent = function(editor) {
         editor.setSession(this.$originalSession);
         this.$originalSession.$useEmacsStyleLineStart = this.$useEmacsStyleLineStart;
-    }
+    }
     this.originalToOccurPosition = function(session, pos) {
         var lines = session.$occurMatchingLines;
         var nullPos = {row: 0, column: 0};
@@ -62,7 +62,7 @@ oop.inherits(Occur, Search);
                 return {row: i, column: pos.column};
         }
         return nullPos;
-    }
+    }
     this.occurToOriginalPosition = function(session, pos) {
         var lines = session.$occurMatchingLines;
         if (!lines || !lines[pos.row])
@@ -109,7 +109,7 @@ exports.Occur = Occur;
 define("ace/commands/occur_commands",["require","exports","module","ace/config","ace/occur","ace/keyboard/hash_handler","ace/lib/oop"], function(require, exports, module) {
 
 var config = require("../config"),
-    Occur = require("../occur").Occur;
+    Occur = require("../occur").Occur;
 var occurStartCommand = {
     name: "occur",
     exec: function(editor, options) {
@@ -190,7 +190,7 @@ define("ace/commands/incremental_search_commands",["require","exports","module",
 var config = require("../config");
 var oop = require("../lib/oop");
 var HashHandler = require("../keyboard/hash_handler").HashHandler;
-var occurStartCommand = require("./occur_commands").occurStartCommand;
+var occurStartCommand = require("./occur_commands").occurStartCommand;
 exports.iSearchStartCommands = [{
     name: "iSearch",
     bindKey: {win: "Ctrl-F", mac: "Command-F"},
@@ -216,7 +216,7 @@ exports.iSearchStartCommands = [{
     bindKey: {win: "Ctrl-Shift-K", mac: "Command-Shift-G"},
     exec: function(editor) { editor.execCommand('iSearch', {jumpToFirstMatch: true, backwards: true, useCurrentOrPrevSearch: true}); },
     readOnly: true
-}];
+}];
 exports.iSearchCommands = [{
     name: "restartSearch",
     bindKey: {win: "Ctrl-F", mac: "Command-F"},
@@ -392,13 +392,13 @@ var Range = require("./range").Range;
 var Search = require("./search").Search;
 var SearchHighlight = require("./search_highlight").SearchHighlight;
 var iSearchCommandModule = require("./commands/incremental_search_commands");
-var ISearchKbd = iSearchCommandModule.IncrementalSearchKeyboardHandler;
+var ISearchKbd = iSearchCommandModule.IncrementalSearchKeyboardHandler;
 function IncrementalSearch() {
     this.$options = {wrap: false, skipCurrent: false};
     this.$keyboardHandler = new ISearchKbd(this);
 }
 
-oop.inherits(IncrementalSearch, Search);
+oop.inherits(IncrementalSearch, Search);
 
 function isRegExp(obj) {
     return obj instanceof RegExp;
@@ -422,7 +422,7 @@ function stringToRegExp(string, flags) {
 
 function objectToRegExp(obj) {
     return stringToRegExp(obj.expression, obj.flags);
-}
+}
 
 ;(function() {
 
@@ -431,7 +431,7 @@ function objectToRegExp(obj) {
         this.$startPos = this.$currentPos = ed.getCursorPosition();
         this.$options.needle = '';
         this.$options.backwards = backwards;
-        ed.keyBinding.addKeyboardHandler(this.$keyboardHandler);
+        ed.keyBinding.addKeyboardHandler(this.$keyboardHandler);
         this.$originalEditorOnPaste = ed.onPaste; ed.onPaste = this.onPaste.bind(this);
         this.$mousedownHandler = ed.addEventListener('mousedown', this.onMouseDown.bind(this));
         this.selectionFix(ed);
@@ -450,7 +450,7 @@ function objectToRegExp(obj) {
         this.message('');
     }
 
-    this.selectionFix = function(editor) {
+    this.selectionFix = function(editor) {
         if (editor.selection.isEmpty() && !editor.session.$emacsMark) {
             editor.clearSelection();
         }
@@ -480,14 +480,14 @@ function objectToRegExp(obj) {
 
     this.highlightAndFindWithNeedle = function(moveToNext, needleUpdateFunc) {
         if (!this.$editor) return null;
-        var options = this.$options;
+        var options = this.$options;
         if (needleUpdateFunc) {
             options.needle = needleUpdateFunc.call(this, options.needle || '') || '';
         }
         if (options.needle.length === 0) {
             this.statusMessage(true);
             return this.cancelSearch(true);
-        };
+        };
         options.start = this.$currentPos;
         var session = this.$editor.session,
             found = this.find(session),
@@ -496,7 +496,7 @@ function objectToRegExp(obj) {
         if (found) {
             if (options.backwards) found = Range.fromPoints(found.end, found.start);
             this.$editor.selection.setRange(Range.fromPoints(shouldSelect ? this.$startPos : found.end, found.end));
-            if (moveToNext) this.$currentPos = found.end;
+            if (moveToNext) this.$currentPos = found.end;
             this.highlight(options.re)
         }
 
@@ -525,7 +525,7 @@ function objectToRegExp(obj) {
         });
     }
 
-    this.next = function(options) {
+    this.next = function(options) {
         options = options || {};
         this.$options.backwards = !!options.backwards;
         this.$currentPos = this.$editor.getCursorPosition();
@@ -535,7 +535,7 @@ function objectToRegExp(obj) {
         });
     }
 
-    this.onMouseDown = function(evt) {
+    this.onMouseDown = function(evt) {
         this.deactivate();
         return true;
     }
@@ -595,7 +595,7 @@ div.ace_isearch-result {\
 .ace_dark div.ace_isearch-result {\
   background-color: rgb(100, 110, 160);\
   box-shadow: 0 0 4px rgb(80, 90, 140);\
-}", "incremental-search-highlighting");
+}", "incremental-search-highlighting");
 var commands = require("./commands/command_manager");
 (function() {
     this.setupIncrementalSearch = function(editor, val) {
@@ -605,7 +605,7 @@ var commands = require("./commands/command_manager");
         var method = val ? 'addCommands' : 'removeCommands';
         this[method](iSearchCommands);
     };
-}).call(commands.CommandManager.prototype);
+}).call(commands.CommandManager.prototype);
 var Editor = require("./editor").Editor;
 require("./config").defineOptions(Editor.prototype, "editor", {
     useIncrementalSearch: {
@@ -681,9 +681,9 @@ exports.handler.attach = function(editor) {
                 z-index: 2\
             }', 'emacsMode'
         );
-    }
+    }
     $formerLongWords = editor.session.$selectLongWords;
-    editor.session.$selectLongWords = true;
+    editor.session.$selectLongWords = true;
     $formerLineStart = editor.session.$useEmacsStyleLineStart;
     editor.session.$useEmacsStyleLineStart = true;
 
@@ -694,7 +694,7 @@ exports.handler.attach = function(editor) {
         return this.session.$emacsMark;
     };
 
-    editor.setEmacsMark = function(p) {
+    editor.setEmacsMark = function(p) {
         this.session.$emacsMark = p;
     };
 
@@ -716,7 +716,7 @@ exports.handler.attach = function(editor) {
         return this.session.$emacsMark || this.session.$emacsMarkRing.slice(-1)[0];
     };
 
-    editor.emacsMarkForSelection = function(replacement) {
+    editor.emacsMarkForSelection = function(replacement) {
         var sel = this.selection,
             multiRangeLength = this.multiSelect ?
                 this.multiSelect.getAllRanges().length : 1,
@@ -811,7 +811,7 @@ exports.handler.bindKey = function(key, command) {
     var ckb = this.commandKeyBinding;
     key.split("|").forEach(function(keyPart) {
         keyPart = keyPart.toLowerCase();
-        ckb[keyPart] = command;
+        ckb[keyPart] = command;
         var keyParts = keyPart.split(" ").slice(0,-1);
         keyParts.reduce(function(keyMapKeys, keyPart, i) {
             var prefix = keyMapKeys[i-1] ? keyMapKeys[i-1] + ' ' : '';
@@ -831,11 +831,11 @@ exports.handler.getStatusText = function(editor, data) {
   return str;
 };
 
-exports.handler.handleKeyboard = function(data, hashId, key, keyCode) {
+exports.handler.handleKeyboard = function(data, hashId, key, keyCode) {
     if (keyCode === -1) return undefined;
 
     var editor = data.editor;
-    editor._signal("changeStatus");
+    editor._signal("changeStatus");
     if (hashId == -1) {
         editor.pushEmacsMark();
         if (data.count) {
@@ -845,7 +845,7 @@ exports.handler.handleKeyboard = function(data, hashId, key, keyCode) {
         }
     }
 
-    var modifier = eMods[hashId];
+    var modifier = eMods[hashId];
     if (modifier == "c-" || data.count) {
         var count = parseInt(key[key.length - 1]);
         if (typeof count === 'number' && !isNaN(count)) {
@@ -853,18 +853,18 @@ exports.handler.handleKeyboard = function(data, hashId, key, keyCode) {
             data.count = 10 * data.count + count;
             return {command: "null"};
         }
-    }
-    if (modifier) key = modifier + key;
-    if (data.keyChain) key = data.keyChain += " " + key;
+    }
+    if (modifier) key = modifier + key;
+    if (data.keyChain) key = data.keyChain += " " + key;
     var command = this.commandKeyBinding[key];
-    data.keyChain = command == "null" ? key : "";
-    if (!command) return undefined;
+    data.keyChain = command == "null" ? key : "";
+    if (!command) return undefined;
     if (command === "null") return {command: "null"};
 
-    if (command === "universalArgument") {
+    if (command === "universalArgument") {
         data.count = -4;
         return {command: "null"};
-    }
+    }
     var args;
     if (typeof command !== "string") {
         args = command.args;
@@ -914,7 +914,7 @@ exports.handler.handleKeyboard = function(data, hashId, key, keyCode) {
     return {command: command, args: args};
 };
 
-exports.emacsKeys = {
+exports.emacsKeys = {
     "Up|C-p"      : {command: "goorselect", args: ["golineup","selectup"]},
     "Down|C-n"    : {command: "goorselect", args: ["golinedown","selectdown"]},
     "Left|C-b"    : {command: "goorselect", args: ["gotoleft","selectleft"]},
@@ -924,7 +924,7 @@ exports.emacsKeys = {
     "Home|C-a"    : {command: "goorselect", args: ["gotolinestart","selecttolinestart"]},
     "End|C-e"     : {command: "goorselect", args: ["gotolineend","selecttolineend"]},
     "C-Home|S-M-,": {command: "goorselect", args: ["gotostart","selecttostart"]},
-    "C-End|S-M-." : {command: "goorselect", args: ["gotoend","selecttoend"]},
+    "C-End|S-M-." : {command: "goorselect", args: ["gotoend","selecttoend"]},
     "S-Up|S-C-p"      : "selectup",
     "S-Down|S-C-n"    : "selectdown",
     "S-Left|S-C-b"    : "selectleft",
@@ -939,7 +939,7 @@ exports.emacsKeys = {
     "C-l" : "recenterTopBottom",
     "M-s" : "centerselection",
     "M-g": "gotoline",
-    "C-x C-p": "selectall",
+    "C-x C-p": "selectall",
     "C-Down": {command: "goorselect", args: ["gotopagedown","selectpagedown"]},
     "C-Up": {command: "goorselect", args: ["gotopageup","selectpageup"]},
     "PageDown|C-v": {command: "goorselect", args: ["gotopagedown","selectpagedown"]},
@@ -952,7 +952,7 @@ exports.emacsKeys = {
 
     "M-C-s": "findnext",
     "M-C-r": "findprevious",
-    "S-M-5": "replace",
+    "S-M-5": "replace",
     "Backspace": "backspace",
     "Delete|C-d": "del",
     "Return|C-m": {command: "insertstring", args: "\n"}, // "newline"
@@ -980,9 +980,9 @@ exports.emacsKeys = {
     "M-;": "togglecomment",
 
     "C-/|C-x u|S-C--|C-z": "undo",
-    "S-C-/|S-C-x u|C--|S-C-z": "redo", //infinite undo?
+    "S-C-/|S-C-x u|C--|S-C-z": "redo", //infinite undo?
     "C-x r":  "selectRectangularRegion",
-    "M-x": {command: "focusCommandLine", args: "M-x "}
+    "M-x": {command: "focusCommandLine", args: "M-x "}
 };
 
 
@@ -1007,7 +1007,7 @@ exports.handler.addCommands({
         editor.multiSelect.toggleBlockSelection();
     },
     setMark:  {
-        exec: function(editor, args) {
+        exec: function(editor, args) {
 
             if (args && args.count) {
                 if (editor.inMultiSelectMode) editor.forEachSelection(moveToMark);
@@ -1020,7 +1020,7 @@ exports.handler.addCommands({
                 ranges = editor.selection.getAllRanges(),
                 rangePositions = ranges.map(function(r) { return {row: r.start.row, column: r.start.column}; }),
                 transientMarkModeActive = true,
-                hasNoSelection = ranges.every(function(range) { return range.isEmpty(); });
+                hasNoSelection = ranges.every(function(range) { return range.isEmpty(); });
             if (transientMarkModeActive && (mark || !hasNoSelection)) {
                 if (editor.inMultiSelectMode) editor.forEachSelection({exec: editor.clearSelection.bind(editor)})
                 else editor.clearSelection();
@@ -1032,7 +1032,7 @@ exports.handler.addCommands({
                 rangePositions.forEach(function(pos) { editor.pushEmacsMark(pos); });
                 editor.setEmacsMark(rangePositions[rangePositions.length-1]);
                 return;
-            }
+            }
 
             function moveToMark() {
                 var mark = editor.popEmacsMark();
@@ -1084,9 +1084,9 @@ exports.handler.addCommands({
         editor.pushEmacsMark(null);
         var pos = editor.getCursorPosition();
         if (pos.column === 0 &&
-            editor.session.doc.getLine(pos.row).length === 0) {
+            editor.session.doc.getLine(pos.row).length === 0) {
             editor.selection.selectLine();
-        } else {
+        } else {
             editor.clearSelection();
             editor.selection.selectLineEnd();
         }
@@ -1118,7 +1118,7 @@ exports.handler.addCommands({
         multiSelectAction: "forEach"
     },
     killRingSave: {
-        exec: function(editor) {
+        exec: function(editor) {
 
             editor.$handlesEmacsOnCopy = true;
             var marks = editor.session.$emacsMarkRing.slice(),

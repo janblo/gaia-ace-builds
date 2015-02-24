@@ -4,7 +4,7 @@ define("ace/mode/vbscript_highlight_rules",["require","exports","module","ace/li
 var oop = require("../lib/oop");
 var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 
-var VBScriptHighlightRules = function() {
+var VBScriptHighlightRules = function() {
 
     this.$rules = {
     "start": [
@@ -13,7 +13,7 @@ var VBScriptHighlightRules = function() {
                 "meta.ending-space"
             ],
             regex: "$"
-        },
+        },
         {
             token: [
                 null
@@ -96,7 +96,7 @@ var VBScriptHighlightRules = function() {
         {
             token: "support.function.event.asp",
             regex: "\\b(?:Application_OnEnd|Application_OnStart|OnTransactionAbort|OnTransactionCommit|Session_OnEnd|Session_OnStart)\\b"
-        },
+        },
         {
             token: "support.function.vb.asp",
             regex: "\\b(?:Array|Add|Asc|Atn|CBool|CByte|CCur|CDate|CDbl|Chr|CInt|CLng|Conversions|Cos|CreateObject|CSng|CStr|Date|DateAdd|DateDiff|DatePart|DateSerial|DateValue|Day|Derived|Math|Escape|Eval|Exists|Exp|Filter|FormatCurrency|FormatDateTime|FormatNumber|FormatPercent|GetLocale|GetObject|GetRef|Hex|Hour|InputBox|InStr|InStrRev|Int|Fix|IsArray|IsDate|IsEmpty|IsNull|IsNumeric|IsObject|Item|Items|Join|Keys|LBound|LCase|Left|Len|LoadPicture|Log|LTrim|RTrim|Trim|Maths|Mid|Minute|Month|MonthName|MsgBox|Now|Oct|Remove|RemoveAll|Replace|RGB|Right|Rnd|Round|ScriptEngine|ScriptEngineBuildVersion|ScriptEngineMajorVersion|ScriptEngineMinorVersion|Second|SetLocale|Sgn|Sin|Space|Split|Sqr|StrComp|String|StrReverse|Tan|Time|Timer|TimeSerial|TimeValue|TypeName|UBound|UCase|Unescape|VarType|Weekday|WeekdayName|Year)\\b"
@@ -116,7 +116,7 @@ var VBScriptHighlightRules = function() {
                 "entity.name.function.asp"
             ],
             regex: "(?:(\\b[a-zA-Z_x7f-xff][a-zA-Z0-9_x7f-xff]*?\\b)(?=\\(\\)?))"
-        },
+        },
         {
             token: [
                 "keyword.operator.asp"

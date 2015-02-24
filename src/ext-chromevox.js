@@ -1,9 +1,9 @@
-define("ace/ext/chromevox",["require","exports","module","ace/editor","ace/config"], function(require, exports, module) {
-var cvoxAce = {};
+define("ace/ext/chromevox",["require","exports","module","ace/editor","ace/config"], function(require, exports, module) {
+var cvoxAce = {};
 cvoxAce.SpeechProperty;
 cvoxAce.Cursor;
 cvoxAce.Token;
-cvoxAce.Annotation;
+cvoxAce.Annotation;
 var CONSTANT_PROP = {
   'rate': 0.8,
   'pitch': 0.4,
@@ -86,7 +86,7 @@ var getCurrentToken = function(cursor) {
 var getCurrentLine = function(cursor) {
   return cvoxAce.editor.getSession().getLine(cursor.row);
 };
-var onRowChange = function(currCursor) {
+var onRowChange = function(currCursor) {
   if (annotTable[currCursor.row]) {
     cvox.Api.playEarcon(ERROR_EARCON);
   }
@@ -104,7 +104,7 @@ var isWord = function(cursor) {
   var lineSuffix = line.substr(cursor.column - 1);
   if (cursor.column === 0) {
     lineSuffix = ' ' + line;
-  }
+  }
   var firstWordRegExp = /^\W(\w+)/;
   var words = firstWordRegExp.exec(lineSuffix);
   return words !== null;
@@ -159,7 +159,7 @@ var expand = function(value, replaceRules) {
   }
   return newValue;
 };
-var mergeTokens = function(tokens, start, end) {
+var mergeTokens = function(tokens, start, end) {
   var newToken = {};
   newToken.value = '';
   newToken.type = tokens[start].type;
@@ -210,7 +210,7 @@ var speakTokenFlush = function(token) {
 var speakTokenQueue = function(token) {
   speakToken_(token, 1);
 };
-var getTokenRule = function(token) {
+var getTokenRule = function(token) {
   if (!token || !token.type) {
     return;
   }
@@ -243,7 +243,7 @@ var speakDisplacement = function(lastCursor, currCursor) {
   displace = displace.replace(/ /g, ' space ');
   cvox.Api.speak(displace);
 };
-var speakCharOrWordOrLine = function(lastCursor, currCursor) {
+var speakCharOrWordOrLine = function(lastCursor, currCursor) {
   if (Math.abs(lastCursor.column - currCursor.column) !== 1) {
     var currLineLength = getCurrentLine(currCursor).length;
     if (currCursor.column === 0 || currCursor.column === currLineLength) {
@@ -269,7 +269,7 @@ var onColumnChange = function(lastCursor, currCursor) {
     speakCharOrWordOrLine(lastCursor, currCursor);
   }
 };
-var onCursorChange = function(evt) {
+var onCursorChange = function(evt) {
   if (changed) {
     changed = false;
     return;
@@ -282,7 +282,7 @@ var onCursorChange = function(evt) {
   }
   lastCursor = currCursor;
 };
-var onSelectionChange = function(evt) {
+var onSelectionChange = function(evt) {
   if (cvoxAce.editor.selection.isEmpty()) {
     cvox.Api.speak('unselected');
   }
@@ -390,7 +390,7 @@ var onChangeStatus = function(evt, editor) {
     return;
   }
   var state = editor.keyBinding.$data.state;
-  if (state === vimState) {
+  if (state === vimState) {
     return;
   }
   switch (state) {
@@ -425,9 +425,9 @@ var initContextMenu = function() {
   body.addEventListener('ATCustomEvent', contextMenuHandler, true);
 };
 var onFindSearchbox = function(evt) {
-  if (evt.match) {
+  if (evt.match) {
     speakLine(lastCursor.row, 0);
-  } else {
+  } else {
     cvox.Api.playEarcon(NO_MATCH_EARCON);
   }
 };
@@ -435,7 +435,7 @@ var focus = function() {
   cvoxAce.editor.focus();
 };
 var SHORTCUTS = [
-  {
+  {
     keyCode: 49,
     func: function() {
       speakAnnotsByRow(lastCursor.row);
@@ -443,37 +443,37 @@ var SHORTCUTS = [
     cmd: Command.SPEAK_ANNOT,
     desc: 'Speak annotations on line'
   },
-  {
+  {
     keyCode: 50,
     func: speakAllAnnots,
     cmd: Command.SPEAK_ALL_ANNOTS,
     desc: 'Speak all annotations'
   },
-  {
+  {
     keyCode: 51,
     func: speakMode,
     cmd: Command.SPEAK_MODE,
     desc: 'Speak Vim mode'
   },
-  {
+  {
     keyCode: 52,
     func: toggleSpeakRowLocation,
     cmd: Command.TOGGLE_LOCATION,
     desc: 'Toggle speak row location'
   },
-  {
+  {
     keyCode: 53,
     func: speakCurrRowAndCol,
     cmd: Command.SPEAK_ROW_COL,
     desc: 'Speak row and column'
   },
-  {
+  {
     keyCode: 54,
     func: toggleSpeakDisplacement,
     cmd: Command.TOGGLE_DISPLACEMENT,
     desc: 'Toggle speak displacement'
   },
-  {
+  {
     keyCode: 55,
     func: focus,
     cmd: Command.FOCUS_TEXT,
@@ -507,7 +507,7 @@ var init = function(editor) {
 };
 function cvoxApiExists() {
   return (typeof(cvox) !== 'undefined') && cvox && cvox.Api;
-}
+}
 var tries = 0;
 var MAX_TRIES = 15;
 function watchForCvoxLoad(editor) {

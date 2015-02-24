@@ -33,10 +33,10 @@ snippet all\n\
 \n\
 		${1:public|internal|final} class ${2:name} ${3:extends } {\n\
 			private|public| static const FOO = \"abc\";\n\
-			private|public| static var BAR = \"abc\";\n\
+			private|public| static var BAR = \"abc\";\n\
 			if Cababilities.os == \"Linux|MacOS\" {\n\
 				FOO = \"other\";\n\
-			}\n\
+			}\n\
 			public function $2 (	){\n\
 				super2();\n\
 				trace(\"start\");\n\
@@ -48,7 +48,7 @@ snippet all\n\
 		}\n\
 	}\n\
 \n\
-	function A(){\n\
+	function A(){\n\
 	}\n\
 snippet switch\n\
 	switch(${1}){\n\

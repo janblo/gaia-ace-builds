@@ -536,7 +536,7 @@ define("ace/range",["require","exports","module"], function(require, exports, mo
 "use strict";
 var comparePoints = function(p1, p2) {
     return p1.row - p2.row || p1.column - p2.column;
-};
+};
 var Range = function(startRow, startColumn, endRow, endColumn) {
     this.start = {
         row: startRow,
@@ -549,7 +549,7 @@ var Range = function(startRow, startColumn, endRow, endColumn) {
     };
 };
 
-(function() {
+(function() {
     this.isEqual = function(range) {
         return this.start.row === range.start.row &&
             this.end.row === range.end.row &&
@@ -775,7 +775,7 @@ define("ace/anchor",["require","exports","module","ace/lib/oop","ace/lib/event_e
 "use strict";
 
 var oop = require("./lib/oop");
-var EventEmitter = require("./lib/event_emitter").EventEmitter;
+var EventEmitter = require("./lib/event_emitter").EventEmitter;
 
 var Anchor = exports.Anchor = function(doc, row, column) {
     this.$onChange = this.onChange.bind(this);
@@ -817,7 +817,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
 
         if (delta.action === "insertText") {
             if (start.row === row && start.column <= column) {
-                if (start.column === column && this.$insertRight) {
+                if (start.column === column && this.$insertRight) {
                 } else if (start.row === end.row) {
                     column += end.column - start.column;
                 } else {
@@ -828,7 +828,7 @@ var Anchor = exports.Anchor = function(doc, row, column) {
                 row += end.row - start.row;
             }
         } else if (delta.action === "insertLines") {
-            if (start.row === row && column === 0 && this.$insertRight) {
+            if (start.row === row && column === 0 && this.$insertRight) {
             }
             else if (start.row <= row) {
                 row += end.row - start.row;
@@ -926,10 +926,10 @@ define("ace/document",["require","exports","module","ace/lib/oop","ace/lib/event
 var oop = require("./lib/oop");
 var EventEmitter = require("./lib/event_emitter").EventEmitter;
 var Range = require("./range").Range;
-var Anchor = require("./anchor").Anchor;
+var Anchor = require("./anchor").Anchor;
 
 var Document = function(text) {
-    this.$lines = [];
+    this.$lines = [];
     if (text.length === 0) {
         this.$lines = [""];
     } else if (Array.isArray(text)) {
@@ -952,7 +952,7 @@ var Document = function(text) {
     };
     this.createAnchor = function(row, column) {
         return new Anchor(this, row, column);
-    };
+    };
     if ("aaa".split(/a/).length === 0)
         this.$split = function(text) {
             return text.replace(/\r\n|\r/g, "\n").split("\n");
@@ -1032,7 +1032,7 @@ var Document = function(text) {
         if (!text || text.length === 0)
             return position;
 
-        position = this.$clipPosition(position);
+        position = this.$clipPosition(position);
         if (this.getLength() <= 1)
             this.$detectNewLine(text);
 
@@ -1047,7 +1047,7 @@ var Document = function(text) {
             position = this.insertInLine(position, lastLine || "");
         }
         return position;
-    };
+    };
     this.insertLines = function(row, lines) {
         if (row >= this.getLength())
             return this.insert({row: row, column: 0}, "\n" + lines.join("\n"));
@@ -1055,7 +1055,7 @@ var Document = function(text) {
     };
     this._insertLines = function(row, lines) {
         if (lines.length == 0)
-            return {row: row, column: 0};
+            return {row: row, column: 0};
         while (lines.length > 0xF000) {
             var end = this._insertLines(row, lines.slice(0, 0xF000));
             lines = lines.slice(0xF000);
@@ -1121,7 +1121,7 @@ var Document = function(text) {
     };
     this.remove = function(range) {
         if (!(range instanceof Range))
-            range = Range.fromPoints(range.start, range.end);
+            range = Range.fromPoints(range.start, range.end);
         range.start = this.$clipPosition(range.start);
         range.end = this.$clipPosition(range.end);
 
@@ -1208,7 +1208,7 @@ var Document = function(text) {
         if (!(range instanceof Range))
             range = Range.fromPoints(range.start, range.end);
         if (text.length == 0 && range.isEmpty())
-            return range.start;
+            return range.start;
         if (text == this.getTextRange(range))
             return range.end;
 
@@ -1317,7 +1317,7 @@ var Mirror = exports.Mirror = function(sender) {
         this.sender.callback(this.doc.getValue(), callbackId);
     };
     
-    this.onUpdate = function() {
+    this.onUpdate = function() {
     };
     
     this.isPending = function() {
@@ -1328,10 +1328,10 @@ var Mirror = exports.Mirror = function(sender) {
 
 });
 
-define("ace/mode/xml/sax",["require","exports","module"], function(require, exports, module) {
+define("ace/mode/xml/sax",["require","exports","module"], function(require, exports, module) {
 var nameStartChar = /[A-Z_a-z\xC0-\xD6\xD8-\xF6\u00F8-\u02FF\u0370-\u037D\u037F-\u1FFF\u200C-\u200D\u2070-\u218F\u2C00-\u2FEF\u3001-\uD7FF\uF900-\uFDCF\uFDF0-\uFFFD]///\u10000-\uEFFFF
 var nameChar = new RegExp("[\\-\\.0-9"+nameStartChar.source.slice(1,-1)+"\u00B7\u0300-\u036F\\ux203F-\u2040]");
-var tagNamePattern = new RegExp('^'+nameStartChar.source+nameChar.source+'*(?:\:'+nameStartChar.source+nameChar.source+'*)?$');
+var tagNamePattern = new RegExp('^'+nameStartChar.source+nameChar.source+'*(?:\:'+nameStartChar.source+nameChar.source+'*)?$');
 var S_TAG = 0;//tag name offerring
 var S_ATTR = 1;//attr name offerring 
 var S_ATTR_S=2;//attr name end and space offer
@@ -1356,7 +1356,7 @@ XMLReader.prototype = {
 	}
 }
 function parse(source,defaultNSMapCopy,entityMap,domBuilder,errorHandler){
-  function fixedFromCharCode(code) {
+  function fixedFromCharCode(code) {
 		if (code > 0xffff) {
 			code -= 0x10000;
 			var surrogate1 = 0xd800 + (code >> 10)
@@ -1388,7 +1388,7 @@ function parse(source,defaultNSMapCopy,entityMap,domBuilder,errorHandler){
 		while(start>=endPos && (m = linePattern.exec(source))){
 			startPos = m.index;
 			endPos = startPos + m[0].length;
-			locator.lineNumber++;
+			locator.lineNumber++;
 		}
 		locator.columnNumber = start-startPos+1;
 	}
@@ -1437,7 +1437,7 @@ function parse(source,defaultNSMapCopy,entityMap,domBuilder,errorHandler){
 				}
 			}
 			end++;
-			break;
+			break;
 		case '?':// <?...?>
 			locator&&position(i);
 			end = parseInstruction(source,i,domBuilder);
@@ -1450,9 +1450,9 @@ function parse(source,defaultNSMapCopy,entityMap,domBuilder,errorHandler){
 			try{
 				locator&&position(i);
 				
-				var el = new ElementAttributes();
+				var el = new ElementAttributes();
 				var end = parseElementStartPart(source,i,el,entityReplacer,errorHandler);
-				var len = el.length;
+				var len = el.length;
 				if(len && locator){
 					var backup = copyLocator(locator,{});
 					for(var i = 0;i<len;i++){
@@ -1482,7 +1482,7 @@ function parse(source,defaultNSMapCopy,entityMap,domBuilder,errorHandler){
 			}
 
 		}
-		if(end<0){
+		if(end<0){
 			appendText(i+1);
 		}else{
 			start = end;
@@ -1494,7 +1494,7 @@ function copyLocator(f,t){
 	t.columnNumber = f.columnNumber;
 	return t;
 	
-}
+}
 function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 	var attrName;
 	var value;
@@ -1509,7 +1509,7 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 				s = S_EQ;
 			}else if(s === S_ATTR_S){
 				s = S_EQ;
-			}else{
+			}else{
 				throw new Error('attribute equal must after attrName');
 			}
 			break;
@@ -1522,16 +1522,16 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 					value = source.slice(start,p).replace(/&#?\w+;/g,entityReplacer);
 					el.add(attrName,value,start-1);
 					s = S_E;
-				}else{
+				}else{
 					throw new Error('attribute value no end \''+c+'\' match');
 				}
 			}else if(s == S_V){
-				value = source.slice(start,p).replace(/&#?\w+;/g,entityReplacer);
-				el.add(attrName,value,start);
+				value = source.slice(start,p).replace(/&#?\w+;/g,entityReplacer);
+				el.add(attrName,value,start);
 				errorHandler.warning('attribute "'+attrName+'" missed start quot('+c+')!!');
 				start = p+1;
 				s = S_E
-			}else{
+			}else{
 				throw new Error('attribute value must after "="');
 			}
 			break;
@@ -1547,12 +1547,12 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 			case S_V:
 			case S_ATTR:
 			case S_ATTR_S:
-				break;
+				break;
 			default:
 				throw new Error("attribute invalid close char('/')")
 			}
 			break;
-		case ''://end document
+		case ''://end document
 			errorHandler.error('unexpected end of input');
 		case '>':
 			switch(s){
@@ -1583,7 +1583,7 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 				break;
 			case S_EQ:
 				throw new Error('attribute value missed!!');
-			}
+			}
 			return p;
 		case '\u0080':
 			c = ' ';
@@ -1604,10 +1604,10 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 					el.add(attrName,value,start)
 				case S_E:
 					s = S_S;
-					break;
+					break;
 				}
-			}else{//not space
-				switch(s){
+			}else{//not space
+				switch(s){
 				case S_ATTR_S:
 					errorHandler.warning('attribute "'+attrName+'" missed value!! "'+attrName+'" instead!!')
 					el.add(attrName,attrName,start);
@@ -1631,7 +1631,7 @@ function parseElementStartPart(source,start,el,entityReplacer,errorHandler){
 		}
 		p++;
 	}
-}
+}
 function appendElement(el,domBuilder,parseStack){
 	var tagName = el.tagName;
 	var localNSMap = null;
@@ -1650,12 +1650,12 @@ function appendElement(el,domBuilder,parseStack){
 			localName = qName;
 			prefix = null
 			nsPrefix = qName === 'xmlns' && ''
-		}
-		a.localName = localName ;
+		}
+		a.localName = localName ;
 		if(nsPrefix !== false){//hack!!
 			if(localNSMap == null){
-				localNSMap = {}
-				_copy(currentNSMap,currentNSMap={})
+				localNSMap = {}
+				_copy(currentNSMap,currentNSMap={})
 			}
 			currentNSMap[nsPrefix] = localNSMap[nsPrefix] = value;
 			a.uri = 'http://www.w3.org/2000/xmlns/'
@@ -1670,7 +1670,7 @@ function appendElement(el,domBuilder,parseStack){
 			if(prefix === 'xml'){
 				a.uri = 'http://www.w3.org/XML/1998/namespace';
 			}if(prefix !== 'xmlns'){
-				a.uri = currentNSMap[prefix]
+				a.uri = currentNSMap[prefix]
 			}
 		}
 	}
@@ -1681,9 +1681,9 @@ function appendElement(el,domBuilder,parseStack){
 	}else{
 		prefix = null;//important!!
 		localName = el.localName = tagName;
-	}
+	}
 	var ns = el.uri = currentNSMap[prefix || ''];
-	domBuilder.startElement(ns,localName,tagName,el);
+	domBuilder.startElement(ns,localName,tagName,el);
 	if(el.closed){
 		domBuilder.endElement(ns,localName,tagName);
 		if(localNSMap){
@@ -1702,24 +1702,24 @@ function parseHtmlSpecialContent(source,elStartEnd,tagName,entityReplacer,domBui
 		var elEndStart =  source.indexOf('</'+tagName+'>',elStartEnd);
 		var text = source.substring(elStartEnd+1,elEndStart);
 		if(/[&<]/.test(text)){
-			if(/^script$/i.test(tagName)){
-					domBuilder.characters(text,0,text.length);
-					return elEndStart;
+			if(/^script$/i.test(tagName)){
+					domBuilder.characters(text,0,text.length);
+					return elEndStart;
 			}//}else{//text area
 				text = text.replace(/&#?\w+;/g,entityReplacer);
 				domBuilder.characters(text,0,text.length);
-				return elEndStart;
+				return elEndStart;
 			
 		}
 	}
 	return elStartEnd+1;
 }
-function fixSelfClosed(source,elStartEnd,tagName,closeMap){
+function fixSelfClosed(source,elStartEnd,tagName,closeMap){
 	var pos = closeMap[tagName];
-	if(pos == null){
+	if(pos == null){
 		pos = closeMap[tagName] = source.lastIndexOf('</'+tagName+'>')
 	}
-	return pos<elStartEnd;
+	return pos<elStartEnd;
 }
 function _copy(source,target){
 	for(var n in source){target[n] = source[n]}
@@ -1729,7 +1729,7 @@ function parseDCC(source,start,domBuilder,errorHandler){//sure start with '<!'
 	switch(next){
 	case '-':
 		if(source.charAt(start + 3) === '-'){
-			var end = source.indexOf('-->',start+4);
+			var end = source.indexOf('-->',start+4);
 			if(end>start){
 				domBuilder.comment(source,start+4,end-start-4);
 				return end+3;
@@ -1737,7 +1737,7 @@ function parseDCC(source,start,domBuilder,errorHandler){//sure start with '<!'
 				errorHandler.error("Unclosed comment");
 				return -1;
 			}
-		}else{
+		}else{
 			return -1;
 		}
 	default:
@@ -1747,7 +1747,7 @@ function parseDCC(source,start,domBuilder,errorHandler){//sure start with '<!'
 			domBuilder.characters(source,start+9,end-start-9);
 			domBuilder.endCDATA() 
 			return end+3;
-		}
+		}
 		var matchs = split(source,start);
 		var len = matchs.length;
 		if(len>1 && /!doctype/i.test(matchs[0][0])){
@@ -1780,7 +1780,7 @@ function parseInstruction(source,start,domBuilder){
 		}
 	}
 	return -1;
-}
+}
 function ElementAttributes(source){
 	
 }
@@ -1802,7 +1802,7 @@ ElementAttributes.prototype = {
 	getOffset:function(i){return this[i].offset},
 	getQName:function(i){return this[i].qName},
 	getURI:function(i){return this[i].uri},
-	getValue:function(i){return this[i].value}
+	getValue:function(i){return this[i].value}
 }
 
 
@@ -1839,13 +1839,13 @@ function split(source,start){
 return XMLReader;
 });
 
-define("ace/mode/xml/dom",["require","exports","module"], function(require, exports, module) {
+define("ace/mode/xml/dom",["require","exports","module"], function(require, exports, module) {
 
 function copy(src,dest){
 	for(var p in src){
 		dest[p] = src[p];
 	}
-}
+}
 function _extends(Class,Super){
 	var pt = Class.prototype;
 	if(Object.create){
@@ -1866,7 +1866,7 @@ function _extends(Class,Super){
 		pt.constructor = Class
 	}
 }
-var htmlns = 'http://www.w3.org/1999/xhtml' ;
+var htmlns = 'http://www.w3.org/1999/xhtml' ;
 var NodeType = {}
 var ELEMENT_NODE                = NodeType.ELEMENT_NODE                = 1;
 var ATTRIBUTE_NODE              = NodeType.ATTRIBUTE_NODE              = 2;
@@ -1879,7 +1879,7 @@ var COMMENT_NODE                = NodeType.COMMENT_NODE                = 8;
 var DOCUMENT_NODE               = NodeType.DOCUMENT_NODE               = 9;
 var DOCUMENT_TYPE_NODE          = NodeType.DOCUMENT_TYPE_NODE          = 10;
 var DOCUMENT_FRAGMENT_NODE      = NodeType.DOCUMENT_FRAGMENT_NODE      = 11;
-var NOTATION_NODE               = NodeType.NOTATION_NODE               = 12;
+var NOTATION_NODE               = NodeType.NOTATION_NODE               = 12;
 var ExceptionCode = {}
 var ExceptionMessage = {};
 var INDEX_SIZE_ERR              = ExceptionCode.INDEX_SIZE_ERR              = ((ExceptionMessage[1]="Index size error"),1);
@@ -1891,7 +1891,7 @@ var NO_DATA_ALLOWED_ERR         = ExceptionCode.NO_DATA_ALLOWED_ERR         = ((
 var NO_MODIFICATION_ALLOWED_ERR = ExceptionCode.NO_MODIFICATION_ALLOWED_ERR = ((ExceptionMessage[7]="No modification allowed"),7);
 var NOT_FOUND_ERR               = ExceptionCode.NOT_FOUND_ERR               = ((ExceptionMessage[8]="Not found"),8);
 var NOT_SUPPORTED_ERR           = ExceptionCode.NOT_SUPPORTED_ERR           = ((ExceptionMessage[9]="Not supported"),9);
-var INUSE_ATTRIBUTE_ERR         = ExceptionCode.INUSE_ATTRIBUTE_ERR         = ((ExceptionMessage[10]="Attribute in use"),10);
+var INUSE_ATTRIBUTE_ERR         = ExceptionCode.INUSE_ATTRIBUTE_ERR         = ((ExceptionMessage[10]="Attribute in use"),10);
 var INVALID_STATE_ERR        	= ExceptionCode.INVALID_STATE_ERR        	= ((ExceptionMessage[11]="Invalid state"),11);
 var SYNTAX_ERR               	= ExceptionCode.SYNTAX_ERR               	= ((ExceptionMessage[12]="Syntax error"),12);
 var INVALID_MODIFICATION_ERR 	= ExceptionCode.INVALID_MODIFICATION_ERR 	= ((ExceptionMessage[13]="Invalid modification"),13);
@@ -1913,11 +1913,11 @@ function DOMException(code, message) {
 	return error;
 };
 DOMException.prototype = Error.prototype;
-copy(ExceptionCode,DOMException)
+copy(ExceptionCode,DOMException)
 function NodeList() {
 };
-NodeList.prototype = {
-	length:0, 
+NodeList.prototype = {
+	length:0, 
 	item: function(index) {
 		return this[index] || null;
 	}
@@ -1930,7 +1930,7 @@ function LiveNodeList(node,refresh){
 function _updateLiveList(list){
 	var inc = list._node._inc || list._node.ownerDocument._inc;
 	if(list._inc != inc){
-		var ls = list._refresh(list._node);
+		var ls = list._refresh(list._node);
 		__set__(list,'length',ls.length);
 		copy(ls,list);
 		list._inc = inc;
@@ -1989,7 +1989,7 @@ function _removeNamedNode(el,list,attr){
 NamedNodeMap.prototype = {
 	length:0,
 	item:NodeList.prototype.item,
-	getNamedItem: function(key) {
+	getNamedItem: function(key) {
 		var i = this.length;
 		while(i--){
 			var attr = this[i];
@@ -2006,7 +2006,7 @@ NamedNodeMap.prototype = {
 		var oldAttr = this.getNamedItem(attr.nodeName);
 		_addNamedNode(this._ownerElement,this,attr,oldAttr);
 		return oldAttr;
-	},
+	},
 	setNamedItemNS: function(attr) {// raises: WRONG_DOCUMENT_ERR,NO_MODIFICATION_ALLOWED_ERR,INUSE_ATTRIBUTE_ERR
 		var el = attr.ownerElement, oldAttr;
 		if(el && el!=this._ownerElement){
@@ -2015,14 +2015,14 @@ NamedNodeMap.prototype = {
 		oldAttr = this.getNamedItemNS(attr.namespaceURI,attr.localName);
 		_addNamedNode(this._ownerElement,this,attr,oldAttr);
 		return oldAttr;
-	},
+	},
 	removeNamedItem: function(key) {
 		var attr = this.getNamedItem(key);
 		_removeNamedNode(this._ownerElement,this,attr);
 		return attr;
 		
 		
-	},// raises: NOT_FOUND_ERR,NO_MODIFICATION_ALLOWED_ERR
+	},// raises: NOT_FOUND_ERR,NO_MODIFICATION_ALLOWED_ERR
 	removeNamedItemNS:function(namespaceURI,localName){
 		var attr = this.getNamedItemNS(namespaceURI,localName);
 		_removeNamedNode(this._ownerElement,this,attr);
@@ -2056,7 +2056,7 @@ DOMImplementation.prototype = {
 		} else {
 			return false;
 		}
-	},
+	},
 	createDocument:function(namespaceURI,  qualifiedName, doctype){// raises:INVALID_CHARACTER_ERR,NAMESPACE_ERR,WRONG_DOCUMENT_ERR
 		var doc = new Document();
 		doc.implementation = this;
@@ -2070,13 +2070,13 @@ DOMImplementation.prototype = {
 			doc.appendChild(root);
 		}
 		return doc;
-	},
+	},
 	createDocumentType:function(qualifiedName, publicId, systemId){// raises:INVALID_CHARACTER_ERR,NAMESPACE_ERR
 		var node = new DocumentType();
 		node.name = qualifiedName;
 		node.nodeName = qualifiedName;
 		node.publicId = publicId;
-		node.systemId = systemId;
+		node.systemId = systemId;
 		return node;
 	}
 };
@@ -2096,7 +2096,7 @@ Node.prototype = {
 	nodeValue : null,
 	namespaceURI : null,
 	prefix : null,
-	localName : null,
+	localName : null,
 	insertBefore:function(newChild, refChild){//raises 
 		return _insertBefore(this,newChild,refChild);
 	},
@@ -2117,7 +2117,7 @@ Node.prototype = {
 	},
 	cloneNode:function(deep){
 		return cloneNode(this.ownerDocument||this,this,deep);
-	},
+	},
 	normalize:function(){
 		var child = this.firstChild;
 		while(child){
@@ -2130,17 +2130,17 @@ Node.prototype = {
 				child = next;
 			}
 		}
-	},
+	},
 	isSupported:function(feature, version){
 		return this.ownerDocument.implementation.hasFeature(feature,version);
-	},
+	},
     hasAttributes:function(){
     	return this.attributes.length>0;
     },
     lookupPrefix:function(namespaceURI){
     	var el = this;
     	while(el){
-    		var map = el._nsMap;
+    		var map = el._nsMap;
     		if(map){
     			for(var n in map){
     				if(map[n] == namespaceURI){
@@ -2151,11 +2151,11 @@ Node.prototype = {
     		el = el.nodeType == 2?el.ownerDocument : el.parentNode;
     	}
     	return null;
-    },
+    },
     lookupNamespaceURI:function(prefix){
     	var el = this;
     	while(el){
-    		var map = el._nsMap;
+    		var map = el._nsMap;
     		if(map){
     			if(prefix in map){
     				return map[prefix] ;
@@ -2164,7 +2164,7 @@ Node.prototype = {
     		el = el.nodeType == 2?el.ownerDocument : el.parentNode;
     	}
     	return null;
-    },
+    },
     isDefaultNamespace:function(namespaceURI){
     	var prefix = this.lookupPrefix(namespaceURI);
     	return prefix == null;
@@ -2201,24 +2201,24 @@ function Document(){
 function _onAddAttribute(doc,el,newAttr){
 	doc && doc._inc++;
 	var ns = newAttr.namespaceURI ;
-	if(ns == 'http://www.w3.org/2000/xmlns/'){
+	if(ns == 'http://www.w3.org/2000/xmlns/'){
 		el._nsMap[newAttr.prefix?newAttr.localName:''] = newAttr.value
 	}
 }
 function _onRemoveAttribute(doc,el,newAttr,remove){
 	doc && doc._inc++;
 	var ns = newAttr.namespaceURI ;
-	if(ns == 'http://www.w3.org/2000/xmlns/'){
+	if(ns == 'http://www.w3.org/2000/xmlns/'){
 		delete el._nsMap[newAttr.prefix?newAttr.localName:'']
 	}
 }
 function _onUpdateChild(doc,el,newChild){
 	if(doc && doc._inc){
-		doc._inc++;
+		doc._inc++;
 		var cs = el.childNodes;
 		if(newChild){
 			cs[cs.length++] = newChild;
-		}else{
+		}else{
 			var child = el.firstChild;
 			var i = 0;
 			while(child){
@@ -2228,7 +2228,7 @@ function _onUpdateChild(doc,el,newChild){
 			cs.length = i;
 		}
 	}
-}
+}
 function _removeChild(parentNode,child){
 	var previous = child.previousSibling;
 	var next = child.nextSibling;
@@ -2244,7 +2244,7 @@ function _removeChild(parentNode,child){
 	}
 	_onUpdateChild(parentNode.ownerDocument,parentNode);
 	return child;
-}
+}
 function _insertBefore(parentNode,newChild,nextChild){
 	var cp = newChild.parentNode;
 	if(cp){
@@ -2278,7 +2278,7 @@ function _insertBefore(parentNode,newChild,nextChild){
 	do{
 		newFirst.parentNode = parentNode;
 	}while(newFirst !== newLast && (newFirst= newFirst.nextSibling))
-	_onUpdateChild(parentNode.ownerDocument||parentNode,parentNode);
+	_onUpdateChild(parentNode.ownerDocument||parentNode,parentNode);
 	if (newChild.nodeType == DOCUMENT_FRAGMENT_NODE) {
 		newChild.firstChild = newChild.lastChild = null;
 	}
@@ -2302,9 +2302,9 @@ function _appendSingleChild(parentNode,newChild){
 	}
 	parentNode.lastChild = newChild;
 	_onUpdateChild(parentNode.ownerDocument,parentNode,newChild);
-	return newChild;
+	return newChild;
 }
-Document.prototype = {
+Document.prototype = {
 	nodeName :  '#document',
 	nodeType :  DOCUMENT_NODE,
 	doctype :  null,
@@ -2332,10 +2332,10 @@ Document.prototype = {
 			this.documentElement = null;
 		}
 		return _removeChild(this,oldChild);
-	},
+	},
 	importNode : function(importedNode,deep){
 		return importNode(this,importedNode,deep);
-	},
+	},
 	getElementById :	function(id){
 		var rtv = null;
 		_visitNode(this.documentElement,function(node){
@@ -2347,7 +2347,7 @@ Document.prototype = {
 			}
 		})
 		return rtv;
-	},
+	},
 	createElement :	function(tagName){
 		var node = new Element();
 		node.ownerDocument = this;
@@ -2403,7 +2403,7 @@ Document.prototype = {
 		node.ownerDocument	= this;
 		node.nodeName	= name;
 		return node;
-	},
+	},
 	createElementNS :	function(namespaceURI,qualifiedName){
 		var node = new Element();
 		var pl = qualifiedName.split(':');
@@ -2416,12 +2416,12 @@ Document.prototype = {
 		if(pl.length == 2){
 			node.prefix = pl[0];
 			node.localName = pl[1];
-		}else{
+		}else{
 			node.localName = qualifiedName;
 		}
 		attrs._ownerElement = node;
 		return node;
-	},
+	},
 	createAttributeNS :	function(namespaceURI,qualifiedName){
 		var node = new Attr();
 		var pl = qualifiedName.split(':');
@@ -2433,7 +2433,7 @@ Document.prototype = {
 		if(pl.length == 2){
 			node.prefix = pl[0];
 			node.localName = pl[1];
-		}else{
+		}else{
 			node.localName = qualifiedName;
 		}
 		return node;
@@ -2465,7 +2465,7 @@ Element.prototype = {
 	removeAttribute : function(name){
 		var attr = this.getAttributeNode(name)
 		attr && this.removeAttributeNode(attr);
-	},
+	},
 	appendChild:function(newChild){
 		if(newChild.nodeType === DOCUMENT_FRAGMENT_NODE){
 			return this.insertBefore(newChild,null);
@@ -2481,7 +2481,7 @@ Element.prototype = {
 	},
 	removeAttributeNode : function(oldAttr){
 		return this.attributes.removeNamedItem(oldAttr.nodeName);
-	},
+	},
 	removeAttributeNS : function(namespaceURI, localName){
 		var old = this.getAttributeNodeNS(namespaceURI, localName);
 		old && this.removeAttributeNode(old);
@@ -2553,8 +2553,8 @@ CharacterData.prototype = {
 		this.replaceData(offset,0,text);
 	
 	},
-	appendChild:function(newChild){
-			throw new Error(ExceptionMessage[3])
+	appendChild:function(newChild){
+			throw new Error(ExceptionMessage[3])
 		return Node.prototype.appendChild.apply(this,arguments)
 	},
 	deleteData: function(offset, count) {
@@ -2658,7 +2658,7 @@ function serializeToString(node,buf){
 			serializeToString(attrs.item(i),buf,isHTML);
 		}
 		if(child || isHTML && !/^(?:meta|link|img|br|hr|input|button)$/i.test(nodeName)){
-			buf.push('>');
+			buf.push('>');
 			if(isHTML && /^script$/i.test(nodeName)){
 				if(child){
 					buf.push(child.data);
@@ -2713,7 +2713,7 @@ function serializeToString(node,buf){
 	case PROCESSING_INSTRUCTION_NODE:
 		return buf.push( "<?",node.target," ",node.data,"?>");
 	case ENTITY_REFERENCE_NODE:
-		return buf.push( '&',node.nodeName,';');
+		return buf.push( '&',node.nodeName,';');
 	default:
 		buf.push('??',node.nodeName);
 	}
@@ -2723,12 +2723,12 @@ function importNode(doc,node,deep){
 	switch (node.nodeType) {
 	case ELEMENT_NODE:
 		node2 = node.cloneNode(false);
-		node2.ownerDocument = doc;
+		node2.ownerDocument = doc;
 	case DOCUMENT_FRAGMENT_NODE:
 		break;
 	case ATTRIBUTE_NODE:
 		deep = true;
-		break;
+		break;
 	}
 	if(!node2){
 		node2 = node.cloneNode(false);//false
@@ -2743,7 +2743,7 @@ function importNode(doc,node,deep){
 		}
 	}
 	return node2;
-}
+}
 function cloneNode(doc,node,deep){
 	var node2 = new node.constructor();
 	for(var n in node){
@@ -2783,7 +2783,7 @@ function cloneNode(doc,node,deep){
 
 function __set__(object,key,value){
 	object[key] = value
-}
+}
 try{
 	if(Object.defineProperty){
 		Object.defineProperty(LiveNodeList.prototype,'length',{
@@ -2807,7 +2807,7 @@ try{
 						this.appendChild(this.ownerDocument.createTextNode(data));
 					}
 					break;
-				default:
+				default:
 					this.data = data;
 					this.value = value;
 					this.nodeValue = data;
@@ -2832,7 +2832,7 @@ try{
 				return node.nodeValue;
 			}
 		}
-		__set__ = function(object,key,value){
+		__set__ = function(object,key,value){
 			object['$$'+key] = value
 		}
 	}
@@ -2910,14 +2910,14 @@ function buildErrorHandler(errorImpl,domBuilder,locator){
 	build('error','warn','warning');
 	build('fatalError','warn','warning','error');
 	return errorHandler;
-}
+}
 function DOMHandler() {
     this.cdata = false;
 }
 function position(locator,node){
 	node.lineNumber = locator.lineNumber;
 	node.columnNumber = locator.columnNumber;
-} 
+} 
 DOMHandler.prototype = {
 	startDocument : function() {
     	this.document = new DOMImplementation().createDocument(null, null, null);
@@ -2962,7 +2962,7 @@ DOMHandler.prototype = {
 	ignorableWhitespace:function(ch, start, length) {
 	},
 	characters:function(chars, start, length) {
-		chars = _toString.apply(this,arguments)
+		chars = _toString.apply(this,arguments)
 		if(this.currentElement && chars){
 			if (this.cdata) {
 				var charNode = this.document.createCDATASection(chars);
@@ -2983,7 +2983,7 @@ DOMHandler.prototype = {
 	    if(this.locator = locator){// && !('lineNumber' in locator)){
 	    	locator.lineNumber = 0;
 	    }
-	},
+	},
 	comment:function(chars, start, length) {
 		chars = _toString.apply(this,arguments)
 	    var comm = this.document.createComment(chars);
@@ -2991,7 +2991,7 @@ DOMHandler.prototype = {
 	    appendElement(this, comm);
 	},
 	
-	startCDATA:function() {
+	startCDATA:function() {
 	    this.cdata = true;
 	},
 	endCDATA:function() {
@@ -3005,7 +3005,7 @@ DOMHandler.prototype = {
 	        this.locator && position(this.locator,dt)
 	        appendElement(this, dt);
 	    }
-	},
+	},
 	warning:function(error) {
 		console.warn(error,_locator(this.locator));
 	},
@@ -3031,10 +3031,10 @@ function _toString(chars,start,length){
 		}
 		return chars;
 	}
-}
+}
 "endDTD,startEntity,endEntity,attributeDecl,elementDecl,externalEntityDecl,internalEntityDecl,resolveEntity,getExternalSubset,notationDecl,unparsedEntityDecl".replace(/\w+/g,function(key){
 	DOMHandler.prototype[key] = function(){return null}
-})
+})
 function appendElement (hander,node) {
     if (!hander.currentElement) {
         hander.document.appendChild(node);
@@ -3111,20 +3111,20 @@ oop.inherits(Worker, Mirror);
 
 });
 
-define("ace/lib/es5-shim",["require","exports","module"], function(require, exports, module) {
+define("ace/lib/es5-shim",["require","exports","module"], function(require, exports, module) {
 
 function Empty() {}
 
 if (!Function.prototype.bind) {
-    Function.prototype.bind = function bind(that) { // .length is 1
-        var target = this;
+    Function.prototype.bind = function bind(that) { // .length is 1
+        var target = this;
         if (typeof target != "function") {
             throw new TypeError("Function.prototype.bind called on incompatible " + target);
-        }
-        var args = slice.call(arguments, 1); // for normal call
+        }
+        var args = slice.call(arguments, 1); // for normal call
         var bound = function () {
 
-            if (this instanceof bound) {
+            if (this instanceof bound) {
 
                 var result = target.apply(
                     this,
@@ -3135,7 +3135,7 @@ if (!Function.prototype.bind) {
                 }
                 return this;
 
-            } else {
+            } else {
                 return target.apply(
                     that,
                     args.concat(slice.call(arguments))
@@ -3146,18 +3146,18 @@ if (!Function.prototype.bind) {
         };
         if(target.prototype) {
             Empty.prototype = target.prototype;
-            bound.prototype = new Empty();
+            bound.prototype = new Empty();
             Empty.prototype = null;
-        }
+        }
         return bound;
     };
-}
+}
 var call = Function.prototype.call;
 var prototypeOfArray = Array.prototype;
 var prototypeOfObject = Object.prototype;
-var slice = prototypeOfArray.slice;
+var slice = prototypeOfArray.slice;
 var _toString = call.bind(prototypeOfObject.toString);
-var owns = call.bind(prototypeOfObject.hasOwnProperty);
+var owns = call.bind(prototypeOfObject.hasOwnProperty);
 var defineGetter;
 var defineSetter;
 var lookupGetter;
@@ -3168,7 +3168,7 @@ if ((supportsAccessors = owns(prototypeOfObject, "__defineGetter__"))) {
     defineSetter = call.bind(prototypeOfObject.__defineSetter__);
     lookupGetter = call.bind(prototypeOfObject.__lookupGetter__);
     lookupSetter = call.bind(prototypeOfObject.__lookupSetter__);
-}
+}
 if ([1,2].splice(0).length != 2) {
     if(function() { // test IE < 9 to splice bug - see issue #138
         function makeArray(l) {
@@ -3188,7 +3188,7 @@ if ([1,2].splice(0).length != 2) {
 
         if (lengthBefore + 1 == array.length) {
             return true;// has right splice implementation without bugs
-        }
+        }
     }()) {//IE 6/7
         var array_splice = Array.prototype.splice;
         Array.prototype.splice = function(start, deleteCount) {
@@ -3201,7 +3201,7 @@ if ([1,2].splice(0).length != 2) {
                 ].concat(slice.call(arguments, 2)))
             }
         };
-    } else {//IE8
+    } else {//IE8
         Array.prototype.splice = function(pos, removeCount){
             var length = this.length;
             if (pos > 0) {
@@ -3218,7 +3218,7 @@ if ([1,2].splice(0).length != 2) {
 
             var removed = this.slice(pos, pos+removeCount);
             var insert = slice.call(arguments, 2);
-            var add = insert.length;            
+            var add = insert.length;            
             if (pos === length) {
                 if (add) {
                     this.push.apply(this, insert);
@@ -3253,12 +3253,12 @@ if ([1,2].splice(0).length != 2) {
             return removed;
         };
     }
-}
+}
 if (!Array.isArray) {
     Array.isArray = function isArray(obj) {
         return _toString(obj) == "[object Array]";
     };
-}
+}
 var boxedString = Object("a"),
     splitString = boxedString[0] != "a" || !(0 in boxedString);
 
@@ -3270,18 +3270,18 @@ if (!Array.prototype.forEach) {
                 object,
             thisp = arguments[1],
             i = -1,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(); // TODO message
         }
 
         while (++i < length) {
-            if (i in self) {
+            if (i in self) {
                 fun.call(thisp, self[i], i, object);
             }
         }
     };
-}
+}
 if (!Array.prototype.map) {
     Array.prototype.map = function map(fun /*, thisp*/) {
         var object = toObject(this),
@@ -3290,7 +3290,7 @@ if (!Array.prototype.map) {
                 object,
             length = self.length >>> 0,
             result = Array(length),
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3301,7 +3301,7 @@ if (!Array.prototype.map) {
         }
         return result;
     };
-}
+}
 if (!Array.prototype.filter) {
     Array.prototype.filter = function filter(fun /*, thisp */) {
         var object = toObject(this),
@@ -3311,7 +3311,7 @@ if (!Array.prototype.filter) {
             length = self.length >>> 0,
             result = [],
             value,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3326,7 +3326,7 @@ if (!Array.prototype.filter) {
         }
         return result;
     };
-}
+}
 if (!Array.prototype.every) {
     Array.prototype.every = function every(fun /*, thisp */) {
         var object = toObject(this),
@@ -3334,7 +3334,7 @@ if (!Array.prototype.every) {
                 this.split("") :
                 object,
             length = self.length >>> 0,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3346,7 +3346,7 @@ if (!Array.prototype.every) {
         }
         return true;
     };
-}
+}
 if (!Array.prototype.some) {
     Array.prototype.some = function some(fun /*, thisp */) {
         var object = toObject(this),
@@ -3354,7 +3354,7 @@ if (!Array.prototype.some) {
                 this.split("") :
                 object,
             length = self.length >>> 0,
-            thisp = arguments[1];
+            thisp = arguments[1];
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
         }
@@ -3366,17 +3366,17 @@ if (!Array.prototype.some) {
         }
         return false;
     };
-}
+}
 if (!Array.prototype.reduce) {
     Array.prototype.reduce = function reduce(fun /*, initial*/) {
         var object = toObject(this),
             self = splitString && _toString(this) == "[object String]" ?
                 this.split("") :
                 object,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
-        }
+        }
         if (!length && arguments.length == 1) {
             throw new TypeError("reduce of empty array with no initial value");
         }
@@ -3390,7 +3390,7 @@ if (!Array.prototype.reduce) {
                 if (i in self) {
                     result = self[i++];
                     break;
-                }
+                }
                 if (++i >= length) {
                     throw new TypeError("reduce of empty array with no initial value");
                 }
@@ -3405,17 +3405,17 @@ if (!Array.prototype.reduce) {
 
         return result;
     };
-}
+}
 if (!Array.prototype.reduceRight) {
     Array.prototype.reduceRight = function reduceRight(fun /*, initial*/) {
         var object = toObject(this),
             self = splitString && _toString(this) == "[object String]" ?
                 this.split("") :
                 object,
-            length = self.length >>> 0;
+            length = self.length >>> 0;
         if (_toString(fun) != "[object Function]") {
             throw new TypeError(fun + " is not a function");
-        }
+        }
         if (!length && arguments.length == 1) {
             throw new TypeError("reduceRight of empty array with no initial value");
         }
@@ -3428,7 +3428,7 @@ if (!Array.prototype.reduceRight) {
                 if (i in self) {
                     result = self[i--];
                     break;
-                }
+                }
                 if (--i < 0) {
                     throw new TypeError("reduceRight of empty array with no initial value");
                 }
@@ -3443,7 +3443,7 @@ if (!Array.prototype.reduceRight) {
 
         return result;
     };
-}
+}
 if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
     Array.prototype.indexOf = function indexOf(sought /*, fromIndex */ ) {
         var self = splitString && _toString(this) == "[object String]" ?
@@ -3458,7 +3458,7 @@ if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
         var i = 0;
         if (arguments.length > 1) {
             i = toInteger(arguments[1]);
-        }
+        }
         i = i >= 0 ? i : Math.max(0, length + i);
         for (; i < length; i++) {
             if (i in self && self[i] === sought) {
@@ -3467,7 +3467,7 @@ if (!Array.prototype.indexOf || ([0, 1].indexOf(1, 2) != -1)) {
         }
         return -1;
     };
-}
+}
 if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
     Array.prototype.lastIndexOf = function lastIndexOf(sought /*, fromIndex */) {
         var self = splitString && _toString(this) == "[object String]" ?
@@ -3481,7 +3481,7 @@ if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
         var i = length - 1;
         if (arguments.length > 1) {
             i = Math.min(i, toInteger(arguments[1]));
-        }
+        }
         i = i >= 0 ? i : length - Math.abs(i);
         for (; i >= 0; i--) {
             if (i in self && sought === self[i]) {
@@ -3490,8 +3490,8 @@ if (!Array.prototype.lastIndexOf || ([0, 1].lastIndexOf(0, -3) != -1)) {
         }
         return -1;
     };
-}
-if (!Object.getPrototypeOf) {
+}
+if (!Object.getPrototypeOf) {
     Object.getPrototypeOf = function getPrototypeOf(object) {
         return object.__proto__ || (
             object.constructor ?
@@ -3499,48 +3499,48 @@ if (!Object.getPrototypeOf) {
             prototypeOfObject
         );
     };
-}
+}
 if (!Object.getOwnPropertyDescriptor) {
     var ERR_NON_OBJECT = "Object.getOwnPropertyDescriptor called on a " +
                          "non-object: ";
     Object.getOwnPropertyDescriptor = function getOwnPropertyDescriptor(object, property) {
         if ((typeof object != "object" && typeof object != "function") || object === null)
-            throw new TypeError(ERR_NON_OBJECT + object);
+            throw new TypeError(ERR_NON_OBJECT + object);
         if (!owns(object, property))
             return;
 
-        var descriptor, getter, setter;
-        descriptor =  { enumerable: true, configurable: true };
-        if (supportsAccessors) {
+        var descriptor, getter, setter;
+        descriptor =  { enumerable: true, configurable: true };
+        if (supportsAccessors) {
             var prototype = object.__proto__;
             object.__proto__ = prototypeOfObject;
 
             var getter = lookupGetter(object, property);
-            var setter = lookupSetter(object, property);
+            var setter = lookupSetter(object, property);
             object.__proto__ = prototype;
 
             if (getter || setter) {
                 if (getter) descriptor.get = getter;
-                if (setter) descriptor.set = setter;
+                if (setter) descriptor.set = setter;
                 return descriptor;
             }
-        }
+        }
         descriptor.value = object[property];
         return descriptor;
     };
-}
+}
 if (!Object.getOwnPropertyNames) {
     Object.getOwnPropertyNames = function getOwnPropertyNames(object) {
         return Object.keys(object);
     };
-}
+}
 if (!Object.create) {
     var createEmpty;
     if (Object.prototype.__proto__ === null) {
         createEmpty = function () {
             return { "__proto__": null };
         };
-    } else {
+    } else {
         createEmpty = function () {
             var empty = {};
             for (var i in empty)
@@ -3566,22 +3566,22 @@ if (!Object.create) {
                 throw new TypeError("typeof prototype["+(typeof prototype)+"] != 'object'");
             var Type = function () {};
             Type.prototype = prototype;
-            object = new Type();
+            object = new Type();
             object.__proto__ = prototype;
         }
         if (properties !== void 0)
             Object.defineProperties(object, properties);
         return object;
     };
-}
+}
 
 function doesDefinePropertyWork(object) {
     try {
         Object.defineProperty(object, "sentinel", {});
         return "sentinel" in object;
-    } catch (exception) {
+    } catch (exception) {
     }
-}
+}
 if (Object.defineProperty) {
     var definePropertyWorksOnObject = doesDefinePropertyWork({});
     var definePropertyWorksOnDom = typeof document == "undefined" ||
@@ -3601,29 +3601,29 @@ if (!Object.defineProperty || definePropertyFallback) {
         if ((typeof object != "object" && typeof object != "function") || object === null)
             throw new TypeError(ERR_NON_OBJECT_TARGET + object);
         if ((typeof descriptor != "object" && typeof descriptor != "function") || descriptor === null)
-            throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
+            throw new TypeError(ERR_NON_OBJECT_DESCRIPTOR + descriptor);
         if (definePropertyFallback) {
             try {
                 return definePropertyFallback.call(Object, object, property, descriptor);
-            } catch (exception) {
+            } catch (exception) {
             }
-        }
-        if (owns(descriptor, "value")) {
+        }
+        if (owns(descriptor, "value")) {
 
             if (supportsAccessors && (lookupGetter(object, property) ||
                                       lookupSetter(object, property)))
-            {
+            {
                 var prototype = object.__proto__;
-                object.__proto__ = prototypeOfObject;
+                object.__proto__ = prototypeOfObject;
                 delete object[property];
-                object[property] = descriptor.value;
+                object[property] = descriptor.value;
                 object.__proto__ = prototype;
             } else {
                 object[property] = descriptor.value;
             }
         } else {
             if (!supportsAccessors)
-                throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);
+                throw new TypeError(ERR_ACCESSORS_NOT_SUPPORTED);
             if (owns(descriptor, "get"))
                 defineGetter(object, property, descriptor.get);
             if (owns(descriptor, "set"))
@@ -3632,7 +3632,7 @@ if (!Object.defineProperty || definePropertyFallback) {
 
         return object;
     };
-}
+}
 if (!Object.defineProperties) {
     Object.defineProperties = function defineProperties(object, properties) {
         for (var property in properties) {
@@ -3641,17 +3641,17 @@ if (!Object.defineProperties) {
         }
         return object;
     };
-}
+}
 if (!Object.seal) {
-    Object.seal = function seal(object) {
+    Object.seal = function seal(object) {
         return object;
     };
-}
+}
 if (!Object.freeze) {
-    Object.freeze = function freeze(object) {
+    Object.freeze = function freeze(object) {
         return object;
     };
-}
+}
 try {
     Object.freeze(function () {});
 } catch (exception) {
@@ -3664,27 +3664,27 @@ try {
             }
         };
     })(Object.freeze);
-}
+}
 if (!Object.preventExtensions) {
-    Object.preventExtensions = function preventExtensions(object) {
+    Object.preventExtensions = function preventExtensions(object) {
         return object;
     };
-}
+}
 if (!Object.isSealed) {
     Object.isSealed = function isSealed(object) {
         return false;
     };
-}
+}
 if (!Object.isFrozen) {
     Object.isFrozen = function isFrozen(object) {
         return false;
     };
-}
+}
 if (!Object.isExtensible) {
-    Object.isExtensible = function isExtensible(object) {
+    Object.isExtensible = function isExtensible(object) {
         if (Object(object) === object) {
             throw new TypeError(); // TODO message
-        }
+        }
         var name = '';
         while (owns(object, name)) {
             name += '?';
@@ -3694,8 +3694,8 @@ if (!Object.isExtensible) {
         delete object[name];
         return returnValue;
     };
-}
-if (!Object.keys) {
+}
+if (!Object.keys) {
     var hasDontEnumBug = true,
         dontEnums = [
             "toString",
@@ -3739,23 +3739,23 @@ if (!Object.keys) {
         return keys;
     };
 
-}
+}
 if (!Date.now) {
     Date.now = function now() {
         return new Date().getTime();
     };
-}
+}
 var ws = "\x09\x0A\x0B\x0C\x0D\x20\xA0\u1680\u180E\u2000\u2001\u2002\u2003" +
     "\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000\u2028" +
     "\u2029\uFEFF";
-if (!String.prototype.trim || ws.trim()) {
+if (!String.prototype.trim || ws.trim()) {
     ws = "[" + ws + "]";
     var trimBeginRegexp = new RegExp("^" + ws + ws + "*"),
         trimEndRegexp = new RegExp(ws + ws + "*$");
     String.prototype.trim = function trim() {
         return String(this).replace(trimBeginRegexp, "").replace(trimEndRegexp, "");
     };
-}
+}
 
 function toInteger(n) {
     n = +n;
@@ -3798,7 +3798,7 @@ function toPrimitive(input) {
         }
     }
     throw new TypeError();
-}
+}
 var toObject = function (o) {
     if (o == null) { // this matches both null and undefined
         throw new TypeError("can't convert "+o+" to object");

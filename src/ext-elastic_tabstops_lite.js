@@ -51,7 +51,7 @@ var ElasticTabstopsLite = function(editor) {
     };
 
     this.$findCellWidthsForBlock = function(row) {
-        var cellWidths = [], widths;
+        var cellWidths = [], widths;
         var rowIter = row;
         while (rowIter >= 0) {
             widths = this.$cellWidthsForRow(rowIter);
@@ -61,7 +61,7 @@ var ElasticTabstopsLite = function(editor) {
             cellWidths.unshift(widths);
             rowIter--;
         }
-        var firstRow = rowIter + 1;
+        var firstRow = rowIter + 1;
         rowIter = row;
         var numRows = this.$editor.session.getLength();
 
@@ -79,7 +79,7 @@ var ElasticTabstopsLite = function(editor) {
     };
 
     this.$cellWidthsForRow = function(row) {
-        var selectionColumns = this.$selectionColumnsForRow(row);
+        var selectionColumns = this.$selectionColumnsForRow(row);
 
         var tabs = [-1].concat(this.$tabsForRow(row));
         var widths = tabs.map(function(el) { return 0; } ).slice(1);
@@ -99,7 +99,7 @@ var ElasticTabstopsLite = function(editor) {
 
     this.$selectionColumnsForRow = function(row) {
         var selections = [], cursor = this.$editor.getCursorPosition();
-        if (this.$editor.session.getSelection().isEmpty()) {
+        if (this.$editor.session.getSelection().isEmpty()) {
             if (row == cursor.row)
                 selections.push(cursor.column);
         }
@@ -116,7 +116,7 @@ var ElasticTabstopsLite = function(editor) {
             if (!column.push) {
                 console.error(column);
                 continue;
-            }
+            }
             column.push(NaN);
 
             for (var r = 0, s = column.length; r < s; r++) {
@@ -126,7 +126,7 @@ var ElasticTabstopsLite = function(editor) {
                     maxWidth = 0;
                     startingNewBlock = false;
                 }
-                if (isNaN(width)) {
+                if (isNaN(width)) {
                     blockEndRow = r;
 
                     for (var j = blockStartRow; j < blockEndRow; j++) {
@@ -176,7 +176,7 @@ var ElasticTabstopsLite = function(editor) {
         if (rowTabs.length == 0)
             return;
 
-        var bias = 0, location = -1;
+        var bias = 0, location = -1;
         var expandedSet = this.$izip(widths, rowTabs);
 
         for (var i = 0, l = expandedSet.length; i < l; i++) {
@@ -192,7 +192,7 @@ var ElasticTabstopsLite = function(editor) {
             var strippedPartialLine = partialLine.replace(/\s*$/g, "");
             var ispaces = partialLine.length - strippedPartialLine.length;
 
-            if (difference > 0) {
+            if (difference > 0) {
                 this.$editor.session.getDocument().insertInLine({row: row, column: it + 1}, Array(difference + 1).join(" ") + "\t");
                 this.$editor.session.getDocument().removeInLine(row, it, it + 1);
 
@@ -204,7 +204,7 @@ var ElasticTabstopsLite = function(editor) {
                 bias += difference;
             }
         }
-    };
+    };
     this.$izip_longest = function(iterables) {
         if (!iterables[0])
             return [];
@@ -233,8 +233,8 @@ var ElasticTabstopsLite = function(editor) {
 
 
         return expandedSet;
-    };
-    this.$izip = function(widths, tabs) {
+    };
+    this.$izip = function(widths, tabs) {
         var size = widths.length >= tabs.length ? tabs.length : widths.length;
 
         var expandedSet = [];

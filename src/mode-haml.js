@@ -2,7 +2,7 @@ define("ace/mode/ruby_highlight_rules",["require","exports","module","ace/lib/oo
 "use strict";
 
 var oop = require("../lib/oop");
-var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
+var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var constantOtherSymbol = exports.constantOtherSymbol = {
     token : "constant.other.symbol.ruby", // symbol
     regex : "[:](?:[A-Za-z_]|[@$](?=[a-zA-Z0-9_]))[a-zA-Z0-9_]*[!=?]?"
@@ -90,7 +90,7 @@ var RubyHighlightRules = function() {
         "variable.language": builtinVariables,
         "support.function": builtinFunctions,
         "invalid.deprecated": "debugger" // TODO is this a remnant from js mode?
-    }, "identifier");
+    }, "identifier");
 
     this.$rules = {
         "start" : [
@@ -169,7 +169,7 @@ var RubyHighlightRules = function() {
                 }, {
                     defaultToken: "string"
                 }]
-            }],
+            }],
 
             {
                 token : "text", // namespaces aren't symbols
@@ -190,7 +190,7 @@ var RubyHighlightRules = function() {
                 token : "constant.language.boolean",
                 regex : "(?:true|false)\\b"
             }, {
-                token : keywordMapper,
+                token : keywordMapper,
                 regex : "[a-zA-Z_$][a-zA-Z0-9_$]*\\b"
             }, {
                 token : "punctuation.separator.key-value",
@@ -295,7 +295,7 @@ var TextHighlightRules = require("./text_highlight_rules").TextHighlightRules;
 var RubyExports = require("./ruby_highlight_rules");
 var RubyHighlightRules = RubyExports.RubyHighlightRules;
 
-var HamlHighlightRules = function() {
+var HamlHighlightRules = function() {
 
     this.$rules = 
         {
@@ -462,7 +462,7 @@ oop.inherits(FoldMode, BaseFoldMode);
             var endColumn = session.getLine(endRow).length;
             return new Range(startRow, startColumn, endRow, endColumn);
         }
-    };
+    };
     this.getFoldWidget = function(session, foldStyle, row) {
         var line = session.getLine(row);
         var indent = line.search(/\S/);
@@ -474,7 +474,7 @@ oop.inherits(FoldMode, BaseFoldMode);
         if (indent == -1) {
             session.foldWidgets[row - 1] = prevIndent!= -1 && prevIndent < nextIndent ? "start" : "";
             return "";
-        }
+        }
         if (prevIndent == -1) {
             if (indent == nextIndent && line[indent] == "#" && next[indent] == "#") {
                 session.foldWidgets[row - 1] = "";
