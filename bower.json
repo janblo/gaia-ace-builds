@@ -1,16 +1,12 @@
 {
   "name": "GaiaAceEditor",
   "description": "Ace Editor with Gaia Ajax features",
-  "version": "1.1.801",
-  "main": "src-Gaia/ace.js",
+  "version": "1.1.802",
+  "main": "src/ace.js",
   "license": "BSD New",
   "ignore": [
     "**/.*",
 	"demo",
-    "src",
-    "src-min",
-    "src-min-noconflict",
-	"src-noconflict",
 	"textarea",
 	"*.json",
 	"*.md",
