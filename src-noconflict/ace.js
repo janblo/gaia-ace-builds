@@ -10313,10 +10313,24 @@ oop.inherits(CommandManager, MultiHashHandler);
             return false;
 
         var e = {editor: editor, command: command, args: args};
-        e.returnValue = this._emit("exec", e);
-        this._signal("afterExec", e);
+		if(editor.$isInGaiaAjaxCall)
+		{
+			editor.$commandQueue.push(e);
+			return true;
+		}
+		else
+		{
+			 while(editor.$commandQueue.length>0)
+			 {
+				 var c = editor.$commandQueue.shift();
+				 c.returnValue = this._emit("exec",c);
+				 this._signal("afterExec",c);
+			 }
 
-        return e.returnValue === false ? false : true;
+			e.returnValue = this._emit("exec", e);
+			this._signal("afterExec", e);
+	        return e.returnValue === false ? false : true;		
+		}
     };
 
     this.toggleRecording = function(editor) {
@@ -11204,6 +11218,8 @@ var Editor = function(renderer, session) {
         }
     };
     this.$mergeableCommands = ["backspace", "del", "insertstring"];
+	this.$commandQueue = [];
+
     this.$historyTracker = function(e) {
         if (!this.$mergeUndoDeltas)
             return;
@@ -11920,6 +11936,12 @@ var Editor = function(renderer, session) {
     };
     this.getWrapBehavioursEnabled = function () {
         return this.getOption("wrapBehavioursEnabled");
+    };
+	this.setIsInGaiaAjaxCall = function(InGaiaCall){
+		this.setOption("isInGaiaAjaxCall",InGaiaCall);
+	};
+	this.getIsInGaiaAjaxCall = function() {
+        return this.getOption("isInGaiaAjaxCall");
     };
     this.setShowFoldWidgets = function(show) {
         this.setOption("showFoldWidgets", show);
@@ -12865,6 +12887,22 @@ config.defineOptions(Editor.prototype, "editor", {
     autoScrollEditorIntoView: {
         set: function(val) {this.setAutoScrollEditorIntoView(val)}
     },
+	
+	isInGaiaAjaxCall: {
+	    initialValue: false,
+	    set: function(val) {
+	        if (!val && this.$commandQueue.length > 0) {
+	            var ed = this;
+	            setTimeout(function() {
+	                while (ed.$commandQueue.length > 0) {
+	                    var c = ed.$commandQueue.shift();
+	                    c.returnValue = ed.commands._emit("exec", c);
+	                    ed.commands._signal("afterExec", c);
+	                }
+	            }, 500);
+	        }
+	    }
+	},
 
     hScrollBarAlwaysVisible: "renderer",
     vScrollBarAlwaysVisible: "renderer",
