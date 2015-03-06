@@ -182,8 +182,15 @@ module.exports = {
     modesByName: modesByName
 };
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/modelist"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/modelist"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             

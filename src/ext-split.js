@@ -239,8 +239,15 @@ define("ace/ext/split",["require","exports","module","ace/split"], function(requ
 "use strict";
 module.exports = require("../split");
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/split"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/split"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             

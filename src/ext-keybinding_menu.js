@@ -163,8 +163,15 @@ define("ace/ext/keybinding_menu",["require","exports","module","ace/editor","ace
         }]);
     };
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/keybinding_menu"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/keybinding_menu"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             

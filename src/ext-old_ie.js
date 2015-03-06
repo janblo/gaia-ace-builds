@@ -487,8 +487,15 @@ patch(
 
 useragent.isOldIE = true;
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/old_ie"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/old_ie"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             

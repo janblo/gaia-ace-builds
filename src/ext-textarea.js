@@ -625,8 +625,15 @@ exports.defaultOptions = {
     showInvisibles:     "false"
 };
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/textarea"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/textarea"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             

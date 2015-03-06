@@ -327,8 +327,15 @@ exports.commands = [{
     bindKey: "Ctrl-Shift-B"
 }]
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/beautify"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/beautify"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             

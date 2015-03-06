@@ -174,8 +174,15 @@ exports.commands = [{
     }
 }];
 
+<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/whitespace"], function() {});
                 })();
+=======
+});
+                (function() {
+                    window.require(["ace/ext/whitespace"], function() {});
+                })();
+>>>>>>> AceEditorAdapterQueueCommands
             
