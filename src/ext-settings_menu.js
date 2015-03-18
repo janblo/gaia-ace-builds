@@ -632,15 +632,8 @@ module.exports.init = function(editor) {
         showSettingsMenu(this);
     };
 };
-<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/settings_menu"], function() {});
                 })();
-=======
-});
-                (function() {
-                    window.require(["ace/ext/settings_menu"], function() {});
-                })();
->>>>>>> AceEditorAdapterQueueCommands
             

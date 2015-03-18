@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* ***** BEGIN LICENSE BLOCK *****
  * Distributed under the BSD license:
  *
@@ -172,181 +171,6 @@ function exportAce(ns) {
 
 exportAce(ACE_NAMESPACE);
 
-=======
-/* ***** BEGIN LICENSE BLOCK *****
- * Distributed under the BSD license:
- *
- * Copyright (c) 2010, Ajax.org B.V.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *     * Redistributions of source code must retain the above copyright
- *       notice, this list of conditions and the following disclaimer.
- *     * Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
- *     * Neither the name of Ajax.org B.V. nor the
- *       names of its contributors may be used to endorse or promote products
- *       derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
- * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
- * DISCLAIMED. IN NO EVENT SHALL AJAX.ORG B.V. BE LIABLE FOR ANY
- * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
- * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
- * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ***** END LICENSE BLOCK ***** */
-
-/**
- * Define a module along with a payload
- * @param module a name for the payload
- * @param payload a function to call with (require, exports, module) params
- */
-
-(function() {
-
-var ACE_NAMESPACE = "";
-
-var global = (function() { return this; })();
-if (!global && typeof window != "undefined") global = window; // strict mode
-
-
-if (!ACE_NAMESPACE && typeof requirejs !== "undefined")
-    return;
-
-
-var define = function(module, deps, payload) {
-    if (typeof module !== "string") {
-        if (define.original)
-            define.original.apply(this, arguments);
-        else {
-            console.error("dropping module because define wasn\'t a string.");
-            console.trace();
-        }
-        return;
-    }
-    if (arguments.length == 2)
-        payload = deps;
-    if (!define.modules[module]) {
-        define.payloads[module] = payload;
-        define.modules[module] = null;
-    }
-};
-
-define.modules = {};
-define.payloads = {};
-
-/**
- * Get at functionality define()ed using the function above
- */
-var _require = function(parentId, module, callback) {
-    if (typeof module === "string") {
-        var payload = lookup(parentId, module);
-        if (payload != undefined) {
-            callback && callback();
-            return payload;
-        }
-    } else if (Object.prototype.toString.call(module) === "[object Array]") {
-        var params = [];
-        for (var i = 0, l = module.length; i < l; ++i) {
-            var dep = lookup(parentId, module[i]);
-            if (dep == undefined && require.original)
-                return;
-            params.push(dep);
-        }
-        return callback && callback.apply(null, params) || true;
-    }
-};
-
-var require = function(module, callback) {
-    var packagedModule = _require("", module, callback);
-    if (packagedModule == undefined && require.original)
-        return require.original.apply(this, arguments);
-    return packagedModule;
-};
-
-var normalizeModule = function(parentId, moduleName) {
-    // normalize plugin requires
-    if (moduleName.indexOf("!") !== -1) {
-        var chunks = moduleName.split("!");
-        return normalizeModule(parentId, chunks[0]) + "!" + normalizeModule(parentId, chunks[1]);
-    }
-    // normalize relative requires
-    if (moduleName.charAt(0) == ".") {
-        var base = parentId.split("/").slice(0, -1).join("/");
-        moduleName = base + "/" + moduleName;
-
-        while(moduleName.indexOf(".") !== -1 && previous != moduleName) {
-            var previous = moduleName;
-            moduleName = moduleName.replace(/\/\.\//, "/").replace(/[^\/]+\/\.\.\//, "");
-        }
-    }
-    return moduleName;
-};
-
-/**
- * Internal function to lookup moduleNames and resolve them by calling the
- * definition function if needed.
- */
-var lookup = function(parentId, moduleName) {
-    moduleName = normalizeModule(parentId, moduleName);
-
-    var module = define.modules[moduleName];
-    if (!module) {
-        module = define.payloads[moduleName];
-        if (typeof module === 'function') {
-            var exports = {};
-            var mod = {
-                id: moduleName,
-                uri: '',
-                exports: exports,
-                packaged: true
-            };
-
-            var req = function(module, callback) {
-                return _require(moduleName, module, callback);
-            };
-
-            var returnValue = module(req, exports, mod);
-            exports = returnValue || mod.exports;
-            define.modules[moduleName] = exports;
-            delete define.payloads[moduleName];
-        }
-        module = define.modules[moduleName] = exports || module;
-    }
-    return module;
-};
-
-function exportAce(ns) {
-    var root = global;
-    if (ns) {
-        if (!global[ns])
-            global[ns] = {};
-        root = global[ns];
-    }
-
-    if (!root.define || !root.define.packaged) {
-        define.original = root.define;
-        root.define = define;
-        root.define.packaged = true;
-    }
-
-    if (!root.require || !root.require.packaged) {
-        require.original = root.require;
-        root.require = require;
-        root.require.packaged = true;
-    }
-}
-
-exportAce(ACE_NAMESPACE);
-
->>>>>>> AceEditorAdapterQueueCommands
 })();
 
 define("ace/lib/regexp",["require","exports","module"], function(require, exports, module) {
@@ -1448,7 +1272,8 @@ var Keys = (function() {
             122: "F11",
             123: "F12",
             144: "Numlock",
-            145: "Scrolllock"
+            145: "Scrolllock",
+			172: "Pipe"
         },
 
         PRINTABLE_KEYS: {
@@ -13075,11 +12900,7 @@ config.defineOptions(Editor.prototype, "editor", {
 	                    c.returnValue = ed.commands._emit("exec", c);
 	                    ed.commands._signal("afterExec", c);
 	                }
-<<<<<<< HEAD
 	            }, 1000);
-=======
-	            }, 500);
->>>>>>> AceEditorAdapterQueueCommands
 	        }
 	    }
 	},
@@ -13494,7 +13315,7 @@ var Marker = function(parentEl) {
             }
 
             var range = marker.range.clipRows(config.firstRow, config.lastRow);
-            if (range.isEmpty()) continue;
+            if (range.isEmpty() && marker.type != "lastScreenLineSeparator") continue;
 
             range = range.toScreenRange(this.session);
             if (marker.renderer) {
@@ -13504,8 +13325,12 @@ var Marker = function(parentEl) {
             } else if (marker.type == "fullLine") {
                 this.drawFullLineMarker(html, range, marker.clazz, config);
             } else if (marker.type == "screenLine") {
-                this.drawScreenLineMarker(html, range, marker.clazz, config);
-            } else if (range.isMultiLine()) {
+                this.drawScreenLineMarker(html, range, marker.clazz, config);                
+            } 
+            else if (marker.type == "lastScreenLineSeparator") {
+                this.drawLastScreenLineSeparator(html, range, marker.clazz, config);
+            }
+            else if (range.isMultiLine()) {
                 if (marker.type == "text")
                     this.drawTextMarker(html, range, marker.clazz, config);
                 else
@@ -13519,6 +13344,18 @@ var Marker = function(parentEl) {
 
     this.$getTop = function(row, layerConfig) {
         return (row - layerConfig.firstRowScreen) * layerConfig.lineHeight;
+    };
+
+    this.drawLastScreenLineSeparator = function (stringBuilder, range, clazz, config, extraStyle) {
+        var top = this.$getTop(range.end.row, config);
+        var height = config.lineHeight;
+
+        stringBuilder.push(
+            "<div class='", clazz, "' style='",
+            "height:", height, "px;",
+            "top:", top, "px;",
+            "left:0;right:0;", extraStyle || "", "'></div>"
+        );
     };
     this.drawTextMarker = function(stringBuilder, range, clazz, layerConfig, extraStyle) {
         var row = range.start.row;
@@ -18485,7 +18322,6 @@ exports.createEditSession = function(text, mode) {
 }
 exports.EditSession = EditSession;
 exports.UndoManager = UndoManager;
-<<<<<<< HEAD
 });
             (function() {
                 window.require(["ace/ace"], function(a) {
@@ -18496,16 +18332,4 @@ exports.UndoManager = UndoManager;
                         window.ace[key] = a[key];
                 });
             })();
-=======
-});
-            (function() {
-                window.require(["ace/ace"], function(a) {
-                    a && a.config.init(true);
-                    if (!window.ace)
-                        window.ace = a;
-                    for (var key in a) if (a.hasOwnProperty(key))
-                        window.ace[key] = a[key];
-                });
-            })();
->>>>>>> AceEditorAdapterQueueCommands
         

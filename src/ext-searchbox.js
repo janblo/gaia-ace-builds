@@ -402,15 +402,8 @@ exports.Search = function(editor, isReplace) {
     sb.show(editor.session.getTextRange(), isReplace);
 };
 
-<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/searchbox"], function() {});
                 })();
-=======
-});
-                (function() {
-                    window.require(["ace/ext/searchbox"], function() {});
-                })();
->>>>>>> AceEditorAdapterQueueCommands
             

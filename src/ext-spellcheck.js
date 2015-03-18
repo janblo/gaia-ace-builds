@@ -64,15 +64,8 @@ require("../config").defineOptions(Editor.prototype, "editor", {
     }
 });
 
-<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/spellcheck"], function() {});
                 })();
-=======
-});
-                (function() {
-                    window.require(["ace/ext/spellcheck"], function() {});
-                })();
->>>>>>> AceEditorAdapterQueueCommands
             

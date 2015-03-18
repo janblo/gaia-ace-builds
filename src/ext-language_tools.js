@@ -1926,15 +1926,8 @@ require("../config").defineOptions(Editor.prototype, "editor", {
         value: false
     }
 });
-<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/language_tools"], function() {});
                 })();
-=======
-});
-                (function() {
-                    window.require(["ace/ext/language_tools"], function() {});
-                })();
->>>>>>> AceEditorAdapterQueueCommands
             

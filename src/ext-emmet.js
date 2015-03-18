@@ -1183,15 +1183,8 @@ exports.setCore = function(e) {
     else
        emmet = e;
 };
-<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/emmet"], function() {});
                 })();
-=======
-});
-                (function() {
-                    window.require(["ace/ext/emmet"], function() {});
-                })();
->>>>>>> AceEditorAdapterQueueCommands
             

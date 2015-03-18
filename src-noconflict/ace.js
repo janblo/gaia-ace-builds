@@ -1272,7 +1272,8 @@ var Keys = (function() {
             122: "F11",
             123: "F12",
             144: "Numlock",
-            145: "Scrolllock"
+            145: "Scrolllock",
+			172: "Pipe"
         },
 
         PRINTABLE_KEYS: {
@@ -12899,7 +12900,7 @@ config.defineOptions(Editor.prototype, "editor", {
 	                    c.returnValue = ed.commands._emit("exec", c);
 	                    ed.commands._signal("afterExec", c);
 	                }
-	            }, 500);
+	            }, 1000);
 	        }
 	    }
 	},
@@ -13314,7 +13315,7 @@ var Marker = function(parentEl) {
             }
 
             var range = marker.range.clipRows(config.firstRow, config.lastRow);
-            if (range.isEmpty()) continue;
+            if (range.isEmpty() && marker.type != "lastScreenLineSeparator") continue;
 
             range = range.toScreenRange(this.session);
             if (marker.renderer) {
@@ -13324,8 +13325,12 @@ var Marker = function(parentEl) {
             } else if (marker.type == "fullLine") {
                 this.drawFullLineMarker(html, range, marker.clazz, config);
             } else if (marker.type == "screenLine") {
-                this.drawScreenLineMarker(html, range, marker.clazz, config);
-            } else if (range.isMultiLine()) {
+                this.drawScreenLineMarker(html, range, marker.clazz, config);                
+            } 
+            else if (marker.type == "lastScreenLineSeparator") {
+                this.drawLastScreenLineSeparator(html, range, marker.clazz, config);
+            }
+            else if (range.isMultiLine()) {
                 if (marker.type == "text")
                     this.drawTextMarker(html, range, marker.clazz, config);
                 else
@@ -13339,6 +13344,18 @@ var Marker = function(parentEl) {
 
     this.$getTop = function(row, layerConfig) {
         return (row - layerConfig.firstRowScreen) * layerConfig.lineHeight;
+    };
+
+    this.drawLastScreenLineSeparator = function (stringBuilder, range, clazz, config, extraStyle) {
+        var top = this.$getTop(range.end.row, config);
+        var height = config.lineHeight;
+
+        stringBuilder.push(
+            "<div class='", clazz, "' style='",
+            "height:", height, "px;",
+            "top:", top, "px;",
+            "left:0;right:0;", extraStyle || "", "'></div>"
+        );
     };
     this.drawTextMarker = function(stringBuilder, range, clazz, layerConfig, extraStyle) {
         var row = range.start.row;

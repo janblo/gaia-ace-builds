@@ -268,15 +268,8 @@ require("../config").defineOptions(Editor.prototype, "editor", {
     }
 });
 
-<<<<<<< HEAD
 });
                 (function() {
                     window.require(["ace/ext/elastic_tabstops_lite"], function() {});
                 })();
-=======
-});
-                (function() {
-                    window.require(["ace/ext/elastic_tabstops_lite"], function() {});
-                })();
->>>>>>> AceEditorAdapterQueueCommands
             
